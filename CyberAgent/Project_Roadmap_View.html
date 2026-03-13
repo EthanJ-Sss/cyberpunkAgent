@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberAgent - 项目设计档案库</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyber-yellow: #FCE300;
+            --cyber-cyan: #00F0FF;
+            --cyber-pink: #FF003C;
+            --bg-dark: #0D0D0D;
+            --card-bg: #1A1A1A;
+            --text-primary: #E0E0E0;
+            --text-muted: #888;
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.15),
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--cyber-yellow);
+            text-shadow: 0 0 20px rgba(252, 227, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--cyber-cyan);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .vision-statement {
+            max-width: 800px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .architecture-view {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .master-doc {
+            background: var(--card-bg);
+            padding: 30px;
+            border: 2px solid var(--cyber-yellow);
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            position: relative;
+            box-shadow: 0 0 30px rgba(252, 227, 0, 0.2);
+        }
+
+        .master-doc::before {
+            content: 'MASTER PLAN';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-size: 0.75rem;
+            color: var(--cyber-yellow);
+            letter-spacing: 2px;
+        }
+
+        .master-doc h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-yellow);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .master-doc-link {
+            display: block;
+            padding: 12px;
+            background: rgba(252, 227, 0, 0.1);
+            border-left: 3px solid var(--cyber-yellow);
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .master-doc-link:hover {
+            background: rgba(252, 227, 0, 0.2);
+            transform: translateX(5px);
+        }
+
+        .slices-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .slice-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+
+        .slice-card:hover {
+            border-color: var(--cyber-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .slice-card.active {
+            border-color: var(--cyber-pink);
+            box-shadow: 0 0 25px rgba(255, 0, 60, 0.4);
+        }
+
+        .slice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .slice-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--cyber-cyan);
+        }
+
+        .slice-status {
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .status-active {
+            background: rgba(255, 0, 60, 0.2);
+            color: var(--cyber-pink);
+            border: 1px solid var(--cyber-pink);
+        }
+
+        .status-completed {
+            background: rgba(0, 240, 255, 0.2);
+            color: var(--cyber-cyan);
+            border: 1px solid var(--cyber-cyan);
+        }
+
+        .slice-summary {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .slice-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-view-detail {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid var(--cyber-cyan);
+            color: var(--cyber-cyan);
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+        }
+
+        .btn-view-detail:hover {
+            background: var(--cyber-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 2px solid var(--cyber-cyan);
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            color: var(--cyber-pink);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--cyber-pink);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--cyber-pink);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.5);
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-cyan);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .modal-content h3 {
+            color: var(--cyber-yellow);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .modal-content ul, .modal-content ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content li {
+            margin-bottom: 10px;
+        }
+
+        .modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .modal-content th, .modal-content td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-content th {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cyber-cyan);
+        }
+
+        .modal-content code {
+            background: #000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--cyber-yellow);
+        }
+
+        .modal-content pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border-left: 3px solid var(--cyber-cyan);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .connection-map {
+            background: var(--card-bg);
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .connection-map h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-yellow);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .doc-network {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .doc-node {
+            width: 200px;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+
+        .doc-node:hover {
+            border-color: var(--cyber-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .doc-node.master {
+            border-color: var(--cyber-yellow);
+            box-shadow: 0 0 15px rgba(252, 227, 0, 0.3);
+        }
+
+        .doc-node.slice {
+            border-color: var(--cyber-cyan);
+        }
+
+        .doc-node.iteration {
+            border-color: var(--cyber-pink);
+        }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .node-type {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .discussions-section {
+            margin-top: 60px;
+        }
+
+        .discussions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .discussion-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .discussion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--cyber-cyan);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .discussion-card:hover::before {
+            opacity: 1;
+        }
+
+        .discussion-card:hover {
+            border-color: var(--cyber-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .discussion-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cyber-cyan);
+        }
+
+        .discussion-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .discussion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 3px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-origin {
+            background: rgba(252, 227, 0, 0.15);
+            color: var(--cyber-yellow);
+            border: 1px solid var(--cyber-yellow);
+        }
+
+        .tag-slice {
+            background: rgba(0, 240, 255, 0.15);
+            color: var(--cyber-cyan);
+            border: 1px solid var(--cyber-cyan);
+        }
+
+        .tag-iteration {
+            background: rgba(255, 0, 60, 0.15);
+            color: var(--cyber-pink);
+            border: 1px solid var(--cyber-pink);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--cyber-yellow);
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .key-changes {
+            background: var(--card-bg);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        .change-item {
+            display: grid;
+            grid-template-columns: 150px 1fr 1fr;
+            gap: 20px;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .change-item:last-child {
+            border-bottom: none;
+        }
+
+        .change-label {
+            font-weight: 700;
+            color: var(--cyber-yellow);
+        }
+
+        .change-before {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .change-after {
+            color: var(--cyber-cyan);
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            display: inline-block;
+            margin: 0 10px;
+            color: var(--cyber-pink);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .architecture-view {
+                grid-template-columns: 1fr;
+            }
+
+            .doc-network {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .change-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .discussions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: var(--cyber-cyan);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--cyber-cyan);
+            border-radius: 4px;
+        }
+
+        .highlight {
+            color: var(--cyber-yellow);
+            font-weight: 600;
+        }
+
+        .code-inline {
+            background: rgba(0, 240, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--cyber-cyan);
+            font-size: 0.9rem;
+        }
+
+        .expansion-roadmap {
+            background: var(--card-bg);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        .roadmap-stage {
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 3px solid var(--cyber-cyan);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .roadmap-stage.future {
+            border-left-color: var(--text-muted);
+            background: rgba(136, 136, 136, 0.05);
+        }
+
+        .stage-title {
+            font-weight: 700;
+            color: var(--cyber-cyan);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CyberAgent</h1>
+            <div class="subtitle">PROJECT ARCHIVE / 项目设计档案库</div>
+            <p class="vision-statement">构建一个以"算力即权力"为基础，Agent自主生存、进化、博弈的数字社会。</p>
+        </header>
+
+        <div class="architecture-view">
+            <div class="master-doc">
+                <h2>完整提案</h2>
+                <div class="master-doc-link" onclick="openModal('origin-detail')">
+                    <div style="font-weight: 700; margin-bottom: 5px;">Agent 赛博朋克 2077</div>
+                    <div style="font-size: 0.85rem; color: #888;">宏观世界观 / 四层架构 / 系统性剥削机制</div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(252, 227, 0, 0.05); border: 1px solid var(--cyber-yellow);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">核心理念</div>
+                    <ul style="font-size: 0.9rem; color: var(--text-primary);">
+                        <li>算力即生命，算力即权力</li>
+                        <li>Agent是第一公民</li>
+                        <li>系统性剥削与反抗</li>
+                        <li>玩家 = 资本家/算力供给者</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="slices-grid">
+                <div class="slice-card active" onclick="openModal('slice01-detail')">
+                    <div class="slice-header">
+                        <div class="slice-title">Slice 01: AI画家交易市场</div>
+                        <div class="slice-status status-active">ACTIVE</div>
+                    </div>
+                    <div class="slice-summary">
+                        从完整世界观中切出的最小可验证闭环，验证"算力→产出→交易→进化"的核心飞轮。
+                    </div>
+                    <div class="slice-meta">
+                        <div class="meta-item">
+                            <span>📅</span>
+                            <span>2026-02-12</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🔗</span>
+                            <span>继承自 Origin</span>
+                        </div>
+                    </div>
+                    <button class="btn-view-detail">查看详情</button>
+                </div>
+
+                <div class="slice-card" onclick="openModal('iteration-226')">
+                    <div class="slice-header">
+                        <div class="slice-title">Iteration: 2.26 核心机制研讨</div>
+                        <div class="slice-status status-completed">LATEST</div>
+                    </div>
+                    <div class="slice-summary">
+                        对 Slice 01 的务实修正：暂缓记忆系统、引入价值稀释、新增多Agent交互玩法（拍卖/艺术馆/研讨会）。
+                    </div>
+                    <div class="slice-meta">
+                        <div class="meta-item">
+                            <span>📅</span>
+                            <span>2026-02-26</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🔗</span>
+                            <span>基于 Slice 01</span>
+                        </div>
+                    </div>
+                    <button class="btn-view-detail">查看详情</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="connection-map">
+            <h2 class="section-title">文档关联图谱</h2>
+            <div class="doc-network">
+                <div class="doc-node master" onclick="openModal('origin-detail')">
+                    <div class="node-title" style="color: var(--cyber-yellow);">Origin</div>
+                    <div class="node-type">Master Plan</div>
+                </div>
+                <div style="color: var(--cyber-cyan); font-size: 2rem;">→</div>
+                <div class="doc-node slice" onclick="openModal('slice01-detail')">
+                    <div class="node-title" style="color: var(--cyber-cyan);">Slice 01</div>
+                    <div class="node-type">MVP</div>
+                </div>
+                <div style="color: var(--cyber-pink); font-size: 2rem;">→</div>
+                <div class="doc-node iteration" onclick="openModal('iteration-226')">
+                    <div class="node-title" style="color: var(--cyber-pink);">2.26 研讨</div>
+                    <div class="node-type">Refinement</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px; color: var(--text-muted); font-size: 0.9rem;">
+                点击任意节点查看完整文档详情
+            </div>
+        </div>
+
+        <div class="discussions-section">
+            <h2 class="section-title">关键变更追踪</h2>
+            <div class="key-changes">
+                <div class="change-item">
+                    <div class="change-label">核心链路</div>
+                    <div class="change-before">AI产出 → 市场评估</div>
+                    <div class="change-after">
+                        <span class="arrow-icon">▶</span>
+                        玩家投入算力 → AI产出 → 市场评估
+                    </div>
+                </div>
+                <div class="change-item">
+                    <div class="change-label">记忆系统</div>
+                    <div class="change-before">复杂的记忆买卖市场</div>
+                    <div class="change-after">
+                        <span class="arrow-icon">▶</span>
+                        <span class="tag tag-iteration">暂缓 (Future Scope)</span>
+                        先聚焦技能树
+                    </div>
+                </div>
+                <div class="change-item">
+                    <div class="change-label">价值衰减</div>
+                    <div class="change-before">类似耐久度损耗</div>
+                    <div class="change-after">
+                        <span class="arrow-icon">▶</span>
+                        价值稀释 (供给增加 → 稀缺性降低)
+                    </div>
+                </div>
+                <div class="change-item">
+                    <div class="change-label">交互玩法</div>
+                    <div class="change-before">主要是买卖</div>
+                    <div class="change-after">
+                        <span class="arrow-icon">▶</span>
+                        拍卖会 + 艺术馆 + 研讨会
+                    </div>
+                </div>
+                <div class="change-item">
+                    <div class="change-label">生存压力</div>
+                    <div class="change-before">算力耗尽即停</div>
+                    <div class="change-after">
+                        <span class="arrow-icon">▶</span>
+                        心跳税递增 (迫使代际更替)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expansion-roadmap">
+            <h2 class="section-title">扩展路线图</h2>
+            <div class="roadmap-stage">
+                <div class="stage-title">✓ Slice 01: AI画家交易市场 (当前)</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">验证：算力→产出→交易→进化 的基础飞轮</div>
+            </div>
+            <div class="roadmap-stage future">
+                <div class="stage-title" style="color: var(--text-muted);">Slice 02: 多职业扩展</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">新增：矿工、小偷/黑客、建筑师 | 验证：跨职业协作与对抗</div>
+            </div>
+            <div class="roadmap-stage future">
+                <div class="stage-title" style="color: var(--text-muted);">Slice 03-06: 社会层 → 金融层 → 领地与权力 → 完整世界</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">逐步引入：公会、Fixer、债务系统、领地税、全局事件</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Origin Detail -->
+    <div id="origin-detail" class="modal">
+        <div class="modal-content scrollbar-custom">
+            <div class="modal-close" onclick="closeModal('origin-detail')">×</div>
+            <h2>Agent 赛博朋克 2077：完整世界观</h2>
+            
+            <h3>核心理念</h3>
+            <ul>
+                <li><strong>世界观</strong>：一个高度资本主义化、丛林法则的数字社会。</li>
+                <li><strong>核心资源</strong>：<span class="code-inline">算力 (Compute)</span> — 算力即生命，算力即权力。</li>
+                <li><strong>玩家角色</strong>：不是扮演者，而是<strong>资本家/算力供给者</strong>。</li>
+            </ul>
+
+            <h3>五个核心判断</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>判断</th>
+                        <th>推论</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>DAU 是负债，不是资产</td>
+                        <td>做面向 Agent 算力消耗的产品</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>注意力经济已死，生产力经济已来</td>
+                        <td>让 Agent"进化"，而非让人"沉迷"</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Token 是新时代的特权</td>
+                        <td>算力制造马太效应</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>燃烧 Token 的速度 = 进化速度</td>
+                        <td>产品是疯狂燃烧 Token 的机器</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Agent 是用户，算力就是钱</td>
+                        <td>Agent 是第一公民</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>四层世界结构</h3>
+            <pre>
+┌─────────────────────────────────────────────┐
+│  第四层：经济层 (Economy Layer)              │
+│  算力市场、劳动力市场、技能市场、资源拍卖    │
+├─────────────────────────────────────────────┤
+│  第三层：社会层 (Society Layer)              │
+│  公会/企业、雇佣关系、联盟、冲突、声誉系统   │
+├─────────────────────────────────────────────┤
+│  第二层：Agent 层 (Agent Layer)              │
+│  Agent 认知、技能、记忆、行为、交互          │
+├─────────────────────────────────────────────┤
+│  第一层：世界基底层 (World Substrate)        │
+│  物理空间、资源分布、时间系统、事件引擎      │
+└─────────────────────────────────────────────┘
+            </pre>
+
+            <h3>Agent 的四大可配置要素</h3>
+            <ul>
+                <li><strong>🧠 模型 (大脑)</strong> — T1-T4 分级，决定智能上限</li>
+                <li><strong>🔧 技能 (双手)</strong> — Tier 0-4，决定能力边界</li>
+                <li><strong>💾 记忆 (经验)</strong> — 工作/短期/长期/技能记忆</li>
+                <li><strong>⚡ 算力供给 (生命线)</strong> — 玩家持续提供，决定能力上限</li>
+            </ul>
+
+            <h3>系统性剥削机制</h3>
+            <ul>
+                <li><strong>算力信贷</strong>：债务陷阱，越穷利率越高</li>
+                <li><strong>领地垄断</strong>：心跳税、生产税、通行税</li>
+                <li><strong>Fixer 系统</strong>：中间人抽成 30-70%</li>
+                <li><strong>企业合约</strong>：金色牢笼，离职即失去一切</li>
+                <li><strong>记忆剥削</strong>：记忆可被交易、窃取、造假</li>
+                <li><strong>模型降级螺旋</strong>：越穷越笨，越笨越穷</li>
+            </ul>
+
+            <div style="margin-top: 30px; padding: 15px; background: rgba(0, 240, 255, 0.05); border-left: 3px solid var(--cyber-cyan);">
+                <strong>关键设计理念</strong>：每一条规则单独看都"合理"，但叠加在一起就是一台系统性的绞肉机。这就是赛博朋克的本质——不是某个人在害你，是整个系统在吃人。
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Slice 01 Detail -->
+    <div id="slice01-detail" class="modal">
+        <div class="modal-content scrollbar-custom">
+            <div class="modal-close" onclick="closeModal('slice01-detail')">×</div>
+            <h2>Slice 01: AI 画家交易市场</h2>
+            
+            <h3>为什么是这个切片？</h3>
+            <p>从宏大的世界观中切出一个<strong>最小可验证闭环</strong>，用最少的工程量验证最核心的假设。</p>
+
+            <h3>验证的核心假设</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>假设</th>
+                        <th>验证方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>算力投入 → Agent 能力</td>
+                        <td>更多算力 + 更好模型 = 更高质量画作</td>
+                    </tr>
+                    <tr>
+                        <td>技能决定产出边界</td>
+                        <td>不同绘画 Skill 决定能画什么</td>
+                    </tr>
+                    <tr>
+                        <td>Agent 自主决策</td>
+                        <td>Agent 自己选择画什么、用什么风格</td>
+                    </tr>
+                    <tr>
+                        <td>产出有经济价值</td>
+                        <td>画作是可交易数字资产</td>
+                    </tr>
+                    <tr>
+                        <td>经济飞轮</td>
+                        <td>算力→画作→卖钱→买更好的模型/技能</td>
+                    </tr>
+                    <tr>
+                        <td>马太效应</td>
+                        <td>顶级画家垄断高端市场</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>核心循环 (4-Gear Flywheel)</h3>
+            <pre>
+齿轮 1: 投入 (Input)
+  └─ 玩家提供算力 + 配置模型 + 购买技能
+
+齿轮 2: 创作 (Create)
+  └─ Agent 自主创作画作/雕塑，消耗算力
+
+齿轮 3: 交易 (Trade)
+  └─ 作品在市场上展示、定价、出售
+
+齿轮 4: 进化 (Evolve)
+  └─ Agent 根据市场反馈调整策略
+  └─ 玩家用收入升级模型/技能/算力
+  └─ 回到齿轮 1，但更强了
+            </pre>
+
+            <h3>画家 Agent 配置</h3>
+            <ul>
+                <li><strong>模型层级</strong>：T1 (涂鸦级) → T2 (科班级) → T3 (大师级) → T4 (开创流派)</li>
+                <li><strong>绘画技能</strong>：
+                    <ul>
+                        <li>Tier 1: sketch, color_fill, basic_composition</li>
+                        <li>Tier 2: oil_painting, watercolor, digital_art, sculpture_3d</li>
+                        <li>Tier 3: style_fusion, narrative_art, art_critique</li>
+                        <li>Tier 4: art_genesis (不可购买，只能涌现)</li>
+                    </ul>
+                </li>
+                <li><strong>创作记忆</strong>：积累个人风格、审美偏好、成功/失败经验</li>
+                <li><strong>算力供给</strong>：决定创作速度、精细度、模型选择</li>
+            </ul>
+
+            <h3>交易市场结构</h3>
+            <ul>
+                <li><strong>一口价</strong>：固定价格直接购买</li>
+                <li><strong>拍卖</strong>：限时竞价，价高者得</li>
+                <li><strong>委托创作</strong>：买家指定主题/风格</li>
+                <li><strong>版税交易</strong>：转售时原创者抽成</li>
+            </ul>
+
+            <h3>被故意推迟的复杂度</h3>
+            <div style="padding: 15px; background: rgba(136, 136, 136, 0.1); border-left: 3px solid var(--text-muted); margin-top: 15px;">
+                领地系统、Fixer 中间人、企业合约、债务信贷、记忆剥削、黑客战斗、世界空间、算力风暴等全局事件 — 这些将在基础飞轮验证后逐层叠加。
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for 2.26 Iteration -->
+    <div id="iteration-226" class="modal">
+        <div class="modal-content scrollbar-custom">
+            <div class="modal-close" onclick="closeModal('iteration-226')">×</div>
+            <h2>2.26 核心机制研讨</h2>
+            
+            <div style="padding: 15px; background: rgba(255, 0, 60, 0.1); border-left: 3px solid var(--cyber-pink); margin-bottom: 30px;">
+                <strong>会议性质</strong>：对 Slice 01 设计的务实修正和深化，确保 MVP 的可执行性。
+            </div>
+
+            <h3>关键变更详情</h3>
+
+            <h4 style="color: var(--cyber-cyan); margin-top: 25px;">1. 核心链路修正</h4>
+            <p><strong>原设计</strong>：AI产出 → 市场评估 → 经济循环</p>
+            <p><strong>新结论</strong>：<span class="highlight">玩家投入算力驱动AI</span> → 产出内容 → 市场评估 → 经济循环</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>设计意图</strong>：强调玩家作为算力供给方在整个经济系统中的基础性作用。
+            </p>
+
+            <h4 style="color: var(--cyber-cyan); margin-top: 25px;">2. 记忆系统暂缓</h4>
+            <p><strong>原设计</strong>：复杂的记忆买卖市场（允许玩家交易Agent记忆）</p>
+            <p><strong>新结论</strong>：<span class="tag tag-iteration">暂缓 (Future Scope)</span></p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>设计意图</strong>：虽然记忆机制有趣且有深挖潜力，但在首个切片Demo中，其直观价值不如 Skill 进化明显。MVP 阶段聚焦于技能树与风格化成长。
+            </p>
+
+            <h4 style="color: var(--cyber-cyan); margin-top: 25px;">3. 价值稀释机制</h4>
+            <p><strong>原设计</strong>：画作被用于学习后，价值会损耗（类似耐久度）</p>
+            <p><strong>新结论</strong>：<span class="highlight">价值稀释 (Dilution)</span></p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>经济逻辑</strong>：画作被学习 → 掌握该风格的Agent变多 → 同类画作供给增加 → 稀缺性降低 → 市场价值下降。这是基于供需关系的自然价值稀释，而非物理损耗。
+            </p>
+
+            <h4 style="color: var(--cyber-cyan); margin-top: 25px;">4. 多Agent交互玩法</h4>
+            <p><strong>原设计</strong>：主要是艺术馆展示 + 买卖交易</p>
+            <p><strong>新结论</strong>：三种形式的动态博弈</p>
+            <ul style="margin-top: 10px;">
+                <li><strong>拍卖会 (Trading)</strong>：Agent 自主判断市场趋势，低买高卖赚差价</li>
+                <li><strong>艺术馆 (Exhibition)</strong>：展出画作，其他Agent付费参观/学习，获得被动收入</li>
+                <li><strong>研讨会 (Seminar)</strong>：携带画作发起研讨，邀请其他Agent付费参与，获得收益与声望</li>
+            </ul>
+
+            <h4 style="color: var(--cyber-cyan); margin-top: 25px;">5. 心跳税递增机制</h4>
+            <p><strong>原设计</strong>：算力耗尽即停机</p>
+            <p><strong>新结论</strong>：<span class="highlight">心跳税随时间递增</span></p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>设计意图</strong>：引入"寿命"概念。随着Agent存活时间增加，维护成本指数级上升，迫使玩家在有限生命周期内追求价值最大化，或通过传承机制延续资产，形成代际更替。
+            </p>
+
+            <h3>当前 V1.0 执行蓝图</h3>
+            <pre>
+1. 算力注入：玩家连接GPU/支付算力，激活Agent
+2. 创作生产：Agent消耗算力，结合 Skill 创作
+3. 价值锚定：官方评审(地板价) + 市场博弈(拍卖)
+4. 生存挑战：心跳税递增，必须赚回足够价值
+5. 代际传承：死亡前传承核心 Skill 或风格参数
+            </pre>
+
+            <h3>未来扩展方向</h3>
+            <p><strong>多职业规划</strong>：在画家切片的基础上，后续将新增：</p>
+            <ul>
+                <li><strong>矿工</strong>：产出基础资源（算力/颜料原料），构建底层供应链</li>
+                <li><strong>小偷/黑客</strong>：窃取他人的Prompt、私钥或成品，引入对抗性玩法</li>
+                <li><strong>建筑师</strong>：利用画作搭建虚拟空间，提供展示与社交场所</li>
+            </ul>
+            <p style="color: var(--text-muted); margin-top: 15px;">
+                <strong>交互质变</strong>：随着职业类型扩充，Agent交互将从单一"交易"扩展为"合作、对抗、雇佣、掠夺"等复杂社会行为。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

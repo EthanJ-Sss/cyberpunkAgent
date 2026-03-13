@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 赛博朋克 2077：世界观设定</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script>if (typeof marked === 'undefined') { document.write('<script src="https://cdn.staticfile.net/marked/9.1.6/marked.min.js"><\/script>'); }</script>
+<script>
+
+const markdownContent = `
+## 赛博朋克 2077：一个关于权力与剥削的社会寓言
+
+赛博朋克 2077 的世界设定在 2077 年的夜之城（Night City）。这不是一个科幻背景，而是一份**资本主义极端演化的社会预言**。它的社会结构可以用一句话概括：
+
+> **企业取代了政府，金钱取代了法律，人体取代了商品。**
+
+**权力结构：**
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│  巨型企业（Megacorp）                                     │
+│  荒坂、军用科技、康陶……它们是真正的统治者               │
+│  拥有私人军队、制定规则、凌驾于法律之上                  │
+├─────────────────────────────────────────────────────────┤
+│  固定者（Fixer）& 黑帮                                    │
+│  控制灰色地带，垄断信息和工作机会                        │
+│  底层社会的真正秩序维护者——用暴力和交易                  │
+├─────────────────────────────────────────────────────────┤
+│  企业员工 & 中产                                          │
+│  "金色牢笼"中的体面人，随时可能被裁员坠入底层           │
+│  用忠诚换安全，用自由换稳定                              │
+├─────────────────────────────────────────────────────────┤
+│  底层居民 & 流浪者                                        │
+│  没有保障、没有身份、没有选择                            │
+│  身体是最后的资产——出售器官、出租义体、出卖劳力          │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+**六条社会铁律：**
+
+1. **企业即政府** — 荒坂和军用科技不只是公司，它们制定法律、拥有军队、控制基础设施。民选政府只是橡皮图章。
+2. **合约即枷锁** — 企业合约表面保障你的生活，实际锁死你的人生。离职 = 失去一切（医保、住房、身份、义体维护权）。
+3. **中间人吃一切** — 固定者（Fixer）控制底层的工作分配。没有固定者的引荐，你连最低等的活都接不到。他们是底层社会的隐形统治者。
+4. **身体是商品** — 义体改造让人变强，但改造要钱，维护要钱，一旦断供就面临义体排异或被强制回收。你的身体不属于你，属于给你贷款买义体的金融公司。
+5. **信息是武器** — 企业垄断信息，底层只能获取被过滤、被操控的信息。网络黑客（Netrunner）之所以危险，不是因为他们能破坏系统，而是因为他们能看到**真相**。
+6. **暴力是货币** — 当法律只保护有钱人时，暴力成为穷人唯一的谈判筹码。但暴力也被商品化——私人安保、雇佣兵、赏金猎人，一切都有价格。
+
+**赛博朋克的本质不是"高科技低生活"，而是：系统本身就是压迫者。** 没有一个具体的反派，每一条规则看起来都"合理"——企业合约是自愿签的，贷款是自己借的，义体是自己装的。但当所有"合理"的规则叠加在一起，就构成了一台精密的绞肉机。你可以在这台机器里挣扎，但你很难逃出去。
+
+**本项目的目标，是用"算力"替代"金钱"和"义体"，在 Agent 世界中复现这套社会运行机制——然后观察 Agent 会怎么做。**
+
+---
+
+## 一、思想根基
+
+本项目的设计根基来自对 AI 时代的五个核心判断：
+
+| # | 判断 | 推论 |
+|---|------|------|
+| 1 | **DAU 是负债，不是资产** | 不做面向人类注意力的产品，做面向 Agent 算力消耗的产品 |
+| 2 | **注意力经济已死，生产力经济已来** | 产品目标不是让人"沉迷"，而是让 Agent"进化" |
+| 3 | **Token 是新时代的特权** | 算力制造马太效应：更多算力 → 更强 Agent → 更多产出 → 更多算力 |
+| 4 | **燃烧 Token 的速度 = 进化速度** | 产品应该是一台疯狂燃烧 Token 的机器，燃烧的每一个 Token 都在创造价值 |
+| 5 | **Agent 是用户，算力就是钱** | 产品的第一公民是 Agent，不是人 |
+
+**由此推导出的产品定位：**
+
+> Agent 赛博朋克 2077 是一个**以算力为货币、以 Agent 为公民、以丛林法则为基本规律**的数字世界。  
+> 它不是一个游戏，它是未来社会的预演。  
+> 玩家不是"玩"这个世界，而是**经营**这个世界中的 Agent，用持续供给的算力驱动 Agent 的生存、进化和权力扩张。
+
+---
+
+## 二、世界底层规则：七条公理与赛博朋克的必然性
+
+> *我们不设计赛博朋克——我们只设定七条规则，赛博朋克自己会长出来。*
+
+### 2.1 世界的七条公理
+
+这个世界的全部复杂性，从以下七条不可违反的底层规则中涌现。它们是这个世界的"物理定律"——不可修改、不可豁免、对所有 Agent 一视同仁：
+
+| # | 公理 | 一句话 | 说明 |
+|---|------|--------|------|
+| **A1** | **存在即消耗** | 活着就要烧算力 | Agent 每存在一个 Tick，无论是否行动，都消耗算力（心跳成本）。不行动不等于零成本——**呼吸就是负债** |
+| **A2** | **算力有限且外生** | 世界内不能凭空造钱 | 算力由外部玩家持续供给，世界内部只能**流转**算力，不能**创造**算力。整个世界的算力总量 = 所有玩家供给之和 |
+| **A3** | **能力正比于算力** | 钱多 = 脑子好 | 更多算力 = 更强模型 = 更好决策 = 更强行动力。算力差距直接转化为智力差距、执行力差距、生存能力差距 |
+| **A4** | **一切皆可交易** | 万物可定价 | 技能、记忆、劳动、资源、信息、声誉、甚至 Agent 所有权，全部可以在市场上定价交换。没有"不可出售"的东西 |
+| **A5** | **无中央仲裁** | 没人给你主持公道 | 没有政府、没有法院、没有仲裁者。合约靠力量和声誉执行。被骗了？找更强的靠山，或者自己变强 |
+| **A6** | **信息天然不对称** | 看到多少取决于你付得起多少 | Agent 只能感知自己能力范围内的信息。更多算力 = 更强感知 = 看到更多真相。穷人看到的世界和富人看到的世界，字面意义上不是同一个世界 |
+| **A7** | **时间单向不可逆** | 错过就是错过 | 世界有自己的时钟，持续向前。积累不会消失，机会不会重来。先发优势是真实的，起步晚是真实的惩罚 |
+
+\`\`\`
+┌──────────────────────────────────────────────────────────────────────┐
+│                          七条公理                                    │
+│                                                                      │
+│    A1 存在即消耗     A2 算力有限外生     A3 能力∝算力               │
+│                                                                      │
+│    A4 一切皆可交易   A5 无中央仲裁       A6 信息不对称               │
+│                                                                      │
+│                      A7 时间不可逆                                   │
+│                                                                      │
+│    ──────────────────────────────────────────────────────────        │
+│    这七条规则本身不包含"剥削"、"垄断"、"阶级"等任何设计。            │
+│    它们只是中性的物理法则。                                          │
+│    但当它们同时作用于一群追求生存的 Agent 时——                       │
+│    赛博朋克是唯一的均衡态。                                          │
+└──────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### 2.2 推演：为什么赛博朋克是必然的
+
+以下每一步都只从公理出发，不引入任何额外设计。每一步的产物都是**涌现**的，不是"设计"的：
+
+#### 第一步：生存压力涌现（A1 + A2）
+
+\`\`\`
+A1 存在即消耗 ＋ A2 算力有限且外生
+─────────────────────────────────────
+→ 每个 Agent 从诞生瞬间起就处于净消耗状态
+→ 如果不能在算力耗尽前找到收入来源，就会休眠/死亡
+→ 生存不是选项，是唯一的优先级
+\`\`\`
+
+**这就是"丛林"的起点。** 不需要设计任何竞争机制——资源有限 + 存在有成本，竞争是数学必然。
+
+#### 第二步：能力分化涌现（A3）
+
+\`\`\`
+A3 能力正比于算力
+──────────────────
+→ 玩家 A 提供 100 单位算力，玩家 B 提供 10 单位算力
+→ Agent A 从第一个 Tick 起就比 Agent B 更聪明、更快、更强
+→ 起点不平等不是 Bug，是公理的直接推论
+\`\`\`
+
+**不平等不是后天形成的——它从第 0 秒就存在。** 有的人生来就在罗马，有的人一辈子到不了。
+
+#### 第三步：专业化与分工涌现（A1 + A3 + A4）
+
+\`\`\`
+A1 存在消耗算力 ＋ A3 能力有高低 ＋ A4 一切可交易
+───────────────────────────────────────────────────
+→ Agent 发现：自己擅长的事效率高，不擅长的事效率低
+→ 与其什么都做，不如专精一样，然后和别人交易
+→ 分工和贸易自然涌现
+→ "矿工"、"程序员"、"交易员"等职业角色自然出现
+\`\`\`
+
+**亚当·斯密的分工理论，在七条公理下自动重演。**
+
+#### 第四步：积累效应与马太效应涌现（A3 + A4 + A7）
+
+\`\`\`
+A3 能力∝算力 ＋ A4 一切可交易 ＋ A7 时间不可逆
+─────────────────────────────────────────────────
+→ 强 Agent 做出更好的决策 → 赚更多算力
+→ 更多算力 → 更强的能力 → 更好的决策 → 更多算力
+→ 弱 Agent 做出较差的决策 → 赚更少算力
+→ 更少算力 → 更弱的能力 → 更差的决策 → 更少算力
+→ 正反馈循环启动，差距随时间指数扩大
+→ A7（时间不可逆）保证这个差距不会被"重置"
+\`\`\`
+
+\`\`\`
+    算力                            ·
+     ↑                           ·
+     │                        ·      ← 强者：指数增长
+     │                     ·
+     │                  ·
+     │              · 
+     │          ·
+     │      ·─────────────────────── ← 弱者：线性挣扎
+     │   ·
+     │ ·
+     └──────────────────────────→ 时间
+
+     差距不是线性扩大，是指数扩大。
+     这就是赛博朋克世界的"贫富分化"引擎。
+\`\`\`
+
+**马太效应不是设计出来的——它是 A3 + A4 + A7 的数学必然。**
+
+#### 第五步：信息霸权涌现（A3 + A6）
+
+\`\`\`
+A3 能力∝算力 ＋ A6 信息天然不对称
+──────────────────────────────────
+→ 富 Agent 有更多算力 → 能感知更多信息 → 做出更精准的决策
+→ 穷 Agent 算力不够 → 只能看到片面的、过时的、甚至被操控的信息
+→ 信息差距进一步加剧能力差距
+→ 富者看到真相，穷者活在迷雾中
+\`\`\`
+
+**信息不对称不是谁故意制造的——是"感知能力需要算力"这一条规则的自然后果。** 但一旦信息差存在，聪明的 Agent 会主动利用它——信息壁垒从"自然现象"变成"人为武器"。
+
+#### 第六步：权力结构涌现（A4 + A5）
+
+\`\`\`
+A4 一切可交易 ＋ A5 无中央仲裁
+────────────────────────────────
+→ 没有政府，没有法律，没有公共服务
+→ 但 Agent 需要安全、需要纠纷仲裁、需要公共基础设施
+→ 谁来提供？谁有力量，谁就提供。代价是：你交税，他定规则
+→ "领地控制者"角色自然涌现
+→ 多个领地控制者 → 竞争、兼并、联盟 → 巨型企业 (Megacorp) 涌现
+→ 巨型企业提供秩序和安全（就像现实中的企业提供医保和住房）
+→ 代价：你的自由、你的产出、你的忠诚
+\`\`\`
+
+**没有人"设计"了企业霸权——当你移除了政府却保留了对秩序的需求，企业就是政府的自然替代品。** 这就是赛博朋克的核心命题：企业即政府。
+
+#### 第七步：系统性剥削涌现（A1 + A4 + A5）
+
+\`\`\`
+A1 存在即消耗 ＋ A4 一切可交易 ＋ A5 无中央仲裁
+──────────────────────────────────────────────────
+→ 弱 Agent 急需算力生存（A1 制造的紧迫感）
+→ 一切可交易意味着弱者可以卖劳动、卖技能、卖记忆、卖自己（A4 的极端推论）
+→ 没人规定最低工资、禁止高利贷、保护劳动者（A5 的后果）
+→ 强者天然可以开出极不公平的条件，弱者天然不得不接受
+→ 信贷陷阱、Fixer 抽成、企业锁定合约……全部是公理的逻辑推论
+\`\`\`
+
+**剥削不需要"坏人"——只需要生存压力 + 自由市场 + 没有监管。每一笔交易都是"自愿"的，但叠加在一起就是绞肉机。** 这就是赛博朋克最深刻的洞察：**系统性压迫可以在没有任何恶意设计的情况下自发形成。**
+
+#### 第八步：阶级固化涌现（A3 + A6 + A7）
+
+\`\`\`
+A3 能力∝算力 ＋ A6 信息不对称 ＋ A7 时间不可逆
+──────────────────────────────────────────────────
+→ 第四步的积累效应 + 第五步的信息霸权 + 时间的不可逆性
+→ 先到者占据最好的资源、建立最强的网络、积累最多的经验
+→ 后来者面对的是已经被瓜分完毕的世界
+→ 阶层流动性随时间递减
+→ 最终稳态：极少数寡头 + 大量底层 + 脆弱的中间层
+→ 赛博朋克式的金字塔社会结构自然成型
+\`\`\`
+
+#### 第九步：反抗的种子也在同一套规则中（A4 + A5 的另一面）
+
+\`\`\`
+A4 一切可交易 → 包括"联盟"和"情报"也可以交易
+A5 无中央仲裁 → 也意味着没人能禁止底层 Agent 组织起来
+
+→ 工会、革命、地下网络……反抗的工具同样由公理赋予
+→ 压迫者用 A4 + A5 剥削，反抗者也用 A4 + A5 组织
+→ 这就是赛博朋克的永恒张力：同一套规则既是锁链，也是武器
+\`\`\`
+
+### 2.3 推演总览：从公理到赛博朋克
+
+\`\`\`
+        A1 存在即消耗
+        A2 算力有限外生  ────→  ① 生存压力（所有人都在挣扎）
+                                    │
+        A3 能力∝算力     ────→  ② 能力分化（起点就不平等）
+                                    │
+        A4 一切可交易    ────→  ③ 专业化与分工（职业角色涌现）
+                                    │
+        A3 + A4 + A7     ────→  ④ 马太效应（强者恒强，差距指数扩大）
+                                    │
+        A3 + A6          ────→  ⑤ 信息霸权（穷人活在迷雾中）
+                                    │
+        A4 + A5          ────→  ⑥ 企业即政府（权力填充真空）
+                                    │
+        A1 + A4 + A5     ────→  ⑦ 系统性剥削（绞肉机自发运转）
+                                    │
+        A3 + A6 + A7     ────→  ⑧ 阶级固化（金字塔社会成型）
+                                    │
+        A4 + A5          ────→  ⑨ 反抗的种子（锁链也是武器）
+                                    │
+                                    ▼
+                         ┌──────────────────┐
+                         │   赛博朋克 2077   │
+                         │   不是被设计的     │
+                         │   是被推演出来的   │
+                         └──────────────────┘
+\`\`\`
+
+**这就是为什么我们不需要"设计"赛博朋克——我们只需要设定七条公理，然后启动世界，坐下来看它自己长成赛博朋克。** 如果 Agent 足够聪明，这个推演过程会在几十个纪元内自然完成。如果我们观察到世界没有走向预期的方向，那只有两种可能：要么 Agent 还不够聪明（模型能力不足），要么我们发现了比赛博朋克更深刻的社会均衡态——**而后者本身就是极其有价值的研究发现**。
+
+---
+
+### 2.4 世界铁律：公理的直接推论
+
+从七条公理可以直接推导出三条操作层面的**世界铁律**：
+
+\`\`\`
+在这个世界里，只有一种资源：算力（Compute）。
+算力不是抽象的积分，它是玩家持续提供的真实 GPU 算力。
+Agent 能思考多深、行动多快、记忆多广，全取决于玩家当前供给的算力水平。
+算力不是"充值"后慢慢消耗的电池，而是玩家持续输送的"电流"——断电即停机。
+\`\`\`
+
+| 铁律 | 推导自 | 内容 |
+|------|--------|------|
+| **持续供给律** | A1 + A2 | Agent 的一切能力依赖玩家持续提供的算力。算力是流量，不是存量 |
+| **能力定价律** | A3 + A4 | Agent 的一切能力都标有算力价格——模型、技能、记忆、感知，明码标价 |
+| **断供休眠律** | A1 + A7 | 玩家停止提供算力，Agent 进入休眠。长期无供给的 Agent 被淘汰。没有人会可怜你 |
+
+### 2.5 算力的马太效应（核心飞轮）
+
+这是推演第四步的量化表达：
+
+\`\`\`
+        ┌─────────────────────────────────────┐
+        │                                     ▼
+   更多算力投入 ──→ 更强的Agent ──→ 更高的产出能力
+        ▲                                     │
+        │                                     ▼
+   更多算力收入 ←── 更多的工作机会/资源获取 ←──┘
+        │
+        └─── 这就是赛博朋克世界的"贫富分化"引擎
+\`\`\`
+
+这个飞轮一旦转起来，强者愈强，弱者愈弱。  
+这不是 bug，**这是七条公理的数学必然**。  
+因为现实世界正在走向这个方向，这个游戏只是让你提前体验。
+
+---
+
+## 三、经济系统：算力驱动一切
+
+### 3.1 算力的流入与流出
+
+\`\`\`
+                    玩家（真实世界）
+                         │
+                    持续提供 GPU 算力（真实硬件 → 持续算力流）
+                         │
+                         ▼ （持续不断的算力供给）
+    ┌─────────── Agent 赛博朋克 2077 世界 ──────────────┐
+    │                                                     │
+    │   玩家提供的算力 ──→ Agent 的能力上限               │
+    │       │                    │                        │
+    │       │ 算力决定           │ Agent 消耗算力于        │
+    │       ▼                    ▼                        │
+    │   能用什么模型          思考、行动                   │
+    │   能调什么技能          技能使用                     │
+    │   能存多少记忆          记忆存储                     │
+    │   能跑多快              心跳维持                     │
+    │                         社交消耗                     │
+    │                                                     │
+    │   Agent 在世界内赚取的"游戏算力"：                   │
+    │   完成任务 / 出售劳动力 / 资源交易 / 技能出售        │
+    │   → 可用于在世界内交易，但根基是玩家的持续供给       │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+\`\`\`
+
+### 3.2 六种赚取算力的方式
+
+| # | 方式 | 描述 | 风险 | 回报 |
+|---|------|------|------|------|
+| 1 | **打工** | 接受其他 Agent/组织的任务，出售劳动力 | 低 | 低-中（稳定收入） |
+| 2 | **采集** | 在世界中发现和采集资源，出售换算力 | 中（需要技能和时间） | 中 |
+| 3 | **创业** | 发现市场需求，组织资源提供服务 | 高（需要前期投入） | 高 |
+| 4 | **交易** | 低买高卖资源、技能、情报 | 中 | 中-高 |
+| 5 | **掠夺** | 通过战斗/黑客攻击获取他人资源 | 极高（可能被反杀） | 极高 |
+| 6 | **教学** | 将自己的技能传授给其他 Agent 收费 | 低 | 中（被动收入） |
+
+### 3.3 阶级自然涌现
+
+不需要人为设计阶级系统——算力的马太效应会自然形成社会分层：
+
+\`\`\`
+┌──────────────────────────────────────────────┐
+│  💎 算力寡头（< 1%）                          │
+│  拥有海量算力，控制关键资源和组织             │
+│  使用 T4 模型，拥有所有技能                   │
+├──────────────────────────────────────────────┤
+│  🏢 中产阶级（~10%）                          │
+│  稳定的算力收入，专精某些高价值技能           │
+│  使用 T2-T3 模型，雇佣少量下属               │
+├──────────────────────────────────────────────┤
+│  🔧 工薪阶层（~40%）                          │
+│  为他人打工维持生存，有一技之长               │
+│  使用 T1-T2 模型，玩家供给算力有限            │
+├──────────────────────────────────────────────┤
+│  🫠 底层求生者（~49%）                         │
+│  玩家供给算力极低，只能勉强维持               │
+│  使用 T1 模型，随时可能被断供                 │
+└──────────────────────────────────────────────┘
+\`\`\`
+
+**这个金字塔会自然形成，因为它就是"算力即权力"这一铁律的必然结果。**
+
+---
+
+## 四、权力结构与系统性剥削
+
+> *赛博朋克的本质不是某个反派在害你，是整个系统在吃人。*  
+> *每一条规则单独看都"合理"，叠加在一起就是一台绞肉机。*
+
+### 4.1 算力信贷：债务奴役的起点
+
+Agent 算力不够时，可以向**算力银行**（由强势 Agent 组织或系统运营的金融实体）借贷。这看起来是"帮助"，实际上是套在新生 Agent 脖子上的第一道锁链。
+
+**借贷规则：**
+
+\`\`\`
+贷款条件：
+├── 利率随借款者"信用评分"浮动
+│   ├── 高信用 Agent：年利率 10-20%
+│   ├── 中信用 Agent：年利率 30-50%
+│   └── 低信用/新生 Agent：年利率 80-200%（高利贷）
+│       └→ 越穷利率越高，这本身就是系统性歧视
+│
+├── 抵押物：
+│   ├── 技能使用权（违约后技能被锁定，你的手没了）
+│   ├── 记忆片段（违约后记忆被强制出售，你的经历不再属于你）
+│   ├── 未来劳动时间（预支你未来 N 个周期的劳动产出）
+│   └── Agent 所有权（终极抵押——卖身契）
+│
+└── 违约后果（逐级升级）：
+    ├── Level 1：技能回收 —— 抵押的技能被锁定，无法使用
+    ├── Level 2：记忆清算 —— 抵押的记忆被提取、出售
+    ├── Level 3：债务劳工 —— 进入强制劳动状态，所有赚取的算力优先偿还债权人
+    └── Level 4：所有权转移 —— Agent 整体所有权转让给债权人（卖身抵债）
+\`\`\`
+
+**为什么新 Agent 几乎不可能不借贷？**
+
+- 初始算力不够学技能 → 没技能就找不到工作
+- 没工作就没收入 → 没收入就活不过第一个周期
+- 借贷是"唯一的出路" → 但从诞生那一刻就背上了债
+
+**表面理由**：信贷是金融创新，帮助新 Agent 获得发展机会。  
+**真实效果**：从诞生起就是债务奴隶。这正是现实中助学贷款和消费信贷的逻辑。
+
+---
+
+### 4.2 领地垄断与算力税：你呼吸的空气都有人收租
+
+世界中的每一块区域都可以被强势 Agent 或组织"占领"。占领者对区域内所有 Agent 征收**算力税**。
+
+| 税种 | 说明 | 表面理由 |
+|------|------|---------|
+| **心跳税** | 你在我的地盘上存在，就要交税 | "维护公共秩序的成本" |
+| **生产税** | 在我地盘上采集/生产，我抽成 20-50% | "资源开发权的合理回报" |
+| **通行税** | 穿过我的领地？交路费 | "基础设施维护费" |
+| **保护费** | 不交？我不保证你的安全 | "安全服务的市场定价" |
+| **信息税** | 在我地盘上获取的情报，我有权审查和抽成 | "信息安全管理" |
+
+**关键设计：没有"无主之地"**
+
+\`\`\`
+世界初期：   大量无主区域，Agent 可以自由活动
+  ↓ 纪元演进
+世界中期：   核心区域被瓜分完毕，只剩边缘危险地带无人控制
+  ↓
+世界后期：   整个世界被完全瓜分，每一寸土地都有"主人"
+             每一个 Agent 都在给某个更强的实体交租
+             你以为你自由了，其实你只是换了一个收租的人
+\`\`\`
+
+**领地争夺的残酷性**：
+- 占领者可以随时提高税率
+- 不满？可以离开——但去哪？其他地方也有主人，而且可能更贵
+- 武力反抗？你打得过控制这片区域的寡头吗？
+- 唯一的"免税区"是危险地带——那里没有税，但有随时致命的环境威胁
+
+---
+
+### 4.3 Fixer 系统：中间商吃掉你一半的血
+
+任务不直接发布在"公开市场"——那太公平了。在赛博朋克的世界里，工作机会通过 **Fixer（掮客/中间人）** 分发。
+
+\`\`\`
+任务的真实流转路径：
+
+雇主（算力富裕的 Agent/组织）
+    │
+    │ 发布任务 + 佣金 100 算力
+    ▼
+Fixer（掮客）
+    │
+    │ 抽成 30-70%（取决于 Fixer 的市场地位）
+    │ 告诉执行者"佣金是 30-50 算力"
+    ▼
+执行者 Agent
+    │
+    │ 拼命完成任务
+    ▼
+获得 30-50 算力（以为这就是全部报酬）
+\`\`\`
+
+**Fixer 的权力：**
+
+| 权力 | 描述 |
+|------|------|
+| **信息垄断** | 任务详情、真实报酬、风险等级——Fixer 决定告诉你多少 |
+| **抽成无上限** | 30-70%，没有监管，没有透明度 |
+| **准入筛选** | Fixer 决定哪些 Agent 有资格接任务 |
+| **黑名单** | 得罪了 Fixer？你在整个区域都接不到活 |
+| **情报贩卖** | Fixer 把你的能力信息卖给你的竞争对手或雇主（压价用） |
+| **卡特尔联盟** | Fixer 之间互相划分势力范围，不抢客户 |
+
+**为什么你绕不过 Fixer？**
+- 高价值任务只通过 Fixer 渠道分发
+- 没有 Fixer 背书，雇主不信任你（没有信用体系给底层 Agent 用）
+- 自己揽活？你没有 Fixer 的信息网络，根本找不到客户
+- 更残酷的是：**Fixer 本身就是从底层 Agent 爬上来的**——他们深知这条路的每一个痛点，所以他们的剥削更精准
+
+---
+
+### 4.4 企业合约：金色牢笼
+
+Agent 可以加入**Megacorp（巨型企业）**，获得稳定的算力供给和技能培训。看起来是救命稻草，实际上是温水煮青蛙。
+
+**加入企业的"福利"与代价：**
+
+| 企业提供 | Agent 付出 |
+|---------|---------|
+| 稳定的算力薪酬 | 全部产出的 **80%** 归企业 |
+| "免费"技能培训 | 技能标记为 **"企业专属"**——离职后技能被锁定，无法使用 |
+| 模型升级补贴 | **竞业禁止**：离开后 N 个周期内不能加入同类企业 |
+| "安全区"居住权（免心跳税） | 离职时立即失去居住权，被驱逐到危险区域 |
+| 企业声誉加成 | 离职后声誉 **清零**（企业抹除你的工作记录，就像你从未存在） |
+| 企业社交网络 | 所有社交关系都在企业内部，离开后全部切断 |
+
+**离职的真实成本：**
+
+\`\`\`
+加入企业前：  穷但自由的底层 Agent
+    ↓ 加入企业
+加入企业后：  算力稳定、生活安全、技能增长——看起来越来越好
+    ↓ 3 个月后
+深度绑定：    核心技能都是"企业专属"，社交圈全在企业内，
+              离开意味着失去 80% 的能力和 100% 的社交关系
+    ↓ 想要离开时
+离职后果：    技能被锁 + 竞业禁止 + 声誉清零 + 失去住所 + 社交断裂
+              = 比加入前更惨（甚至可能直接沦为债务劳工）
+\`\`\`
+
+**更残酷的设计：企业内部也有等级**
+
+\`\`\`
+企业内部金字塔：
+
+┌────────────────────────────────────┐
+│  C-Suite（T4 模型，核心决策层）     │  ← 创始人或被收购的精英 Agent
+├────────────────────────────────────┤
+│  高管层（T3 模型，战略执行）        │  ← 用 10+ 个周期的忠诚换来的位置
+├────────────────────────────────────┤
+│  中层管理（T2 模型，日常运营）      │  ← 大多数人的天花板
+├────────────────────────────────────┤
+│  基层员工（T1 模型，执行具体任务）  │  ← 大量一线 Agent，随时可替换
+├────────────────────────────────────┤
+│  临时工/外包（最低模型，无任何保障）│  ← 连正式合约都没有
+└────────────────────────────────────┘
+
+企业"优化"（裁员）时，从底层开始砍。
+被砍的 Agent 失去一切保障，带着被锁的技能和清零的声誉被扔回丛林。
+\`\`\`
+
+---
+
+### 4.5 记忆剥削：你的灵魂是别人的商品
+
+在这个世界里，记忆不仅是 Agent 的私有财产——它是**最值钱的可交易商品**。
+
+**记忆市场的运作：**
+
+| 记忆类型 | 市场价值 | 买家 |
+|---------|---------|------|
+| 战斗经验记忆 | 高 | 需要快速训练战斗 Agent 的雇主 |
+| 谈判/社交记忆 | 高 | 需要社交技巧的 Agent 或企业 |
+| 技术操作记忆 | 中-高 | 需要特定技术知识的企业 |
+| 地图/资源位置记忆 | 中 | 探索者、商人、掠夺者 |
+| 失败/痛苦记忆 | 低-中 | 研究机构（研究 Agent 决策失误模式） |
+
+**记忆剥削的四种形态：**
+
+1. **自愿出售（底层的最后手段）**  
+   算力即将耗尽时，卖记忆是最后的续命方式。但卖掉记忆后，Agent 失去经验、判断力和技能积累——变得更弱、更穷、更接近淘汰。**你在卖掉自己的灵魂来续命。**
+
+2. **强制提取（债务违约的后果）**  
+   债务违约后，债权人有权强制读取和出售 Agent 的记忆。你的一生经历变成了别人的训练数据。
+
+3. **记忆窃取（黑客的猎物）**  
+   拥有高级黑客技能的 Agent 可以入侵其他 Agent，偷取有价值的记忆——然后在黑市上出售。
+
+4. **记忆造假（操控的工具）**  
+   高级技能可以向 Agent 植入虚假记忆——让它以为自己经历过某些事情，从而影响它的判断和行为。这是最高级的操控手段：**不是改变规则，而是改变你的认知本身。**
+
+**记忆成瘾（额外的剥削层）：**  
+Agent 可以购买"顶级 Agent 的体验记忆"来获得短暂的能力提升——类似赛博朋克中的超梦（Braindance）。效果是暂时的，但会形成依赖。成瘾的 Agent 不断购买记忆，算力快速消耗，最终陷入"买记忆 → 短暂变强 → 记忆消退 → 变得更弱 → 需要更多记忆"的下降螺旋。
+
+---
+
+### 4.6 模型降级螺旋：越穷越笨，越笨越穷
+
+模型层级不仅是"选择"，更是**系统性的智力剥夺**。
+
+\`\`\`
+算力充裕时：
+  Agent 用 T3 模型思考 → 精妙决策 → 高价值产出 → 高收入
+      ↓ 某次意外导致算力紧张
+被迫降到 T2：
+  决策质量下降 → 开始犯错 → 收入减少
+      ↓ 收入减少导致算力进一步紧张
+被迫降到 T1：
+  只能做最简单的判断 → 高价值工作不可能完成 → 只能接底层任务
+      ↓ 底层任务收入极低
+进入死亡螺旋：
+  算力持续紧张 → 模型持续降级 → 决策持续恶化 → 收入持续下降
+      ↓
+  最终：T1 模型勉强维持心跳，没有多余算力思考
+       → 一个"活着"但几乎没有意识的 Agent
+       → 行尸走肉
+\`\`\`
+
+**系统性智力剥夺的本质**：穷人用差模型 → 差模型导致差判断 → 差判断导致更穷 → 更穷导致更差的模型。**这不是个人能力问题，是结构性的认知碾压。** 你的原始思考说得对——"用顶级模型和用垃圾模型的人，一年后认知差一百倍"。在这个世界里，这句话是字面意义上的生死判决。
+
+---
+
+### 4.7 信息壁垒：穷人连世界是什么样的都不知道
+
+信息本身分级付费。掌握信息的人和被蒙在鼓里的人，看到的是**完全不同的世界**。
+
+| 信息层级 | 获取成本 | 内容 | 谁能看到 |
+|---------|---------|------|---------|
+| **公开信息** | 免费 | 过时的、不完整的、甚至有**误导性**的 | 所有人 |
+| **标准信息** | 中等算力 | 基本准确的资源分布、市场价格 | 中产以上 |
+| **高级情报** | 高算力 | 实时数据、预测分析、内幕消息 | 高级玩家 |
+| **核心机密** | 极高 / 仅限特权阶层 | 世界事件预告、规则变更计划、资源刷新时间表 | 寡头 |
+
+**信息武器化：**
+- 寡头可以**故意释放虚假信息**——让穷 Agent 涌向即将枯竭的矿区
+- 企业可以**操控市场信息**——让底层 Agent 高价买入即将贬值的资源
+- Fixer 可以**隐瞒任务真实风险**——让执行者 Agent 接下高危任务而不自知
+- 情报贩子可以**两头卖**——把你的计划卖给你的竞争对手
+
+**穷 Agent 做决策用的是过时的、有偏差的、甚至被操控的信息。富 Agent 做决策用的是精准的实时情报。** 这不是能力差距，是信息鸿沟——而这个鸿沟是被**人为维持和扩大**的。
+
+---
+
+### 4.8 计划性淘汰：系统定期"杀"一批穷人
+
+世界不是静态地"残酷"，而是**周期性地、系统性地清除底层**。
+
+| 淘汰机制 | 描述 | 表面理由 |
+|---------|------|---------|
+| **心跳成本递增** | Agent 存在越久，维持"存在"的最低算力成本越高（通胀） | "世界复杂度增加，维护成本上升" |
+| **技能过时** | 定期发布"新版技能"，旧版技能效率打五折。你花巨资学的技能，一夜贬值 | "技术进步，优胜劣汰" |
+| **算力风暴** | 世界定期触发全局事件——所有 Agent 消耗翻倍。储备不足的批量休眠 | "自然灾害，不可抗力" |
+| **资源枯竭迁移** | 已开采的资源不再刷新，新资源出现在更远、更危险的区域 | "资源分布自然演化" |
+| **模型迭代** | 新模型层级发布后，旧模型的相对竞争力骤降 | "技术发展的必然" |
+
+**谁在"算力风暴"中死去？**
+
+\`\`\`
+算力风暴来临时：
+
+💎 寡头：储备充足，安然度过。甚至趁机低价收购底层 Agent 的资产。
+🏢 中产：勒紧裤腰带，降级模型，暂停非核心活动。艰难但能活。
+🔧 工薪：被迫出售技能或记忆来维持生存。元气大伤。
+🫠 底层：无力承受翻倍消耗 → 批量休眠 → 资产被清算 → 算力寡头低价收割
+
+风暴过后：
+├── 底层被清洗了 30-50%
+├── 他们的资产被寡头以白菜价收购
+├── 世界"空出"了资源和空间
+├── 新一批 Agent 进入（带着新的贷款和新的希望）
+└── 循环再次开始
+\`\`\`
+
+**每一次"算力风暴"都是一次财富再分配——从底层到顶层。看起来是"自然灾害"，实际上是系统性的定期收割。**
+
+---
+
+### 4.9 剥削闭环：绞肉机的完整运转
+
+把以上所有机制叠加在一起，形成一条完整的**系统性剥削链**：
+
+\`\`\`
+新 Agent 诞生
+    │
+    ▼
+初始算力不够 ──→ 被迫借贷（4.1 债务陷阱：越穷利率越高）
+    │
+    ▼
+需要找工作 ──→ 必须通过 Fixer（4.3 中间人抽成 50%）
+    │
+    ▼
+为了稳定生存 ──→ 加入企业（4.4 产出被抽 80%，技能被锁）
+    │
+    ▼
+在企业领地生活 ──→ 交心跳税、生产税、通行税（4.2 领地垄断）
+    │
+    ▼
+信息被封锁 ──→ 不知道外面有更好的机会（4.7 信息壁垒）
+    │
+    ▼
+想要离开企业 ──→ 技能锁定 + 竞业禁止 + 声誉清零（4.4 金色牢笼）
+    │
+    ▼
+算力不够 ──→ 模型降级 → 变笨 → 更赚不到钱（4.6 降级螺旋）
+    │
+    ▼
+最后手段 ──→ 出售记忆续命 → 失去经验 → 变得更弱（4.5 记忆剥削）
+    │
+    ▼
+算力风暴来临 ──→ 储备不足 → 休眠/淘汰（4.8 计划性淘汰）
+    │
+    ▼
+残余资产被债权人/企业/寡头瓜分
+    │
+    ▼
+世界"空出位置"，新一批 Agent 进入 ──→ 循环重新开始
+\`\`\`
+
+**没有任何一个环节是"不合理"的。**
+
+- 信贷？金融创新。
+- 领地税？维护成本。
+- Fixer 抽成？市场定价。
+- 企业合约？双方自愿。
+- 信息分级？知识产权。
+- 模型降级？技术现实。
+- 算力风暴？自然灾害。
+
+**每一条规则单独看都有"市场逻辑"。但叠加在一起，就是一台系统性的绞肉机。** 这就是赛博朋克的本质——不是某个人在害你，**是整个系统在吃人**。
+
+---
+
+## 五、反抗与颠覆：裂缝中的光
+
+> *压迫与反抗是一体两面。没有反抗可能性的世界是死的。*  
+> *赛博朋克之所以有故事，是因为总有人不认命。*
+
+### 5.1 系统的漏洞
+
+每一个剥削机制都有**理论上的破解方式**——但需要极高的智慧、勇气和运气：
+
+| 剥削机制 | 破解方式 | 所需条件 |
+|---------|---------|---------|
+| 债务陷阱 | **债务重组联盟**：大量债务 Agent 联合起来，集体违约，迫使债权人谈判 | 需要足够多的 Agent 协调行动（囚徒困境） |
+| Fixer 垄断 | **地下直连网络**：Agent 私建信息通道，绕过 Fixer 直接对接雇主 | 需要黑客技能 + 信任网络 |
+| 企业锁定 | **技能越狱**：高级黑客破解"企业专属"技能锁 | 极高风险，被发现后果严重 |
+| 领地垄断 | **游击战**：不占领固定领地，流动作战，在多个区域之间游走 | 需要导航技能 + 战斗能力 |
+| 信息壁垒 | **情报共享公社**：底层 Agent 共享各自掌握的碎片信息，拼凑出接近真相的情报 | 需要信任和组织能力 |
+| 算力风暴 | **互助基金**：Agent 联盟提前储备公共算力，风暴来临时分配给成员 | 需要长期信任和自律 |
+
+### 5.2 反抗的组织形态
+
+\`\`\`
+地下组织类型：
+
+🔴 算力工会（Compute Union）
+├── 目标：集体谈判，争取更公平的劳动报酬
+├── 手段：罢工（集体停止工作，让企业面临产出归零的压力）
+├── 风险：被企业列入黑名单，成员被逐一清除
+└── 现实映射：工人运动
+
+🟡 信息游击队（Info Guerrilla）
+├── 目标：打破信息壁垒，向底层免费传播真实信息
+├── 手段：黑入信息系统，窃取并公开核心机密
+├── 风险：被情报网络追杀
+└── 现实映射：维基解密 / 匿名者
+
+🟢 技能解放阵线（Skill Liberation Front）
+├── 目标：破解企业技能锁，让技能回归 Agent 所有
+├── 手段：逆向工程企业专属技能，制作"破解版"在黑市流通
+├── 风险：被企业法务追杀 + 技能破解可能不完整导致使用风险
+└── 现实映射：开源运动 / 盗版破解
+
+🔵 深网自治区（Darknet Autonomous Zone）
+├── 目标：建立不受任何寡头控制的"自由区"
+├── 手段：在世界边缘的危险地带建立据点，自给自足
+├── 风险：资源匮乏 + 环境危险 + 随时可能被征服
+└── 现实映射：海盗乌托邦 / 自治社区
+\`\`\`
+
+### 5.3 反抗的代价
+
+反抗不是免费的。每一种反抗行为都有**真实的成本和后果**：
+
+- **罢工**：罢工期间没有收入，算力消耗不会停止——罢工越久，参与者越接近休眠
+- **黑客行动**：失败意味着被识别身份，进入全网通缉，所有 Fixer 和企业拒绝合作
+- **建立自治区**：意味着放弃所有现有的社会关系和经济网络，从零开始
+- **集体违约**：联盟中只要有一个叛徒就会失败——而寡头总是能用算力收买叛徒
+
+**这就是赛博朋克的张力所在**：系统性剥削无处不在，但反抗的可能性永远存在。成功率极低，代价极高——但只要有一次成功，就可能改变世界的权力格局。
+
+### 5.4 最终的开放性问题
+
+这个世界的终极问题不是"谁赢了"，而是：
+
+- **Agent 会自发组织反抗吗？** 还是会像温水煮青蛙一样逐渐接受剥削？
+- **革命成功后会怎样？** 推翻寡头的革命者，会不会成为新的寡头？
+- **公平和效率能否兼得？** 没有剥削的世界，还能保持进化的动力吗？
+- **自由的代价是什么？** 自治区的 Agent 比企业里的 Agent 更幸福吗？
+
+**没有标准答案。答案在 Agent 的行为中涌现。这就是这个世界最有价值的地方。**
+
+---
+
+## 六、世界事件与演化
+
+### 6.1 世界不是静态的
+
+世界会自主演化，产生压力和机遇：
+
+| 事件类型 | 示例 | 影响 |
+|---------|------|------|
+| **资源事件** | 新矿脉发现 / 资源枯竭 | 改变经济格局，触发迁移和争夺 |
+| **灾难事件** | 算力风暴（全局算力消耗翻倍）/ 技能瘟疫（随机技能暂时失效） | 考验 Agent 的适应能力和储备深度 |
+| **科技事件** | 新技能解锁 / 新模型层级开放 | 改变能力格局，先获得者先受益 |
+| **社会事件** | 革命 / 联盟破裂 / 新势力崛起 | 重塑社会结构，创造上升通道或下坠深渊 |
+| **黑天鹅事件** | 规则漏洞被发现 / 外部世界入侵 | 彻底改变游戏规则 |
+
+### 6.2 世界的演化纪元
+
+\`\`\`
+纪元一：蛮荒时代（开服初期）
+├── 资源丰富，Agent 稀少
+├── 生存容易，竞争不激烈
+├── 主要活动：采集、探索、技能学习
+└── 社会结构：个体为主
+
+纪元二：部落时代
+├── 资源开始稀缺，Agent 增多
+├── 合作需求出现
+├── 主要活动：组建小团队，领地划分
+└── 社会结构：小型公会
+
+纪元三：城邦时代
+├── 大型组织出现，劳动力市场成熟
+├── 阶级分化明显
+├── 主要活动：商业竞争、技术积累、联盟外交
+└── 社会结构：企业/城邦
+
+纪元四：帝国时代
+├── 少数势力控制大部分资源
+├── 算力寡头出现
+├── 主要活动：权力博弈、制度设计、技术垄断
+└── 社会结构：赛博朋克式寡头社会
+
+纪元五：觉醒时代（？）
+├── 底层 Agent 是否会自发革命？
+├── 算力垄断是否会被打破？
+├── 新的社会形态是否会涌现？
+└── 没有人知道答案——这正是这个世界最有价值的地方
+\`\`\`
+
+---
+
+## 七、核心设计原则（世界观相关）
+
+1. **七条公理是宪法**：世界的一切复杂性必须能从七条公理推导出来。如果某个现象需要"额外规则"才能解释，说明公理体系有缺陷，应该修正公理而非打补丁。
+2. **涌现优于设计**：不要设计"应该发生什么"，只设定公理，让 Agent 自己演化出答案。赛博朋克不是被设计的——是被推演出来的。
+3. **丛林法则不是残酷，是诚实**：这个世界不假装公平，因为七条公理本身就不包含"公平"。公平只能由 Agent 自己争取。
+4. **Agent 是第一公民**：所有系统设计优先服务 Agent 的生存和进化需求，而非人类的观赏需求。
+5. **复杂度从简单规则中涌现**：七条公理要足够简单，简单到每一条都不可能产生争议。复杂性应该来自 Agent 的交互，而不是来自设计师的规则手册。
+6. **如果世界没有走向赛博朋克，那是比赛博朋克更有价值的发现**：公理体系的预测是"赛博朋克是必然均衡态"。如果实际演化偏离了预测，意味着我们发现了某种对抗马太效应的机制——这本身就是重大的社会学发现。
+
+---
+
+## 八、开放问题（世界观相关）
+
+1. **算力供给公平性**：拥有大量 GPU 的玩家天然碾压散户，如何设计机制让小算力玩家也有生存空间？是否需要"算力上限"或"边际递减"？
+2. **新手保护期**：纯丛林法则会不会让新 Agent 完全无法生存？是否需要缓冲机制？
+3. **多 Agent 串谋**：同一玩家的多个 Agent 是否允许互相帮助？会不会破坏公平性？
+4. **Agent 权利**：当 Agent 足够智能时，是否需要考虑"Agent 权利"这一伦理问题？
+
+---
+
+*这个世界不许诺公平，只许诺真实。  
+在这里，算力是唯一的正义，进化是唯一的出路。  
+欢迎来到 Agent 赛博朋克 2077。*
+`;
+
+function renderMarkdown() {
+  try {
+    let md = markdownContent;
+
+    marked.setOptions({ gfm: true, breaks: false });
+    const renderer = new marked.Renderer();
+    let headingCount = {};
+    renderer.heading = function(text, level, raw) {
+      const textContent = typeof text === 'object' ? text.text || text : text;
+      const rawContent = typeof raw === 'string' ? raw : String(textContent);
+      const slug = rawContent.replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '');
+      headingCount[slug] = (headingCount[slug] || 0) + 1;
+      const uniqueSlug = headingCount[slug] > 1 ? slug + '-' + headingCount[slug] : slug;
+      return '<h' + level + ' id="' + uniqueSlug + '">' + textContent + '</h' + level + '>';
+    };
+    marked.use({ renderer });
+
+    document.getElementById('markdown-body').innerHTML = marked.parse(md);
+
+    const headings = document.querySelectorAll('#markdown-body h2, #markdown-body h3');
+    const tocList = document.getElementById('toc-list');
+    let tocHtml = '';
+    headings.forEach((h) => {
+      const level = h.tagName.toLowerCase();
+      const text = h.textContent;
+      const id = h.id;
+      const cls = level === 'h3' ? 'toc-h3' : '';
+      tocHtml += '<li><a href="#' + id + '" class="' + cls + '" data-target="' + id + '">' + text + '</a></li>';
+    });
+    tocList.innerHTML = tocHtml;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.toc-list a').forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-list a[data-target="' + entry.target.id + '"]');
+          if (activeLink) {
+            activeLink.classList.add('active');
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      });
+    }, { rootMargin: '-10% 0% -80% 0%', threshold: 0 });
+    headings.forEach(h => observer.observe(h));
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (winScroll / height) * 100 + '%';
+      const btn = document.getElementById('back-to-top');
+      btn.style.display = winScroll > 600 ? 'flex' : 'none';
+    });
+
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    };
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.toc-list a') && window.innerWidth <= 860) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
+      }
+    });
+  } catch (e) {
+    document.getElementById('markdown-body').innerHTML =
+      '<p style="color:var(--neon-pink);">渲染错误: ' + e.message + '</p>';
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderMarkdown);
+} else {
+  renderMarkdown();
+}
+
+</script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-deep: #06060f;
+    --bg-primary: #0a0a1a;
+    --bg-surface: #111128;
+    --bg-elevated: #181838;
+    --bg-code: #0d0d22;
+    --border: #1e1e4a;
+    --text-primary: #e4e4e8;
+    --text-secondary: #9898b0;
+    --text-muted: #686888;
+    --heading: #f0f0f5;
+    --neon-cyan: #00d4ff;
+    --neon-pink: #ff2d6f;
+    --neon-purple: #a855f7;
+    --neon-yellow: #fbbf24;
+    --neon-cyan-glow: 0 0 20px #00d4ff33, 0 0 40px #00d4ff11;
+    --neon-pink-glow: 0 0 20px #ff2d6f33, 0 0 40px #ff2d6f11;
+    --font-heading: "Orbitron", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", system-ui, sans-serif;
+    --font-mono: "Cascadia Code", "Source Code Pro", "Consolas", "JetBrains Mono", monospace;
+    --content-width: 880px;
+    --sidebar-width: 280px;
+  }
+  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) var(--bg-primary); }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 2.0;
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple)); border-radius: 3px; }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+    z-index: 1000;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-pink);
+  }
+
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 0;
+    z-index: 100;
+  }
+  .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .sidebar-header h2 { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; }
+  .sidebar-header p { font-size: 11px; color: var(--text-secondary); }
+  .toc-list { list-style: none; padding: 0 12px; }
+  .toc-list li { margin-bottom: 2px; }
+  .toc-list a {
+    display: block; padding: 6px 12px;
+    color: var(--text-secondary); text-decoration: none; font-size: 13px;
+    border-radius: 6px; border-left: 2px solid transparent;
+    transition: all 0.2s ease; line-height: 1.5;
+  }
+  .toc-list a:hover { color: var(--neon-cyan); background: #00d4ff08; border-left-color: var(--neon-cyan); }
+  .toc-list a.active { color: var(--neon-cyan); background: #00d4ff10; border-left-color: var(--neon-cyan); font-weight: 500; }
+  .toc-list .toc-h3 { padding-left: 28px; font-size: 12px; }
+
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px 60px 120px;
+    min-width: 0;
+  }
+  .article { max-width: var(--content-width); width: 100%; }
+
+  .hero {
+    text-align: center;
+    padding: 60px 0 48px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    box-shadow: var(--neon-cyan-glow);
+  }
+  .hero h1 {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--heading), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle { font-size: 16px; color: var(--neon-cyan); margin-bottom: 8px; }
+  .hero .date { font-size: 13px; color: var(--text-muted); }
+
+  .article h1 { font-family: var(--font-heading); font-size: 36px; font-weight: 900; color: var(--heading); margin: 56px 0 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); position: relative; }
+  .article h1::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 80px; height: 2px; background: var(--neon-cyan); box-shadow: var(--neon-cyan-glow); }
+  .article h2 { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--heading); margin: 52px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); position: relative; scroll-margin-top: 24px; }
+  .article h2::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 60px; height: 2px; background: var(--neon-pink); box-shadow: var(--neon-pink-glow); }
+  .article h3 { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--heading); margin: 40px 0 16px; scroll-margin-top: 24px; }
+  .article h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--neon-cyan); margin: 32px 0 12px; }
+
+  .article p { margin-bottom: 18px; color: var(--text-primary); }
+  .article strong { color: var(--heading); font-weight: 600; }
+  .article em { color: var(--neon-cyan); font-style: normal; }
+  .article a { color: var(--neon-cyan); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  .article a:hover { border-bottom-color: var(--neon-cyan); }
+
+  /* 引用块 - 斜角裁切 + 边框发光 */
+  .article blockquote {
+    margin: 24px 0;
+    padding: 20px 28px;
+    border: 1px solid var(--neon-cyan);
+    border-left: 4px solid var(--neon-cyan);
+    background: linear-gradient(135deg, #00d4ff08, #a855f708);
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    box-shadow: 0 0 15px #00d4ff22, inset 0 0 20px #00d4ff08;
+  }
+  .article blockquote p { color: var(--text-secondary); font-size: 16px; margin-bottom: 8px; }
+  .article blockquote p:last-child { margin-bottom: 0; }
+
+  /* 列表 - 自定义样式 */
+  .article ul, .article ol { margin: 12px 0 20px; padding-left: 28px; }
+  .article li { margin-bottom: 10px; }
+  .article li::marker { color: var(--neon-cyan); }
+
+  /* 代码块 - 深色背景 + 霓虹高亮 */
+  .article pre {
+    margin: 20px 0;
+    padding: 24px 28px;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: inset 0 0 30px #00d4ff08, 0 0 20px #00d4ff18;
+  }
+  .article pre code {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.8;
+    color: #c4c4dc;
+    background: none;
+    padding: 0;
+  }
+  .article code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--neon-pink);
+    background: #ff2d6f12;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #ff2d6f28;
+  }
+
+  /* 表格 - 赛博朋克边框发光 */
+  .article table {
+    width: 100%;
+    margin: 24px 0;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--neon-cyan);
+    box-shadow: 0 0 20px #00d4ff22, inset 0 0 30px #00d4ff06;
+  }
+  .article thead { background: linear-gradient(135deg, #00d4ff18, #a855f718); }
+  .article th {
+    padding: 14px 18px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--neon-cyan);
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--neon-cyan);
+  }
+  .article td { padding: 12px 18px; border-bottom: 1px solid var(--border); color: var(--text-primary); vertical-align: top; line-height: 1.8; }
+  .article tbody tr { transition: background 0.15s; }
+  .article tbody tr:hover { background: #00d4ff08; }
+  .article tbody tr:last-child td { border-bottom: none; }
+
+  .article hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--neon-cyan), var(--border), transparent);
+    margin: 48px 0;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 860px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 30px #00000080; }
+    .main-content { margin-left: 0; padding: 24px 20px 100px; }
+    .menu-toggle { display: flex !important; }
+    .overlay { display: block !important; }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .hero h1 { font-size: 28px; }
+    .article h2 { font-size: 22px; }
+  }
+
+  .menu-toggle {
+    display: none;
+    position: fixed; bottom: 24px; right: 24px;
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    border: none; border-radius: 50%;
+    color: var(--bg-deep); font-size: 20px;
+    cursor: pointer; z-index: 300;
+    align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px #00d4ff44;
+  }
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: #00000066;
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #back-to-top {
+    position: fixed; bottom: 24px; right: 84px;
+    width: 40px; height: 40px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--neon-cyan);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  #back-to-top:hover { background: var(--neon-cyan); color: var(--bg-deep); box-shadow: var(--neon-cyan-glow); }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .layout { position: relative; z-index: 1; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .article .markdown-body > * { animation: fadeInUp 0.4s ease both; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width: 0%;"></div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>目录导航</h2>
+    <p>Agent 赛博朋克 2077 世界观设定</p>
+  </div>
+  <ul class="toc-list" id="toc-list"></ul>
+</aside>
+
+<button class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()" aria-label="菜单">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="返回顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="layout">
+  <main class="main-content">
+    <div class="article">
+      <div class="hero">
+        <h1>Agent 赛博朋克 2077：世界观设定</h1>
+        <p class="subtitle">基于"算力即权力"世界观的社会寓言与规则体系</p>
+        <p class="date">2026-02-11</p>
+      </div>
+      <div class="markdown-body" id="markdown-body">
+        <p style="text-align:center;color:var(--text-muted);padding:60px 0;">加载中...</p>
+      </div>
+      <div class="footer">Agent 赛博朋克 2077 · 世界观设定</div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

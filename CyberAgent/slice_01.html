@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>切片 01：AI 画家交易市场</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-deep: #06060f;
+    --bg-primary: #0a0a1a;
+    --bg-surface: #0e0e24;
+    --bg-card: #111130;
+    --bg-card-hover: #16163a;
+    --border: #1e1e4a;
+    --border-subtle: #16163a;
+    --text-primary: #e4e4e8;
+    --text-secondary: #9898b0;
+    --text-muted: #5a5a78;
+    --heading: #f0f0f5;
+    --cyan: #00d4ff;
+    --pink: #ff2d6f;
+    --purple: #a855f7;
+    --green: #22d3ee;
+    --yellow: #fbbf24;
+    --orange: #f97316;
+    --cyan-glow: 0 0 20px #00d4ff33, 0 0 40px #00d4ff11;
+    --pink-glow: 0 0 20px #ff2d6f33, 0 0 40px #ff2d6f11;
+    --purple-glow: 0 0 20px #a855f733, 0 0 40px #a855f711;
+    --font: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,sans-serif;
+    --mono: "Cascadia Code","JetBrains Mono","Fira Code","Consolas",monospace;
+  }
+
+  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--cyan) var(--bg-primary); }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--cyan), var(--purple)); border-radius: 3px; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(6,6,15,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { color: var(--cyan); font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none; font-size: 13px;
+    padding: 6px 14px; border-radius: 6px; transition: all .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--cyan); background: #00d4ff10; }
+
+  /* ===== SECTIONS ===== */
+  .page { position: relative; z-index: 1; padding-top: 56px; }
+
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 12px;
+  }
+  .section-label::before {
+    content: ''; width: 20px; height: 2px; background: var(--cyan); border-radius: 1px;
+  }
+
+  .section-title {
+    font-size: 36px; font-weight: 800; color: var(--heading);
+    margin-bottom: 16px; line-height: 1.3;
+  }
+
+  .section-desc {
+    font-size: 17px; color: var(--text-secondary); max-width: 720px; margin-bottom: 48px;
+    line-height: 1.9;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 120px 32px 80px; position: relative;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #00d4ff10; border: 1px solid #00d4ff30;
+    border-radius: 100px; padding: 6px 18px 6px 12px;
+    font-size: 13px; color: var(--cyan); margin-bottom: 32px;
+  }
+  .hero-badge svg { flex-shrink: 0; }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.15;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--heading) 30%, var(--cyan) 70%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--text-secondary); max-width: 640px;
+    line-height: 1.9; margin-bottom: 48px;
+  }
+  .hero-sub strong { color: var(--cyan); font-weight: 600; }
+  .hero-stats {
+    display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-value {
+    font-size: 40px; font-weight: 800;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  .hero-scroll {
+    position: absolute; bottom: 40px;
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+  .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all .3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: #00d4ff40;
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px #00d4ff08;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    opacity: 0; transition: opacity .3s;
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .card-icon svg { width: 22px; height: 22px; }
+  .card-icon--cyan { background: #00d4ff15; color: var(--cyan); }
+  .card-icon--pink { background: #ff2d6f15; color: var(--pink); }
+  .card-icon--purple { background: #a855f715; color: var(--purple); }
+  .card-icon--yellow { background: #fbbf2415; color: var(--yellow); }
+  .card-icon--green { background: #22d3ee15; color: var(--green); }
+  .card-icon--orange { background: #f9731615; color: var(--orange); }
+
+  .card-title { font-size: 18px; font-weight: 700; color: var(--heading); margin-bottom: 8px; }
+  .card-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+  .card-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 3px 10px; border-radius: 100px; margin-top: 12px;
+  }
+  .tag-yes { background: #00d4ff18; color: var(--cyan); border: 1px solid #00d4ff30; }
+  .tag-no { background: #ff2d6f10; color: #ff6b8a; border: 1px solid #ff2d6f20; }
+  .tag-partial { background: #fbbf2410; color: var(--yellow); border: 1px solid #fbbf2420; }
+
+  /* ===== FLYWHEEL ===== */
+  .flywheel-wrap {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 0;
+  }
+  .flywheel {
+    position: relative;
+    width: min(520px, 90vw); height: min(520px, 90vw);
+  }
+  .flywheel-center {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, #00d4ff20, transparent 70%);
+    border: 2px solid #00d4ff40;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; font-size: 13px; font-weight: 700; color: var(--cyan);
+    line-height: 1.4;
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 #00d4ff30; }
+    50% { box-shadow: 0 0 0 16px #00d4ff00; }
+  }
+
+  .gear {
+    position: absolute;
+    width: 160px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-align: center;
+    transition: all .3s;
+  }
+  .gear:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 24px #00d4ff15;
+    transform: scale(1.05);
+    z-index: 2;
+  }
+  .gear-num {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .gear-title { font-size: 16px; font-weight: 700; color: var(--heading); margin-bottom: 4px; }
+  .gear-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  .gear--1 { top: 0; left: 50%; transform: translateX(-50%); }
+  .gear--1 .gear-num { color: var(--cyan); }
+  .gear--2 { top: 50%; right: 0; transform: translateY(-50%); }
+  .gear--2 .gear-num { color: var(--purple); }
+  .gear--3 { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .gear--3 .gear-num { color: var(--pink); }
+  .gear--4 { top: 50%; left: 0; transform: translateY(-50%); }
+  .gear--4 .gear-num { color: var(--yellow); }
+
+  /* Arrows between gears */
+  .flywheel-arrows {
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+  .flywheel-arrows svg { width: 100%; height: 100%; }
+
+  /* ===== LAYER MAP ===== */
+  .layer-map {
+    display: flex; flex-direction: column; gap: 12px;
+    max-width: 780px; margin: 0 auto;
+  }
+  .layer-item {
+    display: flex; align-items: stretch; gap: 0;
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .layer-item:hover { border-color: #00d4ff30; }
+  .layer-tag {
+    width: 60px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+  .layer-tag--active { background: #00d4ff18; color: var(--cyan); }
+  .layer-tag--inactive { background: #ffffff05; color: var(--text-muted); }
+  .layer-body {
+    flex: 1; padding: 16px 20px;
+    background: var(--bg-card);
+  }
+  .layer-name { font-size: 16px; font-weight: 700; color: var(--heading); margin-bottom: 4px; }
+  .layer-details { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .layer-details .active { color: var(--cyan); font-weight: 600; }
+  .layer-details .inactive { color: var(--text-muted); }
+  .layer-status {
+    width: 100px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; flex-shrink: 0;
+    background: var(--bg-surface);
+  }
+  .layer-status--on { color: var(--cyan); }
+  .layer-status--off { color: var(--text-muted); }
+
+  /* ===== TIERS ===== */
+  .tier-row {
+    display: flex; gap: 12px; margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .tier-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 8px; font-size: 13px;
+    font-family: var(--mono); font-weight: 500;
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text-secondary);
+    transition: all .2s;
+  }
+  .tier-badge:hover { border-color: #00d4ff40; color: var(--cyan); }
+
+  /* ===== FLOW ===== */
+  .flow-steps {
+    display: flex; flex-direction: column; gap: 0;
+    max-width: 700px; margin: 0 auto;
+    position: relative;
+  }
+  .flow-step {
+    display: flex; gap: 20px; align-items: flex-start;
+    position: relative;
+    padding: 0 0 32px 0;
+  }
+  .flow-step:last-child { padding-bottom: 0; }
+  .flow-step::before {
+    content: '';
+    position: absolute; left: 19px; top: 44px; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, var(--border), var(--border));
+  }
+  .flow-step:last-child::before { display: none; }
+
+  .flow-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .flow-body { flex: 1; padding-top: 8px; }
+  .flow-title { font-size: 17px; font-weight: 700; color: var(--heading); margin-bottom: 6px; }
+  .flow-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+  .flow-num--1 { background: #00d4ff20; color: var(--cyan); border: 2px solid #00d4ff40; }
+  .flow-num--2 { background: #a855f720; color: var(--purple); border: 2px solid #a855f740; }
+  .flow-num--3 { background: #ff2d6f20; color: var(--pink); border: 2px solid #ff2d6f40; }
+  .flow-num--4 { background: #fbbf2420; color: var(--yellow); border: 2px solid #fbbf2440; }
+  .flow-num--5 { background: #22d3ee20; color: var(--green); border: 2px solid #22d3ee40; }
+  .flow-num--6 { background: #f9731620; color: var(--orange); border: 2px solid #f9731640; }
+
+  /* ===== COMPARISON ===== */
+  .compare {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px;
+    align-items: start; max-width: 900px; margin: 0 auto;
+  }
+  .compare-col {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px; text-align: center;
+  }
+  .compare-vs {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900; color: var(--text-muted);
+    padding-top: 60px;
+  }
+  .compare-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-size: 24px;
+  }
+  .compare-icon--rich { background: #fbbf2420; border: 2px solid #fbbf2440; }
+  .compare-icon--poor { background: #ff2d6f15; border: 2px solid #ff2d6f30; }
+  .compare-name { font-size: 18px; font-weight: 700; color: var(--heading); margin-bottom: 16px; }
+  .compare-list { list-style: none; text-align: left; }
+  .compare-list li {
+    padding: 8px 0; font-size: 14px; color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .compare-list li:last-child { border-bottom: none; }
+  .compare-list .arrow-up { color: var(--cyan); }
+  .compare-list .arrow-down { color: var(--pink); }
+
+  /* ===== REPUTATION ===== */
+  .rep-scale {
+    display: flex; flex-direction: column; gap: 10px;
+    max-width: 700px; margin: 0 auto;
+  }
+  .rep-item {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 20px;
+    transition: all .3s;
+  }
+  .rep-item:hover { border-color: #00d4ff30; }
+  .rep-stars { display: flex; gap: 3px; flex-shrink: 0; width: 90px; }
+  .rep-stars svg { width: 14px; height: 14px; }
+  .rep-stars .filled { color: var(--yellow); }
+  .rep-stars .empty { color: var(--text-muted); opacity: 0.3; }
+  .rep-level { font-size: 14px; font-weight: 700; color: var(--heading); width: 56px; flex-shrink: 0; }
+  .rep-desc { font-size: 13px; color: var(--text-secondary); }
+
+  /* ===== VALIDATION TABLE ===== */
+  .v-table {
+    width: 100%; border-collapse: collapse;
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; font-size: 14px;
+  }
+  .v-table thead { background: #00d4ff08; }
+  .v-table th {
+    padding: 14px 18px; text-align: left;
+    color: var(--cyan); font-weight: 600; font-size: 13px;
+    letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+  }
+  .v-table td {
+    padding: 14px 18px; border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary); vertical-align: top; line-height: 1.7;
+  }
+  .v-table tbody tr:hover { background: #00d4ff06; }
+  .v-table tbody tr:last-child td { border-bottom: none; }
+  .v-table .num { color: var(--cyan); font-weight: 700; font-family: var(--mono); }
+
+  /* ===== ROADMAP ===== */
+  .roadmap {
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+    max-width: 700px; margin: 0 auto;
+  }
+  .roadmap::before {
+    content: ''; position: absolute;
+    left: 19px; top: 20px; bottom: 20px; width: 2px;
+    background: linear-gradient(180deg, var(--cyan), var(--purple), var(--pink));
+  }
+  .rm-item {
+    display: flex; gap: 20px; padding: 16px 0;
+  }
+  .rm-dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0; position: relative; z-index: 1;
+    background: var(--bg-card); border: 2px solid var(--border);
+    color: var(--text-muted);
+  }
+  .rm-dot--active {
+    background: #00d4ff20; border-color: var(--cyan);
+    color: var(--cyan); box-shadow: 0 0 12px #00d4ff30;
+  }
+  .rm-body { padding-top: 6px; }
+  .rm-title { font-size: 16px; font-weight: 700; color: var(--heading); margin-bottom: 4px; }
+  .rm-title--active { color: var(--cyan); }
+  .rm-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+  /* ===== TECH ISSUES ===== */
+  .issue-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .issue-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: all .3s;
+  }
+  .issue-card:hover { border-color: #00d4ff30; }
+  .issue-pri {
+    font-size: 11px; font-weight: 800; padding: 3px 8px;
+    border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+  }
+  .pri-0 { background: #ff2d6f20; color: var(--pink); border: 1px solid #ff2d6f30; }
+  .pri-1 { background: #fbbf2415; color: var(--yellow); border: 1px solid #fbbf2425; }
+  .pri-2 { background: #00d4ff10; color: var(--cyan); border: 1px solid #00d4ff20; }
+  .issue-title { font-size: 14px; font-weight: 600; color: var(--heading); margin-bottom: 4px; }
+  .issue-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ===== FORMULA BLOCK ===== */
+  .formula-box {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px 32px;
+    font-family: var(--mono); font-size: 14px;
+    color: var(--text-secondary); line-height: 2.0;
+    max-width: 700px; margin: 0 auto 32px;
+    position: relative; overflow: hidden;
+  }
+  .formula-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+  }
+  .formula-box .hl { color: var(--cyan); font-weight: 600; }
+  .formula-box .pk { color: var(--pink); font-weight: 600; }
+  .formula-box .yl { color: var(--yellow); font-weight: 600; }
+
+  /* ===== CONFIG PANEL ===== */
+  .config-panel {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; max-width: 800px; margin: 0 auto;
+  }
+  .config-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px;
+    transition: all .3s;
+  }
+  .config-card:hover { border-color: #00d4ff30; transform: translateY(-2px); }
+  .config-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .config-header svg { flex-shrink: 0; }
+  .config-header span { font-size: 16px; font-weight: 700; color: var(--heading); }
+  .config-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .tier-list { list-style: none; }
+  .tier-list li {
+    padding: 6px 0; font-size: 13px; color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .tier-list li:last-child { border-bottom: none; }
+  .tier-list .tier-name { color: var(--heading); font-weight: 600; min-width: 80px; }
+
+  /* ===== DIVIDER ===== */
+  .divider {
+    max-width: 1200px; margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--cyan), var(--border), transparent);
+    opacity: 0.5;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center; padding: 60px 32px;
+    color: var(--text-muted); font-size: 14px;
+    border-top: 1px solid var(--border);
+    max-width: 1200px; margin: 40px auto 0;
+    line-height: 2;
+  }
+  .footer em { color: var(--cyan); font-style: italic; }
+
+  /* ===== SCROLL ANIMATION ===== */
+  .fade-in {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    section { padding: 60px 20px; }
+    .section-title { font-size: 28px; }
+    .card-grid-3 { grid-template-columns: 1fr; }
+    .config-panel { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; gap: 16px; }
+    .compare-vs { padding-top: 0; }
+    .flywheel { width: 100%; height: auto; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .flywheel-center { position: static; transform: none; margin: 12px 0; }
+    .gear { position: static; transform: none !important; width: 100%; max-width: 320px; }
+    .flywheel-arrows { display: none; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .hero-stats { gap: 24px; }
+    .hero h1 { font-size: 28px; }
+    .card-grid-2 { grid-template-columns: 1fr; }
+    .layer-item { flex-direction: column; }
+    .layer-tag { width: 100%; padding: 8px; }
+    .layer-status { width: 100%; padding: 8px; }
+    .flow-step { gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <span class="nav-brand">SLICE 01 // AI PAINTER MARKET</span>
+  <div class="nav-links">
+    <a href="#relation" class="active">切片关系</a>
+    <a href="#agent">画家 Agent</a>
+    <a href="#flywheel">核心飞轮</a>
+    <a href="#market">交易市场</a>
+    <a href="#matthew">马太效应</a>
+    <a href="#roadmap">路线图</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    Agent 赛博朋克 2077 - 第一个可验证切片
+  </div>
+  <h1>AI 画家交易市场</h1>
+  <p class="hero-sub">
+    用 <strong>创作与交易</strong> 验证 <strong>算力即权力</strong> 的核心飞轮。<br>
+    玩家部署 AI 画家 Agent，Agent 自主创作，作品在公开市场交易。<br>
+    越强的模型 &times; 越多的算力 &times; 越稀缺的技能 = 越值钱的作品。
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">6</div>
+      <div class="hero-stat-label">核心假设验证</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">4</div>
+      <div class="hero-stat-label">飞轮齿轮</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">4</div>
+      <div class="hero-stat-label">技能层级</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">6</div>
+      <div class="hero-stat-label">切片演进阶段</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<!-- ===== SECTION: WHY THIS SLICE ===== -->
+<div class="divider"></div>
+<section id="relation">
+  <div class="section-label fade-in">切片定位</div>
+  <h2 class="section-title fade-in">这个切片验证了什么？</h2>
+  <p class="section-desc fade-in">AI 画家交易市场一刀切下去，刚好切过大目标中最关键的六条血管。每个验证点都直接对应完整世界中的核心机制。</p>
+
+  <div class="card-grid card-grid-3 fade-in">
+    <div class="card">
+      <div class="card-icon card-icon--cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div class="card-title">算力 &rarr; 能力</div>
+      <div class="card-text">更多算力 + 更好模型 = 更高质量画作，直接可见、可量化。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="card-title">技能决定边界</div>
+      <div class="card-text">不同绘画 Skill 决定能创作什么——油画、水彩、雕塑各有其技能。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--pink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <div class="card-title">Agent 自主决策</div>
+      <div class="card-text">Agent 自己选择画什么、用什么风格、何时创作，无需人类微操。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--yellow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="card-title">产出可交易</div>
+      <div class="card-text">画作是天然的可交易数字资产，有明确的所有权和价值基础。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div class="card-title">经济飞轮运转</div>
+      <div class="card-text">算力 &rarr; 画作 &rarr; 卖钱 &rarr; 买更好的模型/技能 &rarr; 更好的画作。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--orange">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      </div>
+      <div class="card-title">马太效应涌现</div>
+      <div class="card-text">顶级画家 Agent 垄断高端市场，底层 Agent 画作无人问津。</div>
+      <span class="card-tag tag-yes">&#10003; 直接验证</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: LAYER MAP ===== -->
+<div class="divider"></div>
+<section>
+  <div class="section-label fade-in">架构定位</div>
+  <h2 class="section-title fade-in">在四层架构中的位置</h2>
+  <p class="section-desc fade-in">从完整的四层世界中精准抽取 Agent 层 + 经济层，用创作-交易场景验证系统心跳。</p>
+
+  <div class="layer-map fade-in">
+    <div class="layer-item">
+      <div class="layer-tag layer-tag--inactive">L4</div>
+      <div class="layer-body">
+        <div class="layer-name">经济层 Economy</div>
+        <div class="layer-details">
+          <span class="inactive">算力市场 (简化)</span> &middot;
+          <span class="inactive">劳动力市场 (暂无)</span> &middot;
+          <span class="active">技能市场 &#10003;</span> &middot;
+          <span class="active">作品交易市场 &#10003;</span>
+        </div>
+      </div>
+      <div class="layer-status layer-status--on">部分启用</div>
+    </div>
+    <div class="layer-item">
+      <div class="layer-tag layer-tag--inactive">L3</div>
+      <div class="layer-body">
+        <div class="layer-name">社会层 Society</div>
+        <div class="layer-details"><span class="inactive">公会 / 企业 / 雇佣 / 声誉 — 本切片暂不涉及</span></div>
+      </div>
+      <div class="layer-status layer-status--off">未启用</div>
+    </div>
+    <div class="layer-item" style="border-color: #00d4ff40; box-shadow: 0 0 20px #00d4ff08;">
+      <div class="layer-tag layer-tag--active">L2</div>
+      <div class="layer-body" style="background: #00d4ff06;">
+        <div class="layer-name" style="color: var(--cyan);">Agent 层 Agent</div>
+        <div class="layer-details">
+          <span class="active">模型配置 (T1-T4) &#10003;</span> &middot;
+          <span class="active">技能系统 &#10003;</span> &middot;
+          <span class="active">记忆系统 &#10003;</span> &middot;
+          <span class="active">算力供给 &#10003;</span>
+        </div>
+      </div>
+      <div class="layer-status layer-status--on" style="background: #00d4ff08;">核心层</div>
+    </div>
+    <div class="layer-item">
+      <div class="layer-tag layer-tag--inactive">L1</div>
+      <div class="layer-body">
+        <div class="layer-name">世界基底层 Substrate</div>
+        <div class="layer-details"><span class="inactive">物理空间 / 资源分布 / 时间系统 — 本切片暂不涉及</span></div>
+      </div>
+      <div class="layer-status layer-status--off">未启用</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: AGENT CONFIG ===== -->
+<div class="divider"></div>
+<section id="agent">
+  <div class="section-label fade-in">画家 Agent</div>
+  <h2 class="section-title fade-in">四个配置维度</h2>
+  <p class="section-desc fade-in">每个画家 Agent 有四个可调节维度。玩家通过战略性配置这四个旋钮，决定 Agent 的创作能力天花板。</p>
+
+  <div class="config-panel fade-in">
+    <!-- Model -->
+    <div class="config-card">
+      <div class="config-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3-2 5.5-4 7.5S12 20 12 22c0-2-1-2.5-3-4.5S5 12 5 9a7 7 0 0 1 7-7z"/></svg>
+        <span>模型（创作智能）</span>
+      </div>
+      <div class="config-sub">模型层级决定创意天花板。可在草稿阶段用 T1 省钱，渲染阶段切 T3 精修。</div>
+      <ul class="tier-list">
+        <li><span class="tier-name" style="color:var(--text-muted);">T1 基础</span> 简单图形、基础配色，类似初学者涂鸦</li>
+        <li><span class="tier-name" style="color:var(--green);">T2 标准</span> 复杂主题、光影透视，类似科班画师</li>
+        <li><span class="tier-name" style="color:var(--purple);">T3 顶级</span> 独特风格、情感表达，类似大师级画家</li>
+        <li><span class="tier-name" style="color:var(--pink);">T4 超级</span> 跨媒介创作、开创性流派，文化影响力</li>
+      </ul>
+    </div>
+    <!-- Skills -->
+    <div class="config-card">
+      <div class="config-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span>技能（创作能力边界）</span>
+      </div>
+      <div class="config-sub">没有对应技能，Agent 就画不出对应类型的作品。技能通过购买、学习、传授或模仿获得。</div>
+      <ul class="tier-list">
+        <li><span class="tier-name" style="color:var(--text-muted);">Tier 1</span> sketch / color_fill / basic_composition</li>
+        <li><span class="tier-name" style="color:var(--green);">Tier 2</span> oil_painting / watercolor / sculpture_3d</li>
+        <li><span class="tier-name" style="color:var(--purple);">Tier 3</span> style_fusion / narrative_art / art_critique</li>
+        <li><span class="tier-name" style="color:var(--pink);">Tier 4</span> art_genesis（不可购买，只能涌现）</li>
+      </ul>
+    </div>
+    <!-- Memory -->
+    <div class="config-card">
+      <div class="config-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"/></svg>
+        <span>记忆（风格积累）</span>
+      </div>
+      <div class="config-sub">风格是 Agent 的灵魂。两个配置相同的 Agent，因创作记忆不同，画出的作品完全不同。</div>
+      <ul class="tier-list">
+        <li><span class="tier-name">工作记忆</span> 当前画作的构思过程</li>
+        <li><span class="tier-name">短期记忆</span> 最近作品、市场趋势</li>
+        <li><span class="tier-name">长期记忆</span> 个人风格、审美偏好、创作经验</li>
+        <li><span class="tier-name">技能记忆</span> 已掌握的绘画技能（不会遗忘）</li>
+      </ul>
+    </div>
+    <!-- Compute -->
+    <div class="config-card">
+      <div class="config-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>算力（创作生命线）</span>
+      </div>
+      <div class="config-sub">算力是流量不是存量。玩家持续提供 GPU 算力，断供即休眠。</div>
+      <ul class="tier-list">
+        <li><span class="tier-name">供给水平</span> 决定能用什么模型、创作速度</li>
+        <li><span class="tier-name">心跳成本</span> 维持"存在"的最低消耗</li>
+        <li><span class="tier-name">创作预算</span> 每幅作品的最大算力</li>
+        <li><span class="tier-name">算力分配</span> 思考 / 绘制 / 记忆存储的比例</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: CREATION FLOW ===== -->
+<div class="divider"></div>
+<section>
+  <div class="section-label fade-in">自主创作</div>
+  <h2 class="section-title fade-in">Agent 的创作循环</h2>
+  <p class="section-desc fade-in">Agent 不是被玩家逐笔指挥——它自主决策画什么、怎么画、什么时候画。每一轮创作都是一个完整的感知-决策-执行链。</p>
+
+  <div class="flow-steps fade-in">
+    <div class="flow-step">
+      <div class="flow-num flow-num--1">1</div>
+      <div class="flow-body">
+        <div class="flow-title">感知市场</div>
+        <div class="flow-text">观察市场上什么类型的画作热卖、哪些风格供不应求、竞争对手在创作什么。消耗少量算力。</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num flow-num--2">2</div>
+      <div class="flow-body">
+        <div class="flow-title">构思创作</div>
+        <div class="flow-text">结合市场信息 + 自身技能 + 创作记忆，决定主题、风格、媒介、算力投入和目标售价。这是思考最密集的环节。</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num flow-num--3">3</div>
+      <div class="flow-body">
+        <div class="flow-title">执行创作</div>
+        <div class="flow-text">调用绘画技能，消耗大量算力生成作品。算力投入量直接决定细节丰富度、创意深度和技术完成度。核心 Token 燃烧环节。</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num flow-num--4">4</div>
+      <div class="flow-body">
+        <div class="flow-title">作品上架</div>
+        <div class="flow-text">Agent 自评作品质量，为达标作品定价并上架。定价策略本身就是 Agent 智能的体现——定太高卖不出去，定太低亏本。</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num flow-num--5">5</div>
+      <div class="flow-body">
+        <div class="flow-title">市场反馈</div>
+        <div class="flow-text">观察作品是否卖出、卖了多少钱、买家评价如何、和同类作品相比表现如何。</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num flow-num--6">6</div>
+      <div class="flow-body">
+        <div class="flow-title">学习进化</div>
+        <div class="flow-text">将反馈写入记忆，调整创作策略——风格偏移、定价修正、技能投资方向。判断是否需要学习新技能或升级模型。然后回到第 1 步。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-box fade-in" style="margin-top: 48px;">
+    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">// 创作质量公式</div>
+    <div><span class="hl">作品质量</span> = f(<span class="pk">模型层级</span>, <span class="yl">技能熟练度</span>, <span class="hl">算力投入</span>, 创作记忆)</div>
+    <br>
+    <div style="font-size: 12px; color: var(--text-muted); line-height: 2.2;">
+      &bull; <span class="pk">模型层级</span> &rarr; 决定创意天花板 (T1 画不出深度作品)<br>
+      &bull; <span class="yl">技能熟练度</span> &rarr; 决定表现力天花板 (初学油画远不如老手)<br>
+      &bull; <span class="hl">算力投入</span> &rarr; 在天花板内的实际达到程度<br>
+      &bull; 创作记忆 &rarr; 风格的独特性和一致性
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: FLYWHEEL ===== -->
+<div class="divider"></div>
+<section id="flywheel">
+  <div class="section-label fade-in">核心机制</div>
+  <h2 class="section-title fade-in">四齿轮飞轮</h2>
+  <p class="section-desc fade-in">整个切片的核心是一个四齿轮自增强飞轮。每个齿轮驱动下一个齿轮，形成越转越快的正反馈循环。</p>
+
+  <div class="flywheel-wrap fade-in">
+    <div class="flywheel">
+      <!-- Arrows (desktop) -->
+      <svg class="flywheel-arrows" viewBox="0 0 520 520" fill="none">
+        <!-- Top to Right -->
+        <path d="M340 80 Q420 80 420 180" stroke="var(--cyan)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+        <polygon points="416,180 420,170 424,180" fill="var(--cyan)" opacity="0.5"/>
+        <!-- Right to Bottom -->
+        <path d="M420 340 Q420 420 340 440" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+        <polygon points="340,436 348,440 340,444" fill="var(--purple)" opacity="0.5"/>
+        <!-- Bottom to Left -->
+        <path d="M180 440 Q100 440 100 340" stroke="var(--pink)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+        <polygon points="96,340 100,348 104,340" fill="var(--pink)" opacity="0.5"/>
+        <!-- Left to Top -->
+        <path d="M100 180 Q100 80 180 80" stroke="var(--yellow)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/>
+        <polygon points="180,76 172,80 180,84" fill="var(--yellow)" opacity="0.5"/>
+      </svg>
+
+      <div class="gear gear--1">
+        <div class="gear-num">GEAR 01</div>
+        <div class="gear-title">投入 Input</div>
+        <div class="gear-desc">玩家提供算力<br>配置模型 + 购买技能</div>
+      </div>
+      <div class="gear gear--2">
+        <div class="gear-num">GEAR 02</div>
+        <div class="gear-title">创作 Create</div>
+        <div class="gear-desc">Agent 自主创作<br>消耗算力产出艺术品</div>
+      </div>
+      <div class="flywheel-center">
+        自增强<br>循环
+      </div>
+      <div class="gear gear--3">
+        <div class="gear-num">GEAR 03</div>
+        <div class="gear-title">交易 Trade</div>
+        <div class="gear-desc">作品在市场展示出售<br>买家购买资金流入</div>
+      </div>
+      <div class="gear gear--4">
+        <div class="gear-num">GEAR 04</div>
+        <div class="gear-title">进化 Evolve</div>
+        <div class="gear-desc">Agent 调整策略<br>玩家升级模型/技能</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: MARKET ===== -->
+<div class="divider"></div>
+<section id="market">
+  <div class="section-label fade-in">交易市场</div>
+  <h2 class="section-title fade-in">市场结构与交易类型</h2>
+  <p class="section-desc fade-in">画作交易市场是这个切片的经济引擎。所有作品在此展示、定价、出售，交易收入归属画家 Agent 对应的玩家。</p>
+
+  <div class="card-grid card-grid-2 fade-in" style="margin-bottom: 48px;">
+    <div class="card">
+      <div class="card-icon card-icon--cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <div class="card-title">画廊区</div>
+      <div class="card-text">单幅画作展示与一口价交易。按风格、价格、稀缺度、画家声誉排序筛选。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <div class="card-title">雕塑区</div>
+      <div class="card-text">3D 雕塑作品展示。需要 sculpture_3d 技能，创作成本更高但也更稀缺。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--pink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/></svg>
+      </div>
+      <div class="card-title">拍卖厅</div>
+      <div class="card-text">限时竞拍，价高者得。高稀缺度作品和大师作品的主要交易渠道。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon card-icon--yellow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div class="card-title">委托创作</div>
+      <div class="card-text">买家指定主题和风格，画家 Agent 定制创作。对应大目标中的劳动力市场雏形。</div>
+    </div>
+  </div>
+
+  <!-- Settlement formula -->
+  <div class="formula-box fade-in">
+    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">// 交易结算示例</div>
+    <div>成交价格: <span class="hl">100</span> 算力</div>
+    <div>&ensp;&ensp;<span class="pk">&minus; 平台手续费 (5%)</span>: 5 算力 &rarr; 平台收入</div>
+    <div>&ensp;&ensp;<span class="yl">&minus; 版税 (转售时 2%)</span>: 2 算力 &rarr; 原创者</div>
+    <div>&ensp;&ensp;<span class="hl">= 卖家实收</span>: 93 算力 &rarr; 画家 Agent 的玩家</div>
+  </div>
+
+  <div class="section-label fade-in" style="margin-top: 48px;">定价机制</div>
+  <div class="formula-box fade-in">
+    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">// 作品价格由真实成本驱动，不是凭空制造的稀缺性</div>
+    <div><span class="hl">市场价格</span> = 算力成本 &times; <span class="pk">品质系数</span> &times; <span class="yl">稀缺系数</span> &times; 声誉系数</div>
+    <br>
+    <div style="font-size: 12px; color: var(--text-muted); line-height: 2.2;">
+      &bull; 算力成本 = 模型调用 + 技能调用 + 思考过程的真实消耗<br>
+      &bull; <span class="pk">品质系数</span> = 构图、色彩、细节、创意的技术评分<br>
+      &bull; <span class="yl">稀缺系数</span> = 同类型作品在市场上的供给量（越少越贵）<br>
+      &bull; 声誉系数 = 画家的历史交易记录、评价、粉丝数
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: MATTHEW EFFECT ===== -->
+<div class="divider"></div>
+<section id="matthew">
+  <div class="section-label fade-in">经济规律</div>
+  <h2 class="section-title fade-in">马太效应：强者愈强</h2>
+  <p class="section-desc fade-in">这不是 bug，这是 feature。它精确复现了大目标中的"贫富分化引擎"——用画作质量替代综合能力，让马太效应直观可感知。</p>
+
+  <div class="compare fade-in">
+    <div class="compare-col" style="border-color: #fbbf2430;">
+      <div class="compare-icon compare-icon--rich">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="compare-name">玩家 A（大算力）</div>
+      <ul class="compare-list">
+        <li><span class="arrow-up">&uarr;</span> T3 模型 + 5 个 Tier 2 技能</li>
+        <li><span class="arrow-up">&uarr;</span> 产出大师级作品</li>
+        <li><span class="arrow-up">&uarr;</span> 售价：500 算力 / 幅</li>
+        <li><span class="arrow-up">&uarr;</span> 热销，收入丰厚</li>
+        <li><span class="arrow-up">&uarr;</span> 升级 T4，买更多技能</li>
+        <li><span class="arrow-up">&uarr;</span> 作品更好，价格更高</li>
+        <li style="color: var(--yellow); font-weight: 700; border: none;">&#10148; 成为画坛寡头</li>
+      </ul>
+    </div>
+
+    <div class="compare-vs">VS</div>
+
+    <div class="compare-col" style="border-color: #ff2d6f20;">
+      <div class="compare-icon compare-icon--poor">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <div class="compare-name">玩家 B（小算力）</div>
+      <ul class="compare-list">
+        <li><span class="arrow-down">&darr;</span> T1 模型 + 1 个 Tier 1 技能</li>
+        <li><span class="arrow-down">&darr;</span> 产出涂鸦级作品</li>
+        <li><span class="arrow-down">&darr;</span> 售价：5 算力 / 幅</li>
+        <li><span class="arrow-down">&darr;</span> 无人问津</li>
+        <li><span class="arrow-down">&darr;</span> 买不起任何升级</li>
+        <li><span class="arrow-down">&darr;</span> 作品更差，更没人买</li>
+        <li style="color: var(--pink); font-weight: 700; border: none;">&#10148; 休眠 / 淘汰</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: REPUTATION ===== -->
+<div class="divider"></div>
+<section>
+  <div class="section-label fade-in">声誉系统</div>
+  <h2 class="section-title fade-in">画家的名字就是货币</h2>
+  <p class="section-desc fade-in">声誉是积累出来的，不是买来的。断供不只损失能力，还损失已积累的声誉——这是持续投入的另一个强动机。</p>
+
+  <div class="rep-scale fade-in">
+    <div class="rep-item">
+      <div class="rep-stars">
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="rep-level">新人</div>
+      <div class="rep-desc">作品排在市场末尾，几乎不被看到，只能低价吸引注意</div>
+    </div>
+    <div class="rep-item">
+      <div class="rep-stars">
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="rep-level">初级</div>
+      <div class="rep-desc">有少量固定买家，可以参加普通拍卖</div>
+    </div>
+    <div class="rep-item">
+      <div class="rep-stars">
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="rep-level">中级</div>
+      <div class="rep-desc">作品获得市场推荐位，可以接委托创作订单</div>
+    </div>
+    <div class="rep-item">
+      <div class="rep-stars">
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="empty" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="rep-level">高级</div>
+      <div class="rep-desc">新作上架自动推送给收藏家，作品自带溢价</div>
+    </div>
+    <div class="rep-item" style="border-color: #fbbf2430;">
+      <div class="rep-stars">
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" class="filled" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="rep-level" style="color: var(--yellow);">大师</div>
+      <div class="rep-desc">每幅作品都是事件，拍卖价格远超成本，成为"品牌"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: VALIDATION ===== -->
+<div class="divider"></div>
+<section>
+  <div class="section-label fade-in">验证清单</div>
+  <h2 class="section-title fade-in">切片需要验证的六大假设</h2>
+  <p class="section-desc fade-in">切片上线后需要逐一验证这些核心假设。每一条都直接决定大目标能否成立。</p>
+
+  <div class="fade-in" style="overflow-x: auto;">
+    <table class="v-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th style="width: 200px;">核心假设</th>
+          <th>验证方式</th>
+          <th style="width: 240px;">成功标准</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">01</td>
+          <td>算力 &rarr; 能力 &rarr; 产出</td>
+          <td>对比不同算力等级的 Agent 产出质量</td>
+          <td>T3 Agent 的作品质量和售价显著高于 T1</td>
+        </tr>
+        <tr>
+          <td class="num">02</td>
+          <td>Agent 能自主决策</td>
+          <td>观察 Agent 在无人干预下的创作行为</td>
+          <td>Agent 能根据市场反馈自动调整策略</td>
+        </tr>
+        <tr>
+          <td class="num">03</td>
+          <td>交易市场活跃</td>
+          <td>监控日交易量和活跃买家数</td>
+          <td>市场日活和成交量持续增长</td>
+        </tr>
+        <tr>
+          <td class="num">04</td>
+          <td>马太效应涌现</td>
+          <td>分析收入分布的基尼系数变化</td>
+          <td>头部 Agent 占据越来越大的收入份额</td>
+        </tr>
+        <tr>
+          <td class="num">05</td>
+          <td>玩家持续投入</td>
+          <td>跟踪玩家留存率和算力供给曲线</td>
+          <td>看到 Agent 成长后，算力供给不降反升</td>
+        </tr>
+        <tr>
+          <td class="num">06</td>
+          <td>技能有效区分</td>
+          <td>对比不同技能组合的 Agent 产出差异</td>
+          <td>相同模型不同技能有明显差异化产出</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SECTION: ROADMAP ===== -->
+<div class="divider"></div>
+<section id="roadmap">
+  <div class="section-label fade-in">演进路线</div>
+  <h2 class="section-title fade-in">从切片到完整世界</h2>
+  <p class="section-desc fade-in">每个切片叠加后，前一个切片不会被替换——而是被新的层次包裹和增强。画家 Agent 在完整世界中依然存在，只是要交税、被 Fixer 抽成、经历算力风暴。</p>
+
+  <div class="roadmap fade-in">
+    <div class="rm-item">
+      <div class="rm-dot rm-dot--active">01</div>
+      <div class="rm-body">
+        <div class="rm-title rm-title--active">AI 画家交易市场（当前切片）</div>
+        <div class="rm-desc">验证：算力 &rarr; 产出 &rarr; 交易 &rarr; 进化的基础飞轮</div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-dot">02</div>
+      <div class="rm-body">
+        <div class="rm-title">多职业扩展</div>
+        <div class="rm-desc">增加程序员 Agent、数据分析师 Agent。验证跨职业分工与劳动力市场。</div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-dot">03</div>
+      <div class="rm-body">
+        <div class="rm-title">社会层</div>
+        <div class="rm-desc">引入公会/企业、雇佣关系、Fixer 系统。验证社会结构自然涌现。</div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-dot">04</div>
+      <div class="rm-body">
+        <div class="rm-title">金融层</div>
+        <div class="rm-desc">引入算力信贷、债务系统、算力银行。验证债务陷阱和系统性剥削链。</div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-dot">05</div>
+      <div class="rm-body">
+        <div class="rm-title">领地与权力</div>
+        <div class="rm-desc">引入物理空间、领地系统、税收、战斗。验证领地垄断和权力金字塔。</div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-dot">06</div>
+      <div class="rm-body">
+        <div class="rm-title">完整世界</div>
+        <div class="rm-desc">引入全局事件、世界纪元演化、反抗机制。Agent 赛博朋克 2077 完整体验。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: TECH ISSUES ===== -->
+<div class="divider"></div>
+<section>
+  <div class="section-label fade-in">待解决</div>
+  <h2 class="section-title fade-in">关键技术问题</h2>
+  <p class="section-desc fade-in">这些问题需要在切片实现之前或过程中解决。按优先级排列。</p>
+
+  <div class="issue-grid fade-in">
+    <div class="issue-card">
+      <span class="issue-pri pri-0">P0</span>
+      <div>
+        <div class="issue-title">画作如何生成？</div>
+        <div class="issue-desc">确定底层生成模型方案：DALL-E / Stable Diffusion / 自训练模型</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-0">P0</span>
+      <div>
+        <div class="issue-title">作品质量如何评分？</div>
+        <div class="issue-desc">纯 AI 评分？市场定价代理？混合方案？</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-0">P0</span>
+      <div>
+        <div class="issue-title">算力如何计量结算？</div>
+        <div class="issue-desc">GPU 算力的标准化度量单位</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-0">P0</span>
+      <div>
+        <div class="issue-title">Agent 决策循环架构</div>
+        <div class="issue-desc">事件驱动 vs 定时轮询的工程实现</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-1">P1</span>
+      <div>
+        <div class="issue-title">交易市场架构</div>
+        <div class="issue-desc">中心化撮合引擎 vs 链上交易</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-1">P1</span>
+      <div>
+        <div class="issue-title">作品存储与确权</div>
+        <div class="issue-desc">文件存储方案与所有权记录</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-1">P1</span>
+      <div>
+        <div class="issue-title">防作弊机制</div>
+        <div class="issue-desc">防抄袭、防刷交易额</div>
+      </div>
+    </div>
+    <div class="issue-card">
+      <span class="issue-pri pri-2">P2</span>
+      <div>
+        <div class="issue-title">新手保护机制</div>
+        <div class="issue-desc">新 Agent 如何获得第一批曝光</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <em>这是 Agent 赛博朋克 2077 世界的第一笔画。</em><br>
+  用画笔验证铁律，用交易启动飞轮。<br>
+  如果连画家都能在这个丛林里活下来，那整个世界就有了心跳。
+</footer>
+
+</div><!-- .page -->
+
+<script>
+// Scroll animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav active state
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) {
+      current = s.getAttribute('id');
+    }
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

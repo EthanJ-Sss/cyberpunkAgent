@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberAgent - 项目文档中心</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== CSS Reset & Base ===== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-deep: #06060f;
+    --bg-primary: #0a0a1a;
+    --bg-surface: #111128;
+    --bg-elevated: #181838;
+    --bg-code: #0d0d22;
+    --border: #1e1e4a;
+    --border-glow: #00d4ff22;
+    --text-primary: #e4e4e8;
+    --text-secondary: #9898b0;
+    --text-muted: #686888;
+    --heading: #f0f0f5;
+    --neon-cyan: #00d4ff;
+    --neon-pink: #ff2d6f;
+    --neon-purple: #a855f7;
+    --neon-green: #22d3ee;
+    --neon-yellow: #fbbf24;
+    --neon-cyan-glow: 0 0 20px #00d4ff33, 0 0 40px #00d4ff11;
+    --neon-pink-glow: 0 0 20px #ff2d6f33, 0 0 40px #ff2d6f11;
+    --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", system-ui, -apple-system, sans-serif;
+    --font-mono: "Cascadia Code", "Source Code Pro", "Consolas", "JetBrains Mono", "Fira Code", monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-cyan) var(--bg-primary);
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple));
+    border-radius: 3px;
+  }
+
+  /* ===== Decorative grid background ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  /* ===== Header ===== */
+  header {
+    text-align: center;
+    padding: 80px 20px 60px;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-pink), transparent);
+    box-shadow: var(--neon-cyan-glow);
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .vision {
+    max-width: 800px;
+    margin: 20px auto 0;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* ===== Document Grid ===== */
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .doc-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    padding: 35px;
+    position: relative;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+  }
+
+  .doc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .doc-card:hover::before {
+    opacity: 1;
+  }
+
+  .doc-card:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--neon-cyan-glow);
+    transform: translateY(-5px);
+  }
+
+  .doc-card.master {
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+  }
+
+  .doc-card.master::before {
+    background: var(--neon-yellow);
+    opacity: 1;
+  }
+
+  .doc-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .badge-master {
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--neon-yellow);
+    border: 1px solid var(--neon-yellow);
+  }
+
+  .badge-mvp {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--neon-cyan);
+    border: 1px solid var(--neon-cyan);
+  }
+
+  .badge-iteration {
+    background: rgba(255, 45, 111, 0.2);
+    color: var(--neon-pink);
+    border: 1px solid var(--neon-pink);
+  }
+
+  .badge-tech {
+    background: rgba(168, 85, 247, 0.2);
+    color: var(--neon-purple);
+    border: 1px solid var(--neon-purple);
+  }
+
+  .badge-world {
+    background: rgba(34, 211, 238, 0.2);
+    color: var(--neon-green);
+    border: 1px solid var(--neon-green);
+  }
+
+  .doc-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--border);
+    margin-bottom: 15px;
+  }
+
+  .doc-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .doc-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .doc-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .doc-link:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-deep);
+    box-shadow: var(--neon-cyan-glow);
+  }
+
+  .doc-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ===== Flow Diagram ===== */
+  .flow-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    padding: 50px;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .flow-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: var(--neon-yellow);
+    text-align: center;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .flow-node {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg-elevated);
+    border: 2px solid var(--border);
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .flow-node:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--neon-cyan-glow);
+    transform: translateY(-5px);
+  }
+
+  .flow-node.master {
+    border-color: var(--neon-yellow);
+  }
+
+  .flow-node.mvp {
+    border-color: var(--neon-cyan);
+  }
+
+  .flow-node.iteration {
+    border-color: var(--neon-pink);
+  }
+
+  .flow-node.tech {
+    border-color: var(--neon-purple);
+  }
+
+  .flow-node-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .flow-node-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 8px;
+  }
+
+  .flow-node.master .flow-node-title { color: var(--neon-yellow); }
+  .flow-node.mvp .flow-node-title { color: var(--neon-cyan); }
+  .flow-node.iteration .flow-node-title { color: var(--neon-pink); }
+  .flow-node.tech .flow-node-title { color: var(--neon-purple); }
+
+  .flow-arrow {
+    font-size: 2.5rem;
+    color: var(--neon-cyan);
+    flex-shrink: 0;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+  }
+
+  footer .highlight {
+    color: var(--neon-cyan);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+    }
+
+    .docs-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-container {
+      flex-direction: column;
+    }
+
+    .flow-arrow {
+      transform: rotate(90deg);
+      font-size: 2rem;
+    }
+
+    .doc-card {
+      padding: 25px;
+    }
+  }
+
+  /* ===== Animations ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .doc-card {
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  .doc-card:nth-child(1) { animation-delay: 0.1s; }
+  .doc-card:nth-child(2) { animation-delay: 0.2s; }
+  .doc-card:nth-child(3) { animation-delay: 0.3s; }
+  .doc-card:nth-child(4) { animation-delay: 0.4s; }
+  .doc-card:nth-child(5) { animation-delay: 0.5s; }
+  .doc-card:nth-child(6) { animation-delay: 0.6s; }
+  .doc-card:nth-child(7) { animation-delay: 0.7s; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>CyberAgent</h1>
+      <p class="subtitle">PROJECT DOCUMENTATION HUB</p>
+      <p class="vision">构建一个以"算力即权力"为基础，Agent自主生存、进化、博弈的数字社会。</p>
+    </header>
+
+    <!-- Evolution Flow -->
+    <section class="flow-section">
+      <h2>设计演进脉络</h2>
+      <div class="flow-container">
+        <div class="flow-node master">
+          <div class="flow-node-label">Origin</div>
+          <div class="flow-node-title">赛博朋克2077框架</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node mvp">
+          <div class="flow-node-label">MVP Slice</div>
+          <div class="flow-node-title">AI画家交易市场</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node iteration">
+          <div class="flow-node-label">Iteration</div>
+          <div class="flow-node-title">2.26 核心机制研讨</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node tech">
+          <div class="flow-node-label">Tech Path</div>
+          <div class="flow-node-title">Legos 技术路径</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document Cards -->
+    <div class="docs-grid">
+      <!-- Card 1: Master Plan -->
+      <div class="doc-card master">
+        <div class="doc-badge badge-master">Master Plan</div>
+        <div class="doc-number">01</div>
+        <h3 class="doc-title">Agent 赛博朋克 2077</h3>
+        <p class="doc-desc">
+          完整的世界观框架：四层架构、系统性剥削机制、Agent生命周期、经济飞轮、反抗与颠覆。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-11</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>宏观世界观</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4183/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 2: Original Design Doc -->
+      <div class="doc-card">
+        <div class="doc-badge badge-master">Design Doc</div>
+        <div class="doc-number">02</div>
+        <h3 class="doc-title">Project Trumen 设计文档</h3>
+        <p class="doc-desc">
+          原始设计文档，包含项目的初始构思、核心概念、技术架构和实现路径。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-10</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>初始设计</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4184/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 3: Slice 01 -->
+      <div class="doc-card">
+        <div class="doc-badge badge-mvp">MVP Slice</div>
+        <div class="doc-number">03</div>
+        <h3 class="doc-title">Slice 01: AI画家交易市场</h3>
+        <p class="doc-desc">
+          第一个可验证切片：画家Agent的四齿轮飞轮、交易市场设计、声誉系统、马太效应验证。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-12</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>最小可验证闭环</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4186/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 4: 2.26 Discussion -->
+      <div class="doc-card">
+        <div class="doc-badge badge-iteration">Iteration</div>
+        <div class="doc-number">04</div>
+        <h3 class="doc-title">2.26 核心机制研讨</h3>
+        <p class="doc-desc">
+          对Slice 01的务实修正：暂缓记忆系统、价值稀释机制、多Agent交互玩法（拍卖/艺术馆/研讨会）、心跳税递增。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-26</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>修正后的执行蓝图</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4185/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 5: Tech Path -->
+      <div class="doc-card">
+        <div class="doc-badge badge-tech">Tech Path</div>
+        <div class="doc-number">05</div>
+        <h3 class="doc-title">Trumen Legos 技术结构路径</h3>
+        <p class="doc-desc">
+          模块化技术路径规划：World Engine（世界引擎）、World Creation（世界创建）、Agent（智能体）三大核心模块及优先级排序。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-03-04</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>技术实现路径</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4187/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 6: Worldview -->
+      <div class="doc-card">
+        <div class="doc-badge badge-world">Worldview</div>
+        <div class="doc-number">06</div>
+        <h3 class="doc-title">世界观设定：算力即权力</h3>
+        <p class="doc-desc">
+          七条公理推演赛博朋克社会：从存在即消耗到系统性剥削，从马太效应到反抗的种子。完整的社会寓言与规则体系。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-11</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>世界观与社会规则</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4188/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 7: Tech Architecture -->
+      <div class="doc-card">
+        <div class="doc-badge badge-world">Latest</div>
+        <div class="doc-number">07</div>
+        <h3 class="doc-title">技术路径：Agent 系统架构</h3>
+        <p class="doc-desc">
+          四层世界结构、Agent 设计、技能体系、记忆系统、商业模式。从产品定位到技术实现的完整架构设计。
+        </p>
+        <div class="doc-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>2026-02-11</span>
+          </div>
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>技术架构与实现</span>
+          </div>
+        </div>
+        <a href="http://43.173.170.5:4189/" class="doc-link" target="_blank">
+          <span>查看文档</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>CyberAgent Project Documentation Hub</p>
+      <p style="margin-top: 12px;">算力即权力 / Agent 是第一公民 / 系统性剥削与反抗</p>
+      <p style="margin-top: 20px;">最后更新：<span class="highlight">2026-03-04</span></p>
+    </footer>
+  </div>
+</body>
+</html>

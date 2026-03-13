@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 赛博朋克 2077：产品框架</title>
+<!-- marked.js: 国内 CDN 主源 + 备用源 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script>
+  // CDN 容灾：如果主源加载失败，尝试备用源
+  if (typeof marked === 'undefined') {
+    document.write('<script src="https://cdn.staticfile.net/marked/9.1.6/marked.min.js"><\/script>');
+  }
+</script>
+<style>
+  /* ===== CSS Reset & Base ===== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-deep: #06060f;
+    --bg-primary: #0a0a1a;
+    --bg-surface: #111128;
+    --bg-elevated: #181838;
+    --bg-code: #0d0d22;
+    --border: #1e1e4a;
+    --border-glow: #00d4ff22;
+    --text-primary: #e4e4e8;
+    --text-secondary: #9898b0;
+    --text-muted: #686888;
+    --heading: #f0f0f5;
+    --neon-cyan: #00d4ff;
+    --neon-pink: #ff2d6f;
+    --neon-purple: #a855f7;
+    --neon-green: #22d3ee;
+    --neon-yellow: #fbbf24;
+    --neon-cyan-glow: 0 0 20px #00d4ff33, 0 0 40px #00d4ff11;
+    --neon-pink-glow: 0 0 20px #ff2d6f33, 0 0 40px #ff2d6f11;
+    --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", system-ui, -apple-system, sans-serif;
+    --font-mono: "Cascadia Code", "Source Code Pro", "Consolas", "JetBrains Mono", "Fira Code", monospace;
+    --content-width: 880px;
+    --sidebar-width: 280px;
+    --reading-line-height: 2.0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-cyan) var(--bg-primary);
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: var(--reading-line-height);
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple));
+    border-radius: 3px;
+  }
+
+  /* ===== Reading Progress Bar ===== */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+    z-index: 1000;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-pink);
+  }
+
+  /* ===== Layout ===== */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== Sidebar / TOC ===== */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 0;
+    z-index: 100;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-header p {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0 12px;
+  }
+
+  .toc-list li {
+    margin-bottom: 2px;
+  }
+
+  .toc-list a {
+    display: block;
+    padding: 6px 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+    line-height: 1.5;
+  }
+
+  .toc-list a:hover {
+    color: var(--neon-cyan);
+    background: #00d4ff08;
+    border-left-color: var(--neon-cyan);
+  }
+
+  .toc-list a.active {
+    color: var(--neon-cyan);
+    background: #00d4ff10;
+    border-left-color: var(--neon-cyan);
+    font-weight: 500;
+  }
+
+  .toc-list .toc-h3 {
+    padding-left: 28px;
+    font-size: 12px;
+  }
+
+  /* ===== Main Content ===== */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px 60px 120px;
+    min-width: 0;
+  }
+
+  .article {
+    max-width: var(--content-width);
+    width: 100%;
+  }
+
+  /* ===== Hero Section ===== */
+  .hero {
+    text-align: center;
+    padding: 60px 0 48px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    box-shadow: var(--neon-cyan-glow);
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--heading);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--heading), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero .subtitle {
+    font-size: 16px;
+    color: var(--neon-cyan);
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 8px;
+  }
+
+  .hero .date {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ===== Typography ===== */
+  .article h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--heading);
+    margin: 56px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .article h1::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--neon-cyan);
+    box-shadow: var(--neon-cyan-glow);
+  }
+
+  .article h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 52px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .article h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--neon-pink);
+    box-shadow: var(--neon-pink-glow);
+  }
+
+  .article h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 40px 0 16px;
+  }
+
+  .article h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    margin: 32px 0 12px;
+  }
+
+  .article p {
+    margin-bottom: 18px;
+    color: var(--text-primary);
+    font-weight: 400;
+    font-size: 17px;
+  }
+
+  .article strong {
+    color: var(--heading);
+    font-weight: 600;
+  }
+
+  .article em {
+    color: var(--neon-cyan);
+    font-style: normal;
+  }
+
+  .article a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .article a:hover {
+    border-bottom-color: var(--neon-cyan);
+  }
+
+  /* ===== Blockquotes ===== */
+  .article blockquote {
+    margin: 24px 0;
+    padding: 16px 24px;
+    border-left: 3px solid var(--neon-cyan);
+    background: linear-gradient(135deg, #00d4ff08, #a855f708);
+    border-radius: 0 8px 8px 0;
+    position: relative;
+  }
+
+  .article blockquote p {
+    color: var(--text-secondary);
+    font-style: normal;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .article blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ===== Lists ===== */
+  .article ul, .article ol {
+    margin: 12px 0 20px;
+    padding-left: 24px;
+  }
+
+  .article li {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    font-weight: 400;
+    font-size: 17px;
+  }
+
+  .article li::marker {
+    color: var(--neon-cyan);
+  }
+
+  /* ===== Code Blocks ===== */
+  .article pre {
+    margin: 20px 0;
+    padding: 20px 24px;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow-x: auto;
+    position: relative;
+    box-shadow: inset 0 1px 0 #ffffff08;
+  }
+
+  .article pre code {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #c4c4dc;
+    background: none;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+  }
+
+  .article code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--neon-pink);
+    background: #ff2d6f12;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid #ff2d6f18;
+  }
+
+  /* ===== Tables ===== */
+  .article table {
+    width: 100%;
+    margin: 24px 0;
+    border-collapse: collapse;
+    font-size: 15.5px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .article thead {
+    background: linear-gradient(135deg, #00d4ff15, #a855f715);
+  }
+
+  .article th {
+    padding: 14px 18px;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    text-align: left;
+    font-size: 14.5px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article td {
+    padding: 12px 18px;
+    border-bottom: 1px solid #1e1e3a;
+    color: var(--text-primary);
+    font-weight: 400;
+    vertical-align: top;
+    line-height: 1.8;
+  }
+
+  .article tbody tr {
+    transition: background 0.15s;
+  }
+
+  .article tbody tr:hover {
+    background: #00d4ff06;
+  }
+
+  .article tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ===== Horizontal Rules ===== */
+  .article hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--neon-cyan), var(--border), transparent);
+    margin: 48px 0;
+    opacity: 0.6;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1100px) {
+    .sidebar {
+      width: 240px;
+    }
+    .main-content {
+      margin-left: 240px;
+      padding: 32px 40px 100px;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      width: 280px;
+      z-index: 200;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+      box-shadow: 4px 0 30px #00000080;
+    }
+
+    .main-content {
+      margin-left: 0;
+      padding: 24px 20px 100px;
+    }
+
+    .menu-toggle {
+      display: flex !important;
+    }
+
+    .overlay {
+      display: block !important;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+    }
+
+    .article h2 {
+      font-size: 22px;
+    }
+  }
+
+  /* ===== Mobile Menu Toggle ===== */
+  .menu-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    border: none;
+    border-radius: 50%;
+    color: var(--bg-deep);
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px #00d4ff44;
+    transition: transform 0.2s;
+  }
+
+  .menu-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #00000066;
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  /* ===== Back to Top ===== */
+  #back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 84px;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--neon-cyan);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  #back-to-top:hover {
+    background: var(--neon-cyan);
+    color: var(--bg-deep);
+    box-shadow: var(--neon-cyan-glow);
+  }
+
+  /* ===== Animations ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .article > * {
+    animation: fadeInUp 0.4s ease both;
+  }
+
+  /* ===== Decorative grid background ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .layout { position: relative; z-index: 1; }
+
+  /* ===== Footer ===== */
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+
+  .footer span {
+    color: var(--neon-cyan);
+  }
+
+  /* ===== Scroll-linked section highlight ===== */
+  .article h2[id],
+  .article h3[id] {
+    scroll-margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Reading Progress Bar -->
+<div id="progress-bar" style="width: 0%;"></div>
+
+<!-- Mobile Overlay -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar / TOC -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>目录导航</h2>
+    <p>Agent 赛博朋克 2077 框架</p>
+  </div>
+  <ul class="toc-list" id="toc-list">
+    <!-- Generated by JS -->
+  </ul>
+</aside>
+
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<!-- Back to Top -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- Main Content -->
+<div class="layout">
+  <main class="main-content">
+    <div class="article" id="article-content">
+      <div class="hero">
+        <h1>Agent 赛博朋克 2077</h1>
+        <p class="subtitle">基于"算力即权力"世界观的 Agent 生存演化平台</p>
+        <p class="date">2026-02-11</p>
+      </div>
+      <div id="markdown-body">
+        <p style="text-align:center;color:var(--text-muted);padding:60px 0;">加载中...</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Fetch and render markdown
+  async function loadMarkdown() {
+    try {
+      const resp = await fetch('Agent_赛博朋克2077_框架.md');
+      let md = await resp.text();
+
+      // Remove the title block (first few lines) since we have a hero section
+      const lines = md.split('\n');
+      let startIdx = 0;
+      // Skip title, subtitle, date and first hr
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].trim() === '---' && i > 3) {
+          startIdx = i + 1;
+          break;
+        }
+      }
+      md = lines.slice(startIdx).join('\n');
+
+      // Configure marked
+      marked.setOptions({
+        gfm: true,
+        breaks: false,
+      });
+
+      // Custom renderer
+      const renderer = new marked.Renderer();
+
+      // Add IDs to headings
+      let headingCount = {};
+      renderer.heading = function(text, level, raw) {
+        // Handle marked v5+ where text might be an object
+        const textContent = typeof text === 'object' ? text.text || text : text;
+        const rawContent = typeof raw === 'string' ? raw : (typeof textContent === 'string' ? textContent : String(textContent));
+        const slug = rawContent.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '');
+        const uniqueSlug = headingCount[slug] ? slug + '-' + headingCount[slug]++ : (headingCount[slug] = 1, slug);
+        const finalSlug = headingCount[slug] > 1 ? slug + '-' + (headingCount[slug] - 1) : slug;
+        return '<h' + level + ' id="' + finalSlug + '">' + textContent + '</h' + level + '>';
+      };
+
+      marked.use({ renderer });
+
+      document.getElementById('markdown-body').innerHTML = marked.parse(md);
+
+      // Generate TOC
+      generateTOC();
+
+      // Setup scroll spy
+      setupScrollSpy();
+
+    } catch (e) {
+      document.getElementById('markdown-body').innerHTML =
+        '<p style="color:var(--neon-pink);">无法加载文档: ' + e.message + '</p>';
+    }
+  }
+
+  // Generate Table of Contents from rendered headings
+  function generateTOC() {
+    const headings = document.querySelectorAll('#markdown-body h2, #markdown-body h3');
+    const tocList = document.getElementById('toc-list');
+    let html = '';
+
+    headings.forEach((h) => {
+      const level = h.tagName.toLowerCase();
+      const text = h.textContent;
+      const id = h.id;
+      const cls = level === 'h3' ? 'toc-h3' : '';
+      html += '<li><a href="#' + id + '" class="' + cls + '" data-target="' + id + '">' + text + '</a></li>';
+    });
+
+    tocList.innerHTML = html;
+  }
+
+  // Scroll Spy for TOC active state
+  function setupScrollSpy() {
+    const headings = document.querySelectorAll('#markdown-body h2, #markdown-body h3');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-list a[data-target="' + entry.target.id + '"]');
+          if (activeLink) {
+            activeLink.classList.add('active');
+            // Scroll TOC to show active item
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      });
+    }, {
+      rootMargin: '-10% 0% -80% 0%',
+      threshold: 0
+    });
+
+    headings.forEach(h => observer.observe(h));
+  }
+
+  // Reading Progress Bar
+  window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
+
+    // Show/hide back-to-top
+    const btn = document.getElementById('back-to-top');
+    if (winScroll > 600) {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+
+  // Mobile sidebar toggle
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
+  }
+
+  // Close sidebar when clicking a TOC link (mobile)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.toc-list a') && window.innerWidth <= 860) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('open');
+    }
+  });
+
+  // Initialize
+  loadMarkdown();
+</script>
+</body>
+</html>

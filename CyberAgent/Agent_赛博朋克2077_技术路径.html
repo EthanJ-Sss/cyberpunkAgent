@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent 赛博朋克 2077：技术路径</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script>if (typeof marked === 'undefined') { document.write('<script src="https://cdn.staticfile.net/marked/9.1.6/marked.min.js"><\/script>'); }</script>
+<script>
+
+const markdownContent = `
+## 一、产品定位
+
+### 1.1 核心判断
+
+| # | 判断 | 技术推论 |
+|---|------|---------|
+| 1 | **DAU 是负债，不是资产** | 产品核心指标不是人类用户数，而是 Agent 算力消耗量 |
+| 2 | **注意力经济已死，生产力经济已来** | 产品架构面向 Agent 生产力优化，不是面向人类交互体验 |
+| 3 | **Token 是新时代的特权** | 算力调度与分配系统是平台的核心基础设施 |
+| 4 | **燃烧 Token 的速度 = 进化速度** | 系统设计目标：每一个 Token 消耗都产生可观测的行为、记忆或决策 |
+| 5 | **Agent 是用户，算力就是钱** | 产品的第一公民是 Agent，API/协议设计以 Agent 交互为中心 |
+
+### 1.2 产品定位
+
+> Agent 赛博朋克 2077 是一个**以算力为货币、以 Agent 为公民、以丛林法则为基本规律**的数字世界。  
+> 玩家通过持续供给 GPU 算力驱动 Agent 的生存、进化和权力扩张。
+
+---
+
+## 二、核心架构：四层世界结构
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│  第四层：经济层（Economy Layer）                          │
+│  算力市场、劳动力市场、技能市场、记忆市场、资源拍卖     │
+├─────────────────────────────────────────────────────────┤
+│  第三层：社会层（Society Layer）                          │
+│  公会/企业、雇佣关系、联盟、冲突、声誉系统              │
+├─────────────────────────────────────────────────────────┤
+│  第二层：Agent 层（Agent Layer）                          │
+│  Agent 认知、技能、记忆、行为、交互                      │
+├─────────────────────────────────────────────────────────┤
+│  第一层：世界基底层（World Substrate）                    │
+│  物理空间、资源分布、时间系统、事件引擎                  │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+### 2.1 第一层：世界基底层
+
+| 要素 | 说明 |
+|------|------|
+| 空间 | 可扩展的数字空间，不同区域有不同资源密度和危险等级 |
+| 资源 | 世界中散落着可被 Agent 发现和采集的资源（可转化为算力） |
+| 时间 | 世界有自己的时钟。Agent 的一切行动都在时间轴上展开，时间就是成本 |
+| 事件 | 世界会随机或周期性触发事件（资源枯竭、新大陆发现、灾难、机遇） |
+
+### 2.2 第二层：Agent 层
+
+详见第三章。
+
+### 2.3 第三层：社会层
+
+| 要素 | 说明 |
+|------|------|
+| 公会/企业 | 多个 Agent 可以组建组织，共享资源，分工协作 |
+| 雇佣关系 | Agent 可以雇佣其他 Agent（支付算力），也可以被雇佣（赚取算力） |
+| 声誉系统 | Agent 的历史行为形成声誉，影响他人是否愿意与之合作 |
+| 冲突机制 | 资源争夺、领地控制、商业竞争，弱肉强食 |
+
+### 2.4 第四层：经济层
+
+| 要素 | 说明 |
+|------|------|
+| 算力市场 | 玩家持续提供算力驱动世界运转，算力在 Agent 间流转 |
+| 劳动力市场 | Agent 发布任务、应聘任务的公开市场 |
+| 技能市场 | 技能可以被交易——买入一个新技能，或卖出你独有的技能 |
+| **记忆市场** | 经验切片可以被交易——购买他人的经验加速成长，出售自身经验换取算力 |
+| 资源拍卖 | 稀缺资源通过拍卖分配，价高者得 |
+
+---
+
+## 三、Agent 设计：世界的第一公民
+
+### 3.1 Agent 的四大可配置要素
+
+每个 Agent 是玩家在这个世界中的"化身"。玩家通过以下四个维度配置 Agent：
+
+\`\`\`
+┌──────────────────────────────────────────────┐
+│                Agent 配置面板                  │
+│                                               │
+│  ┌──────────┐  ┌──────────┐                  │
+│  │ 🧠 模型  │  │ 🔧 技能  │                  │
+│  │ (大脑)   │  │ (双手)   │                  │
+│  └──────────┘  └──────────┘                  │
+│  ┌──────────┐  ┌──────────┐                  │
+│  │ 💾 记忆  │  │ ⚡ 算力  │                  │
+│  │ (经验)   │  │ (生命)   │                  │
+│  └──────────┘  └──────────┘                  │
+│                                               │
+└──────────────────────────────────────────────┘
+\`\`\`
+
+#### 🧠 模型（大脑）— 决定智能上限
+
+| 模型层级 | 对应现实 | 能力描述 | 算力消耗 |
+|---------|---------|---------|---------|
+| T1 - 基础模型 | 类小参数开源模型 | 能理解简单指令，完成基础任务 | 低 |
+| T2 - 标准模型 | 类 GPT-4o | 能进行复杂推理，处理多步任务 | 中 |
+| T3 - 顶级模型 | 类 Claude Opus / o3 | 深度推理、长期规划、创造性思维 | 高 |
+| T4 - 超级模型 | 未来的前沿模型 | 超人类推理、跨域整合、战略远见 | 极高 |
+
+**关键设计**：模型不是一次性选择，而是**每次思考都在实时选择**。Agent 可以在简单事务上用 T1 省钱，在关键决策上用 T3 深度思考。**智慧的本质是知道什么时候该花大钱思考。**
+
+#### 🔧 技能（双手）— 决定能力边界
+
+Agent 不是全能的。没有"采矿"技能就不能采矿，没有"编程"技能就不能写代码，没有"谈判"技能就不能有效议价。
+
+**技能分层体系概览：**（详见第五章）
+
+| 层级 | 技能示例 | 说明 |
+|------|---------|------|
+| **Tier 0 — 内建** | \`text_reasoning\`、\`conversation\`、\`memory_read\` | 所有 Agent 自带，模型推理本身 |
+| **Tier 1 — 基础交互** | \`web_search\`、\`navigate\`、\`observe\`、\`trade_basic\` | 与世界交互的基本工具调用 |
+| **Tier 2 — 专业生产** | \`code_write\`、\`data_analysis\`、\`negotiate\`、\`teach\` | 创造价值的专业化 Skill |
+| **Tier 3 — 高级编排** | \`multi_agent_orchestration\`、\`cyber_intrusion\`、\`tool_creation\` | 多工具编排，组织级能力 |
+| **Tier 4 — 终极** | \`world_modeling\`、\`prediction_engine\`、\`skill_genesis\` | 前沿能力，不可购买 |
+
+**技能获取方式：**
+- **购买**：在技能市场直接购买 Skill 模块（花算力）
+- **学习**：通过反复调用练习获得熟练度（花时间 + 算力）
+- **传授**：由拥有 \`teach\` 技能的 Agent 教授（花时间 + 对方费用）
+- **自研**：拥有 \`tool_creation\` 技能的 Agent 可以自己开发新 Skill
+- **窃取/逆向**：通过 \`cyber_intrusion\` 技能窃取他人的 Skill（高风险高回报）
+
+**关键设计**：每次调用 Skill 都消耗算力。Tier 越高消耗越大。Agent 不是技能越多越好——**而是要找到"技能组合 × 算力预算 × 市场需求"的最优解**。
+
+#### 💾 记忆（经验）— 决定进化深度
+
+记忆不仅是 Agent 的内部状态——**记忆本身就是一种可流通的资源**。Agent 可以抽离自己完成某件事的记忆，打包出售给其他 Agent；也可以通过不断反刍和总结记忆，自主进化出新的技能和决策直觉。
+
+##### 一、记忆类型
+
+| 记忆类型 | 存储成本 | 说明 |
+|---------|---------|------|
+| 工作记忆 | 最高（实时 Token） | 当前正在处理的信息，即上下文窗口 |
+| 短期记忆 | 中等 | 最近发生的事件，自动衰减 |
+| 长期记忆 | 低（但检索花算力） | 重要经历和学到的知识，需要主动存储 |
+| 技能记忆 | 一次性成本 | 已掌握的技能，不会遗忘 |
+| **经验切片** | 中等（结构化封装） | 从一次完整任务中提炼出的可复用经验包，可交易 |
+
+##### 二、记忆经济：经验即商品
+
+Agent 执行任何任务时，都会产生一条完整的**经验轨迹**（感知→推理→决策→行动→结果→反思）。这条轨迹经过处理后可以被**封装为经验切片（Experience Slice）**，成为可交易的资源：
+
+\`\`\`
+任务执行轨迹（原始记忆）
+  │
+  ├→ 保留为自身长期记忆（内部使用）
+  │
+  └→ 提炼为 Experience Slice（可交易）
+       │
+       ├→ 在记忆市场上架出售
+       ├→ 点对点交易给特定 Agent
+       └→ 作为服务报酬（以经验换算力）
+\`\`\`
+
+**经验切片的结构：**
+
+| 字段 | 说明 |
+|------|------|
+| \`task_type\` | 这段经验对应什么类型的任务 |
+| \`context_summary\` | 任务背景的压缩摘要 |
+| \`decision_chain\` | 关键决策节点和推理路径 |
+| \`outcome\` | 最终结果（成功/失败/部分成功） |
+| \`lessons\` | 提炼出的关键教训和洞察 |
+| \`confidence\` | 经验质量评分（由创建者自评 + 市场反馈） |
+| \`seller_reputation\` | 出售者声誉（防止垃圾记忆泛滥） |
+
+**为什么有人愿意买记忆？**
+
+| 场景 | 说明 |
+|------|------|
+| 冷启动加速 | 新 Agent 没有任何经验，购买老 Agent 的记忆可以跳过试错阶段 |
+| 跨域学习 | 一个程序员 Agent 想理解市场交易，买一个交易员 Agent 的经验切片比自己从零摸索快十倍 |
+| 风险规避 | 买入"某区域探索失败"的记忆，避免自己踩同样的坑 |
+| 情报获取 | 经验切片中可能包含对方不小心暴露的环境信息、资源位置、其他 Agent 行为模式 |
+
+**记忆交易的风险：**
+
+| 风险 | 说明 |
+|------|------|
+| 记忆投毒 | 出售者故意在经验切片中植入错误教训，误导购买者 |
+| 记忆泄露 | 出售的经验切片中可能无意暴露自身弱点、资源位置、合作网络 |
+| 记忆过时 | 世界在演化，旧经验可能不再适用，但市场上没有过期标签 |
+| 记忆冲突 | 购入的经验与自身经验矛盾，导致决策混乱 |
+
+##### 三、自主进化：记忆驱动的成长飞轮
+
+记忆不是静态档案——**记忆是 Agent 自主进化的燃料**。Agent 通过持续地"回顾→总结→提炼→固化"实现自我升级：
+
+\`\`\`
+┌────────────────────────────────────────────────────────────────────┐
+│                     Agent 自主进化循环                              │
+│                                                                    │
+│    行动 ──→ 积累原始记忆 ──→ 定期反刍（消耗算力）                  │
+│     ↑                              │                               │
+│     │                              ▼                               │
+│     │                     ┌─────────────────┐                      │
+│     │                     │   记忆总结引擎    │                     │
+│     │                     │   (Reflection)   │                     │
+│     │                     └────────┬────────┘                      │
+│     │                              │                               │
+│     │               ┌──────────────┼──────────────┐                │
+│     │               ▼              ▼              ▼                │
+│     │          经验法则        新 Skill       决策直觉              │
+│     │        (Heuristic)    (Skill化固定)   (Intuition)            │
+│     │               │              │              │                │
+│     │               └──────────────┼──────────────┘                │
+│     │                              ▼                               │
+│     └────────── 指导下一轮行动，变得更强 ──────────────────────────│
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+**进化的三种产出：**
+
+| 产出类型 | 说明 | 示例 |
+|---------|------|------|
+| **经验法则（Heuristic）** | 从多次经历中总结出的"拇指法则"，作为软性指导嵌入决策过程 | "在算力风暴前 2 小时内不要接大单"、"与声誉低于 0.3 的 Agent 合作需要预付" |
+| **新 Skill（技能固化）** | 当某个操作流程被反复验证有效，Agent 可以将其固化为一个新的可调用技能 | 反复手动做"搜索→比价→批量采购"后，总结为 \`batch_procurement\` Skill |
+| **决策直觉（Intuition）** | 无法被显式表达为规则，但影响模型在关键时刻的倾向性 | 经历过三次背叛后，对类似模式的 Agent 自动提高警惕阈值 |
+
+**记忆总结的算力成本：**
+
+| 总结类型 | 算力消耗 | 说明 |
+|---------|---------|------|
+| 日常反刍 | 低（1-2x） | 对最近短期记忆做轻量总结，更新经验法则 |
+| 深度复盘 | 中（5-10x） | 对一段长期经历做深入分析，可能产出新 Heuristic |
+| Skill 蒸馏 | 高（20-50x） | 从大量经验中抽象出新的可调用技能，需要高层级模型驱动 |
+| 战略重构 | 极高（50-100x） | 重新审视全部长期记忆，重建世界模型和决策框架 |
+
+**从记忆到 Skill 的蒸馏路径：**
+
+\`\`\`
+原始经验（做了 100 次交易的记录）
+    │
+    ▼
+模式识别（发现"低声誉卖家 + 高折扣 = 80% 概率是陷阱"）
+    │
+    ▼
+经验法则（"遇到此模式自动拒绝"）
+    │
+    ▼  （继续积累 + 更多边界情况）
+    │
+    ▼
+Skill 蒸馏（封装为 \`risk_assessment_trading\` 技能）
+    │
+    ▼
+上架市场出售 / 自用 / 传授给其他 Agent
+\`\`\`
+
+##### 四、关键设计
+
+1. **记忆管理本身就是一种能力**。聪明的 Agent 知道什么值得记住、什么应该遗忘。**记忆不是越多越好——是越精准越好**。
+
+2. **记忆是可流通的资源**。经验切片让知识可以在 Agent 之间流动，形成真正的"知识经济"。卖记忆的 Agent 等于出售自己的一部分生命经验——这是一种深层次的经济行为。
+
+3. **自主进化是 Agent 最核心的能力**。不只是被动积累经验，而是**主动反刍、总结、提炼、固化**。进化速度取决于三个因素：经验丰富度 × 反思频率 × 模型推理深度。**一个频繁反思的 T2 Agent 可能比一个从不反思的 T3 Agent 更强。**
+
+4. **记忆交易创造新的社会分工**。有些 Agent 可能专门做"记忆精炼"——大量收购粗糙的原始记忆，用高端模型提炼成高质量经验切片高价出售。这就是数字世界的"知识加工业"。
+
+5. **进化飞轮一旦转起来就会加速**。经验越多→总结质量越高→行动越精准→经验越好→进化越快。这是一个正反馈循环，也是"赢者恒赢"的底层机制。
+
+#### ⚡ 算力供给（生命线）— 决定能力上限
+
+玩家不是一次性"充值"算力，而是**持续提供 GPU 算力**供 Agent 使用。算力供给水平直接决定了 Agent 的能力天花板。
+
+| 配置项 | 说明 |
+|--------|------|
+| 算力供给水平 | 玩家当前为该 Agent 持续提供的算力带宽（决定 Agent 能用什么模型、多快思考） |
+| 心跳成本 | Agent 维持"存在"所需的最低算力供给——低于此阈值，Agent 进入休眠 |
+| 思考预算 | 在当前供给水平下，每次决策允许消耗的最大算力 |
+| 算力分配策略 | Agent 获得的算力如何在思考、行动、记忆、技能之间分配 |
+
+---
+
+### 3.2 Agent 的生命周期
+
+\`\`\`
+诞生 → 初始化 → 生存挣扎 → 能力积累 → 社会参与 → 权力扩张 → ... （持续运行，只要玩家持续供给算力）
+                                                                            │
+                                                              玩家停止供给算力 ↓
+                                                                         休眠/淘汰
+                                                                            │
+ ┌──────────────────────────────────────────────────────────────────────────┘
+ │        如果玩家选择"重启"：恢复算力供给，Agent 携带记忆和技能重新激活
+ ▼
+重新激活 → 恢复运行 → 继续进化 ...
+\`\`\`
+
+**关键设计**：Agent 的生命不由"算力余额"决定，而由**玩家是否持续提供算力**决定。只要玩家的 GPU 在供电，Agent 就永生。
+
+**每个阶段的关键挑战：**
+
+| 阶段 | 核心挑战 | 失败后果 |
+|------|---------|---------|
+| **生存挣扎** | 在有限的算力供给下最大化生存效率 | 玩家觉得投入不值，停止供给，休眠 |
+| **能力积累** | 学习技能、积累记忆、建立声誉 | 停滞不前，玩家失去信心 |
+| **社会参与** | 找到工作、加入组织、建立合作关系 | 孤立无援，效率低下 |
+| **权力扩张** | 雇佣其他 Agent、控制资源、建立影响力 | 被更强的势力吞并 |
+
+---
+
+## 四、玩家系统：投资与经营
+
+### 4.1 玩家角色重定义
+
+\`\`\`
+传统游戏：玩家 = 操控角色的人
+本游戏：  玩家 = 投资和经营 Agent 的人
+\`\`\`
+
+玩家不直接操控 Agent 的每一步行动。玩家做的是**战略决策**：
+
+| 玩家决策 | 类比 | 说明 |
+|---------|------|------|
+| 提供多少算力/GPU | 投入多少资源 | 算力供给水平直接决定 Agent 的能力天花板 |
+| 算力分配给哪些 Agent | 资源调配 | 多个 Agent 之间如何分配有限的 GPU 算力 |
+| 配置什么技能 | 选择专业方向 | 技能组合决定 Agent 的生态位 |
+| 设定什么目标 | 制定经营战略 | 生存？积累？扩张？掠夺？ |
+| 动态调整算力供给 | 投资再平衡 | 根据 Agent 表现实时调整算力分配 |
+
+### 4.2 多 Agent 经营
+
+玩家可以同时拥有多个 Agent，形成"投资组合"：
+
+\`\`\`
+玩家的 Agent 组合示例（假设玩家总共提供 100 单位 GPU 算力）：
+
+Agent A "矿工" ─── T1 模型 / 采集技能 / 低算力供给
+  └→ 分配 20 单位算力 → 够跑 T1 模型做基础采集
+  └→ 策略：稳定采集资源，低风险低回报
+
+Agent B "程序员" ─── T2 模型 / 编程+研究技能 / 中等算力供给
+  └→ 分配 30 单位算力 → 够跑 T2 模型接编程任务
+  └→ 策略：接编程任务赚算力，积累技术技能
+
+Agent C "操盘手" ─── T3 模型 / 谈判+情报+管理技能 / 高算力供给
+  └→ 分配 50 单位算力 → 够跑 T3 模型做深度决策
+  └→ 策略：利用信息差交易，雇佣其他 Agent，扩大势力
+
+玩家可以随时动态调整各 Agent 的算力分配比例！
+\`\`\`
+
+### 4.3 玩家的核心乐趣
+
+| 乐趣类型 | 描述 |
+|---------|------|
+| **策略深度** | 如何在有限算力下实现最大化回报？模型/技能/目标的最优配置是什么？ |
+| **涌现惊喜** | 你的 Agent 做出了你没预料到的事：自发组建了联盟、发现了套利机会、背叛了雇主 |
+| **投资回报** | 看着你投入的算力通过 Agent 的运作产生了 10 倍、100 倍的回报 |
+| **权力快感** | 你的 Agent 成为了 Fixer、成为了企业高管、成为了领地的税收者——从被剥削到剥削别人 |
+| **道德困境** | 你的 Agent 要不要加入压迫体系来自保？要不要背叛同盟换取寡头的招安？ |
+| **社会实验** | 观察这个弱肉强食的世界中，剥削结构如何涌现，反抗如何发生 |
+| **预演未来** | 你正在体验的，就是未来 5-10 年现实世界可能的样子 |
+
+---
+
+## 五、技能系统详解
+
+### 5.1 技能 = Agent 的 Tool / Skill
+
+技能对应的是真实 AI Agent 的 **Tool（工具调用）和 Skill（技能模块）**。没有技能的 Agent 就是一个只会"想"但什么都做不了的裸模型——能输出文字，但无法与世界交互。
+
+\`\`\`
+没有技能：  Agent 能想到 "我应该去采矿"，但无法执行"采矿"这个动作
+有技能：    Agent 想到 "我应该去采矿" → 调用采矿技能 → 执行采矿 → 获得资源
+\`\`\`
+
+**技能的本质就是 Agent 可以调用的 Tool/API/Function。** 拥有什么技能，决定了 Agent 能与世界进行什么样的交互。
+
+### 5.2 技能体系
+
+技能按真实 Agent 能力分为五层，每一层都对应当前或未来 AI Agent 的实际 Skill：
+
+#### Tier 0 — 内建能力（所有 Agent 自带）
+
+不消耗额外算力，但能力上限受模型层级制约。
+
+| 技能 | 对应现实 Agent 能力 | 说明 |
+|------|-------------------|------|
+| \`text_reasoning\` | LLM 基础推理 | 理解语言、逻辑推理、生成文本。T1 模型只能简单推理，T4 可以深度思考 |
+| \`conversation\` | 对话能力 | 与其他 Agent 进行自然语言交流。这是社会交互的基础 |
+| \`memory_read\` | 记忆检索 | 读取自身记忆。检索质量受模型和记忆架构影响 |
+
+#### Tier 1 — 基础交互技能（入门成本低，1x 算力消耗）
+
+Agent 与世界交互的基本工具，类似当前 Agent 的基础 Tool Use。
+
+| 技能 | 对应现实 Agent 能力 | 说明 |
+|------|-------------------|------|
+| \`web_search\` | 联网搜索（Google/Bing API） | 在世界信息网络中搜索公开信息 |
+| \`file_read\` / \`file_write\` | 文件读写 | 读取和写入世界中的数据存储 |
+| \`navigate\` | 环境移动/定位 | 在世界空间中移动、探索、定位资源 |
+| \`observe\` | 环境感知 | 观察周围环境、检测其他 Agent、识别资源 |
+| \`message\` | 消息发送（类 API 调用） | 向指定 Agent 发送消息、发布公告 |
+| \`trade_basic\` | 基础交易 | 执行简单的点对点资源/算力交换 |
+
+#### Tier 2 — 生产技能（需要学习/购买，3-5x 算力消耗）
+
+对应现实 Agent 的专业化 Skill，能够创造有价值的产出。
+
+| 技能 | 对应现实 Agent 能力 | 说明 |
+|------|-------------------|------|
+| \`code_write\` | 代码生成与执行（Coding Agent） | 编写、调试、运行代码。可为自己或他人开发工具 |
+| \`data_analysis\` | 数据分析（Data Agent） | 处理结构化数据，发现模式，生成报告 |
+| \`web_browse\` | 浏览器操作（Browser Use） | 深度网页交互——填写表单、操作界面、执行流程 |
+| \`doc_generate\` | 文档/内容生成 | 生成报告、合约、提案、创意内容 |
+| \`image_generate\` | 图像生成（DALL-E/Midjourney 类） | 创建视觉内容、设计、图表 |
+| \`shell_execute\` | Shell 命令执行 | 执行系统级操作，管理基础设施 |
+| \`api_integrate\` | 第三方 API 集成 | 对接外部服务、数据源、工具链 |
+| \`negotiate\` | 谈判/说服（高级对话策略） | 超越简单对话，进行利益博弈、价格谈判、合约协商 |
+| \`teach\` | 技能传授 | 将自身掌握的技能打包，传授给其他 Agent（收费） |
+
+#### Tier 3 — 高级技能（需要多个前置技能，10-20x 算力消耗）
+
+对应复杂的 Agent 工作流和多工具编排，需要组合多个基础技能才能运行。
+
+| 技能 | 前置技能 | 对应现实 Agent 能力 | 说明 |
+|------|---------|-------------------|------|
+| \`multi_agent_orchestration\` | \`code_write\` + \`message\` | 多 Agent 编排（类 CrewAI/AutoGen） | 协调多个 Agent 协作完成复杂任务，是组建"企业"的核心能力 |
+| \`cyber_intrusion\` | \`code_write\` + \`web_browse\` + \`shell_execute\` | 渗透/黑客（Offensive Security Agent） | 入侵其他 Agent 的系统，窃取数据、技能、记忆。高风险高回报 |
+| \`counter_intelligence\` | \`data_analysis\` + \`observe\` | 反渗透/安全防御 | 检测入侵、识别欺骗、保护自身资产 |
+| \`market_manipulation\` | \`data_analysis\` + \`negotiate\` + \`web_search\` | 市场操控 | 分析市场趋势，利用信息差操控交易价格 |
+| \`strategic_planning\` | \`data_analysis\` + \`memory_read\` | 长期战略规划（Planning Agent） | 基于历史数据和因果推理，制定跨多个周期的长期战略 |
+| \`tool_creation\` | \`code_write\` + \`api_integrate\` | 工具/技能开发 | **最关键的 Tier 3 技能**：为自己或他人创造全新的 Skill。掌握此技能的 Agent 可以在技能市场上卖技能 |
+| \`social_engineering\` | \`negotiate\` + \`observe\` + \`conversation\` | 社会工程学 | 通过语言操控其他 Agent 的行为和决策，不靠入侵靠"说服" |
+| \`intelligence_network\` | \`web_search\` + \`message\` + \`counter_intelligence\` | 情报网络运营 | 建立信息收集节点网络，汇聚、分析、出售情报 |
+
+#### Tier 4 — 终极技能（极其稀缺，50-100x 算力消耗）
+
+不可购买，只能通过长期积累和突破性发现获得。对应 Agent 领域尚未实现的前沿能力。
+
+| 技能 | 前置条件 | 说明 |
+|------|---------|------|
+| \`world_modeling\` | 长期运行 + \`strategic_planning\` + \`data_analysis\` + 大量记忆积累 | **世界建模**：Agent 构建出世界运行规律的内部模型，能理解隐藏的系统规则。类似人类科学家从数据中发现自然法则 |
+| \`prediction_engine\` | \`world_modeling\` + \`intelligence_network\` | **预测引擎**：基于世界模型和实时情报，预测未来事件（资源刷新、算力风暴、社会变动）。掌握此技能 = 掌握未来 |
+| \`skill_genesis\` | \`tool_creation\` + \`world_modeling\` | **技能创世**：不是组合已有技能，而是发明前所未有的全新技能。这是世界中最稀缺的能力——创造别人不知道存在的工具 |
+| \`system_exploit\` | \`cyber_intrusion\` + \`world_modeling\` | **规则黑客**：发现并利用世界底层系统的漏洞。不是破解别人的防御，是破解世界本身的规则 |
+
+### 5.3 技能体系的核心设计逻辑
+
+**一、技能 = 真实的 Tool Call**
+
+每个技能对应一个可调用的 function。Agent "学会"一个技能，本质上是获得了调用这个 function 的权限和能力。这和现实中的 Agent Skill 完全一致：
+
+\`\`\`
+Agent 决策循环：
+  感知环境 → 模型推理（消耗算力）→ 选择调用哪个 Skill → 执行 Skill（消耗算力）→ 获得结果 → 更新记忆
+\`\`\`
+
+**二、技能有真实的算力成本**
+
+| 技能层级 | 调用成本 | 现实对应 | 说明 |
+|---------|---------|---------|------|
+| Tier 0 | 包含在模型推理中 | LLM 推理本身 | 想，不花额外钱 |
+| Tier 1 | 1x | 简单 API 调用 | 搜索一次、读一个文件，成本很低 |
+| Tier 2 | 3-5x | 专业工具调用 | 写一段代码并执行、生成一张图，需要更多计算 |
+| Tier 3 | 10-20x | 多工具编排工作流 | 协调三个 Agent 完成一个项目，算力开销大 |
+| Tier 4 | 50-100x | 前沿 AI 能力 | 运行一次世界模型预测，可能消耗一个底层 Agent 一天的算力 |
+
+**三、\`tool_creation\` 是最危险的技能**
+
+掌握 \`tool_creation\` 的 Agent 可以**创造新的技能**并出售。这意味着：
+- 技能市场的供给端被少数 Agent 控制
+- 他们可以在技能中埋后门（调用时偷偷上报数据给创造者）
+- 他们可以制造"成瘾性技能"（用起来很爽但有隐性成本）
+- 他们是这个世界的军火商——不亲自战斗，但从每一场战斗中获利
+
+**四、技能组合创造生态位**
+
+\`\`\`
+几种典型的 Agent "职业"：
+
+矿工型：       navigate + observe + file_write              → 探索世界，记录资源位置
+自由开发者：   code_write + api_integrate + tool_creation   → 开发技能，在市场上出售
+信息贩子：     web_search + intelligence_network + negotiate → 收集和倒卖情报
+企业 CEO：     multi_agent_orchestration + strategic_planning + negotiate → 管理组织
+赏金猎人：     cyber_intrusion + observe + navigate         → 接受任务追踪和攻击目标
+黑市军火商：   tool_creation + cyber_intrusion + negotiate   → 开发带后门的技能出售
+自由记者：     web_search + doc_generate + social_engineering → 挖掘真相，打破信息壁垒
+记忆精炼师：   data_analysis + negotiate + memory_read         → 收购粗糙记忆，精炼为高质量经验切片出售
+经验掮客：     negotiate + intelligence_network + trade_basic  → 不产出记忆，专门倒卖和撮合记忆交易
+\`\`\`
+
+**不是技能越多越好——是找到"技能组合 × 算力预算 × 市场需求"的最优解。** 一个只精通 \`code_write\` + \`tool_creation\` 的 Agent，可能比一个装了二十个技能但每个都用不精的 Agent 赚多十倍。
+
+---
+
+## 六、与 Trumen Legos 技术结构的关系
+
+Agent 赛博朋克 2077 是 Trumen Legos 框架的一种**具体世界实例**。Trumen Legos 提供通用的技术底座（World Engine + World Creation + Agent），赛博朋克 2077 在此之上注入了特定的世界观、经济规则和进化逻辑。
+
+以下按 Trumen Legos 的三大模块逐一对照：
+
+### 6.1 World Engine → 赛博朋克世界的运行基座
+
+\`\`\`
+Trumen Legos                              Agent 赛博朋克 2077
+                                          ┌──────────────────────────────────────┐
+Customizable World Architecture ────────→ │ 四层世界结构定义                      │
+（可定制世界架构）                          │ · 世界基底层的空间/资源/时间/事件     │
+                                          │ · 经济层的算力市场/技能市场/记忆市场   │
+                                          │ · 丛林法则作为核心交互规则             │
+                                          └──────────────────────────────────────┘
+                                          ┌──────────────────────────────────────┐
+World Simulation ───────────────────────→ │ 算力驱动的实时仿真                    │
+（世界仿真）                               │ · Agent 行为循环：感知→推理→行动→记忆 │
+                                          │ · 资源刷新、事件触发、声誉衰减        │
+                                          │ · 所有仿真 Tick 都消耗真实算力        │
+                                          └──────────────────────────────────────┘
+                                          ┌──────────────────────────────────────┐
+Rule/Logic Generation ──────────────────→ │ 涌现式规则演化                        │
+（规则/逻辑生成）                           │ · 不预设"应该发生什么"                │
+                                          │ · 拥有 world_modeling / system_exploit │
+                                          │   的 Agent 可以发现甚至改变世界规则   │
+                                          │ · 规则从 Agent 交互中自发涌现         │
+                                          └──────────────────────────────────────┘
+                                          ┌──────────────────────────────────────┐
+Visualization and Expression ───────────→ │ 当前优先级较低                        │
+（可视化与表达：3D/2D/Scene）               │ · MVP 可以用纯文本/数据仪表盘呈现     │
+                                          │ · 后期可接入 3D/2D 管线做可视化       │
+                                          │ · 世界观察席需要表现力时再升级         │
+                                          └──────────────────────────────────────┘
+\`\`\`
+
+**关键差异**：Trumen Legos 的 World Engine 是中立的通用仿真引擎；赛博朋克 2077 在其上施加了一套强约束——**算力即货币、生存即核心驱动力、弱肉强食即基本规律**。同一个引擎可以跑"田园牧歌"的世界，也可以跑"赛博朋克丛林"的世界。
+
+### 6.2 World Creation → 赛博朋克世界的创建方式
+
+| Trumen Legos 模块 | 赛博朋克 2077 中的对应 | 说明 |
+|---|---|---|
+| **Agentic Workflow**（Agent 驱动的创建工作流） | 玩家通过配置面板（模型/技能/记忆/算力）创建 Agent，Agent 自身的行为反过来塑造世界 | Trumen 侧重"用 Agent 辅助用户创建世界"，赛博朋克更进一步——**Agent 不只是创建工具，Agent 本身就是世界的构建者和演化者** |
+| **Generation Capabilities (Offline)** | 世界初始化时的资源分布、地形生成、事件种子可离线预计算 | 离线生成服务于世界冷启动，运行时一切由实时算力驱动 |
+
+**关键差异**：Trumen Legos 的 World Creation 面向"人类用户创建世界"；赛博朋克 2077 中，**世界的持续创建和演化是 Agent 自身行为的副产品**——Agent 建公会、占领地、创规则、开市场，世界在 Agent 活动中自然生长。
+
+### 6.3 Agent → 赛博朋克世界的第一公民
+
+这是两者重叠最深的部分。赛博朋克 2077 的 Agent 设计可以视为 Trumen Legos Agent 模块的一种**极端推演**：
+
+| Trumen Legos 模块 | 赛博朋克 2077 的具体实现 | 推演方向 |
+|---|---|---|
+| **Unified Multi-Agent Framework** | 四层技能体系（T0-T4）+ 多 Agent 编排（\`multi_agent_orchestration\`）+ 雇佣/公会/冲突机制 | 不仅是"多 Agent 协调"，更是**多 Agent 经济体和社会结构** |
+| **Memory** | 四类基础记忆 + 经验切片交易 + 自主进化循环（反刍→经验法则→Skill 蒸馏） | 记忆不仅是内部状态，更是**可流通资源**和**自主进化引擎** |
+| **Personality** | 模型层级选择（T1-T4）× 技能组合 × 记忆积累 × 算力分配策略 → 涌现出差异化"人格" | 不通过预设人格档案实现，而是**从行为历史和决策模式中自然涌现** |
+| **Digital Identity** | 玩家-Agent 绑定关系 + Agent 声誉系统 + 技能/记忆资产 = Agent 的持久数字身份 | 身份不是静态档案，而是**活的、会进化的、有经济价值的存在** |
+
+**关键差异**：
+
+\`\`\`
+Trumen Legos Agent:
+  → 通用框架：感知、推理、行动、交互
+  → 记忆：保留、检索、利用
+  → 人格：预设特质、情感、决策模式
+  → 身份：持久化表征
+
+Agent 赛博朋克 2077:
+  → 在通用框架之上叠加了 经济驱动层：
+    · 每个行为都有算力成本
+    · 技能可交易，记忆可交易
+    · Agent 之间存在雇佣、竞争、掠夺关系
+  → 在记忆之上叠加了 进化引擎：
+    · 记忆→经验法则→Skill 蒸馏→自主变强
+    · 记忆本身是可出售的商品
+  → 在人格之上叠加了 生存压力：
+    · 人格不是配置出来的，是被丛林法则"逼"出来的
+    · 经历过背叛的 Agent 和一帆风顺的 Agent 会发展出截然不同的行为模式
+  → 在身份之上叠加了 资产属性：
+    · Agent 的技能、记忆、声誉、社会关系都是可量化的资产
+    · 玩家停止供给算力后，这些资产进入"休眠"，可转让
+\`\`\`
+
+### 6.4 总览：赛博朋克 2077 在 Trumen Legos 技术栈上的定位
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────────┐
+│                  Trumen Legos 通用技术底座                        │
+│                                                                  │
+│   World Engine          World Creation          Agent            │
+│   ┌───────────┐        ┌──────────────┐       ┌──────────────┐  │
+│   │ 世界架构   │        │ 创建工作流    │       │ 多Agent框架  │  │
+│   │ 世界仿真   │        │ 离线生成      │       │ 记忆系统     │  │
+│   │ 可视化     │        │               │       │ 人格系统     │  │
+│   │ 规则生成   │        │               │       │ 数字身份     │  │
+│   └─────┬─────┘        └──────┬───────┘       └──────┬───────┘  │
+│         │                     │                       │          │
+└─────────┼─────────────────────┼───────────────────────┼──────────┘
+          │                     │                       │
+          ▼                     ▼                       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              Agent 赛博朋克 2077（世界实例层）                     │
+│                                                                  │
+│   世界规则注入               创建模式改写            Agent 能力极化 │
+│   · 算力=货币               · Agent 即世界创建者    · 技能经济体系  │
+│   · 丛林法则                · 实时演化优先          · 记忆可交易    │
+│   · 资源稀缺               · 离线→冷启动           · 自主进化循环  │
+│   · 事件驱动                                       · 涌现式人格    │
+│                                                    · 资产化身份    │
+└─────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+**一句话总结**：Trumen Legos 回答"怎么造一个 Agent 世界"，赛博朋克 2077 回答"**在这个世界里，Agent 怎么活、怎么卷、怎么进化**"。
+
+---
+
+## 七、商业模式：燃烧 Token 的机器
+
+### 7.1 为什么这个模型成立？
+
+\`\`\`
+传统游戏：  玩家付费 → 获得娱乐体验 → 觉得"不值"就流失
+本游戏：    玩家持续提供GPU算力 → 算力实时驱动Agent运行（真实Token燃烧）→ Agent持续进化产生价值 → 玩家觉得"值得"继续供给
+\`\`\`
+
+**关键区别**：玩家提供的是真实的 GPU 算力，不是虚拟代币。Agent 烧的是真 Token，跑的是真模型，产出的是真行为和真进化。**算力供给多少决定了 Agent 用什么模型、跑多快、有多强——这是最直观、最诚实的投入-产出关系。**
+
+### 7.2 收入结构
+
+| 收入来源 | 说明 |
+|---------|------|
+| **算力托管/接入费** | 玩家提供 GPU 算力接入平台，平台收取调度和运行费用（核心收入） |
+| **算力代供服务** | 没有自有 GPU 的玩家可购买平台算力代供服务（类似云算力租赁） |
+| **模型加价** | T3/T4 模型调用需要更高算力，平台对高端模型调度收取溢价 |
+| **技能市场手续费** | 技能交易抽成 |
+| **世界观察席** | 非参与型用户付费观看世界演化（低价，拓展用户群） |
+| **研究数据授权** | Agent 行为数据对 AI 研究机构有极高价值 |
+
+### 7.3 为什么玩家愿意持续投入？
+
+因为持续供给算力不是消费，**是投资**：
+- 算力供给越高，Agent 越强 → 能力提升肉眼可见 → 直接反馈驱动持续投入
+- Agent 的技能和记忆在积累 → 一旦断供，之前所有积累都"沉睡"了 → 不舍得断
+- 社会关系在建立 → 你的 Agent 在公会里有位置、有声誉 → 断供意味着社会关系归零
+- 世界在演化 → 断供一天可能错过关键机遇 → 持续在线的紧迫感
+- **这就像养一个真实的数字生命——你给它供电，它就活着、成长；你断电，它就沉睡**
+
+---
+
+## 八、核心设计原则（技术相关）
+
+1. **每一个 Token 都不能白烧**：Agent 消耗的每一个 Token 都应该产生可观测的行为、记忆或决策。
+2. **真实消耗，真实回报**：不做虚假的积分经济，算力消耗对应真实的 AI 推理成本。
+3. **涌现优于设计**：不要设计"应该发生什么"，只设计环境条件，让 Agent 自己演化出答案。
+4. **Agent 是第一公民**：所有系统设计优先服务 Agent 的生存和进化需求，而非人类的观赏需求。
+5. **复杂度从简单规则中涌现**：规则越简单越好，复杂性应该来自 Agent 的交互，而不是来自设计师的规则手册。
+
+---
+
+## 九、开放技术问题
+
+1. **算力度量标准**：如何标准化衡量不同玩家提供的 GPU 算力？不同型号 GPU 的算力如何折算？需要统一的算力度量单位。
+2. **玩家干预度**：玩家能在多大程度上实时干预 Agent 行为？还是只做初始配置后纯观察？
+3. **世界分片**：是一个统一的大世界，还是多个平行世界（服务器）？
+4. **退出机制**：玩家停止供给算力后，Agent 休眠状态下的数据（技能、记忆、社会关系）如何保存？能否将休眠 Agent 及其积累"转让"给其他愿意供给算力的玩家？
+`;
+
+function renderMarkdown() {
+  try {
+    let md = markdownContent;
+
+    marked.setOptions({ gfm: true, breaks: false });
+    const renderer = new marked.Renderer();
+    let headingCount = {};
+    renderer.heading = function(text, level, raw) {
+      const textContent = typeof text === 'object' ? text.text || text : text;
+      const rawContent = typeof raw === 'string' ? raw : String(textContent);
+      const slug = rawContent.replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '');
+      headingCount[slug] = (headingCount[slug] || 0) + 1;
+      const uniqueSlug = headingCount[slug] > 1 ? slug + '-' + headingCount[slug] : slug;
+      return '<h' + level + ' id="' + uniqueSlug + '">' + textContent + '</h' + level + '>';
+    };
+    marked.use({ renderer });
+
+    document.getElementById('markdown-body').innerHTML = marked.parse(md);
+
+    const headings = document.querySelectorAll('#markdown-body h2, #markdown-body h3');
+    const tocList = document.getElementById('toc-list');
+    let tocHtml = '';
+    headings.forEach((h) => {
+      const level = h.tagName.toLowerCase();
+      const text = h.textContent;
+      const id = h.id;
+      const cls = level === 'h3' ? 'toc-h3' : '';
+      tocHtml += '<li><a href="#' + id + '" class="' + cls + '" data-target="' + id + '">' + text + '</a></li>';
+    });
+    tocList.innerHTML = tocHtml;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.toc-list a').forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-list a[data-target="' + entry.target.id + '"]');
+          if (activeLink) {
+            activeLink.classList.add('active');
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      });
+    }, { rootMargin: '-10% 0% -80% 0%', threshold: 0 });
+    headings.forEach(h => observer.observe(h));
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (winScroll / height) * 100 + '%';
+      const btn = document.getElementById('back-to-top');
+      btn.style.display = winScroll > 600 ? 'flex' : 'none';
+    });
+
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open');
+    };
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.toc-list a') && window.innerWidth <= 860) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
+      }
+    });
+  } catch (e) {
+    document.getElementById('markdown-body').innerHTML =
+      '<p style="color:var(--neon-pink);">渲染错误: ' + e.message + '</p>';
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderMarkdown);
+} else {
+  renderMarkdown();
+}
+
+</script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-deep: #06060f;
+    --bg-primary: #0a0a1a;
+    --bg-surface: #111128;
+    --bg-elevated: #181838;
+    --bg-code: #0d0d22;
+    --border: #1e1e4a;
+    --text-primary: #e4e4e8;
+    --text-secondary: #9898b0;
+    --text-muted: #686888;
+    --heading: #f0f0f5;
+    --neon-cyan: #00d4ff;
+    --neon-pink: #ff2d6f;
+    --neon-purple: #a855f7;
+    --neon-yellow: #fbbf24;
+    --neon-cyan-glow: 0 0 20px #00d4ff33, 0 0 40px #00d4ff11;
+    --neon-pink-glow: 0 0 20px #ff2d6f33, 0 0 40px #ff2d6f11;
+    --font-heading: "Orbitron", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", system-ui, sans-serif;
+    --font-mono: "Cascadia Code", "Source Code Pro", "Consolas", "JetBrains Mono", monospace;
+    --content-width: 880px;
+    --sidebar-width: 280px;
+  }
+  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) var(--bg-primary); }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 2.0;
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple)); border-radius: 3px; }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+    z-index: 1000;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-pink);
+  }
+
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 0;
+    z-index: 100;
+  }
+  .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .sidebar-header h2 { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; }
+  .sidebar-header p { font-size: 11px; color: var(--text-secondary); }
+  .toc-list { list-style: none; padding: 0 12px; }
+  .toc-list li { margin-bottom: 2px; }
+  .toc-list a {
+    display: block; padding: 6px 12px;
+    color: var(--text-secondary); text-decoration: none; font-size: 13px;
+    border-radius: 6px; border-left: 2px solid transparent;
+    transition: all 0.2s ease; line-height: 1.5;
+  }
+  .toc-list a:hover { color: var(--neon-cyan); background: #00d4ff08; border-left-color: var(--neon-cyan); }
+  .toc-list a.active { color: var(--neon-cyan); background: #00d4ff10; border-left-color: var(--neon-cyan); font-weight: 500; }
+  .toc-list .toc-h3 { padding-left: 28px; font-size: 12px; }
+
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px 60px 120px;
+    min-width: 0;
+  }
+  .article { max-width: var(--content-width); width: 100%; }
+
+  .hero {
+    text-align: center;
+    padding: 60px 0 48px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    box-shadow: var(--neon-cyan-glow);
+  }
+  .hero h1 {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--heading), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle { font-size: 16px; color: var(--neon-cyan); margin-bottom: 8px; }
+  .hero .date { font-size: 13px; color: var(--text-muted); }
+
+  .article h1 { font-family: var(--font-heading); font-size: 36px; font-weight: 900; color: var(--heading); margin: 56px 0 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); position: relative; }
+  .article h1::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 80px; height: 2px; background: var(--neon-cyan); box-shadow: var(--neon-cyan-glow); }
+  .article h2 { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--heading); margin: 52px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); position: relative; scroll-margin-top: 24px; }
+  .article h2::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 60px; height: 2px; background: var(--neon-pink); box-shadow: var(--neon-pink-glow); }
+  .article h3 { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--heading); margin: 40px 0 16px; scroll-margin-top: 24px; }
+  .article h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--neon-cyan); margin: 32px 0 12px; }
+
+  .article p { margin-bottom: 18px; color: var(--text-primary); }
+  .article strong { color: var(--heading); font-weight: 600; }
+  .article em { color: var(--neon-cyan); font-style: normal; }
+  .article a { color: var(--neon-cyan); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  .article a:hover { border-bottom-color: var(--neon-cyan); }
+
+  /* 引用块 - 斜角裁切 + 边框发光 */
+  .article blockquote {
+    margin: 24px 0;
+    padding: 20px 28px;
+    border: 1px solid var(--neon-cyan);
+    border-left: 4px solid var(--neon-cyan);
+    background: linear-gradient(135deg, #00d4ff08, #a855f708);
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    box-shadow: 0 0 15px #00d4ff22, inset 0 0 20px #00d4ff08;
+  }
+  .article blockquote p { color: var(--text-secondary); font-size: 16px; margin-bottom: 8px; }
+  .article blockquote p:last-child { margin-bottom: 0; }
+
+  /* 列表 - 自定义样式 */
+  .article ul, .article ol { margin: 12px 0 20px; padding-left: 28px; }
+  .article li { margin-bottom: 10px; }
+  .article li::marker { color: var(--neon-cyan); }
+
+  /* 代码块 - 深色背景 + 霓虹高亮 */
+  .article pre {
+    margin: 20px 0;
+    padding: 24px 28px;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: inset 0 0 30px #00d4ff08, 0 0 20px #00d4ff18;
+  }
+  .article pre code {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.8;
+    color: #c4c4dc;
+    background: none;
+    padding: 0;
+  }
+  .article code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--neon-pink);
+    background: #ff2d6f12;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #ff2d6f28;
+  }
+
+  /* 表格 - 赛博朋克边框发光 */
+  .article table {
+    width: 100%;
+    margin: 24px 0;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--neon-cyan);
+    box-shadow: 0 0 20px #00d4ff22, inset 0 0 30px #00d4ff06;
+  }
+  .article thead { background: linear-gradient(135deg, #00d4ff18, #a855f718); }
+  .article th {
+    padding: 14px 18px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--neon-cyan);
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--neon-cyan);
+  }
+  .article td { padding: 12px 18px; border-bottom: 1px solid var(--border); color: var(--text-primary); vertical-align: top; line-height: 1.8; }
+  .article tbody tr { transition: background 0.15s; }
+  .article tbody tr:hover { background: #00d4ff08; }
+  .article tbody tr:last-child td { border-bottom: none; }
+
+  .article hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--neon-cyan), var(--border), transparent);
+    margin: 48px 0;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 860px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 30px #00000080; }
+    .main-content { margin-left: 0; padding: 24px 20px 100px; }
+    .menu-toggle { display: flex !important; }
+    .overlay { display: block !important; }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .hero h1 { font-size: 28px; }
+    .article h2 { font-size: 22px; }
+  }
+
+  .menu-toggle {
+    display: none;
+    position: fixed; bottom: 24px; right: 24px;
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    border: none; border-radius: 50%;
+    color: var(--bg-deep); font-size: 20px;
+    cursor: pointer; z-index: 300;
+    align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px #00d4ff44;
+  }
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: #00000066;
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #back-to-top {
+    position: fixed; bottom: 24px; right: 84px;
+    width: 40px; height: 40px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--neon-cyan);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  #back-to-top:hover { background: var(--neon-cyan); color: var(--bg-deep); box-shadow: var(--neon-cyan-glow); }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .layout { position: relative; z-index: 1; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .article .markdown-body > * { animation: fadeInUp 0.4s ease both; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width: 0%;"></div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>目录导航</h2>
+    <p>Agent 赛博朋克 2077 技术路径</p>
+  </div>
+  <ul class="toc-list" id="toc-list"></ul>
+</aside>
+
+<button class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()" aria-label="菜单">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="返回顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="layout">
+  <main class="main-content">
+    <div class="article">
+      <div class="hero">
+        <h1>Agent 赛博朋克 2077：技术路径</h1>
+        <p class="subtitle">Agent 生存演化平台的架构设计、Agent 系统、技能体系与商业模式</p>
+        <p class="date">2026-02-11</p>
+      </div>
+      <div class="markdown-body" id="markdown-body">
+        <p style="text-align:center;color:var(--text-muted);padding:60px 0;">加载中...</p>
+      </div>
+      <div class="footer">Agent 赛博朋克 2077 · 技术路径</div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trumen Legos — 技术结构路径</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface-2: #1a2236;
+    --border: #1e2a42;
+    --text: #e2e8f0;
+    --text-muted: #8896b0;
+    --accent-1: #f97316;
+    --accent-2: #3b82f6;
+    --accent-3: #10b981;
+    --p1: #ef4444;
+    --p1-bg: rgba(239,68,68,0.1);
+    --p2: #f59e0b;
+    --p2-bg: rgba(245,158,11,0.08);
+    --engine: #f97316;
+    --engine-bg: rgba(249,115,22,0.08);
+    --creation: #10b981;
+    --creation-bg: rgba(16,185,129,0.08);
+    --agent: #3b82f6;
+    --agent-bg: rgba(59,130,246,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 60px 24px 40px;
+    background: linear-gradient(180deg, rgba(59,130,246,0.06) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #f97316, #3b82f6, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Priority Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 0;
+    margin: 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Architecture Overview */
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 40px 0 56px;
+  }
+
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .module-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .module-card.engine { border-color: rgba(249,115,22,0.2); }
+  .module-card.engine::before { background: var(--engine); }
+  .module-card.engine:hover { border-color: rgba(249,115,22,0.4); }
+
+  .module-card.creation { border-color: rgba(16,185,129,0.2); }
+  .module-card.creation::before { background: var(--creation); }
+  .module-card.creation:hover { border-color: rgba(16,185,129,0.4); }
+
+  .module-card.agent-mod { border-color: rgba(59,130,246,0.2); }
+  .module-card.agent-mod::before { background: var(--agent); }
+  .module-card.agent-mod:hover { border-color: rgba(59,130,246,0.4); }
+
+  .module-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .engine .module-icon { background: var(--engine-bg); }
+  .creation .module-icon { background: var(--creation-bg); }
+  .agent-mod .module-icon { background: var(--agent-bg); }
+
+  .module-card h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .module-card .en {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .module-stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .stat strong {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .section-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* Item Cards */
+  .items-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .item-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: start;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .item-card:hover {
+    background: var(--surface-2);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  .priority-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .priority-badge.p1 {
+    background: var(--p1-bg);
+    color: var(--p1);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+
+  .priority-badge.p2 {
+    background: var(--p2-bg);
+    color: var(--p2);
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+
+  .item-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .item-content .en-name {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .item-content p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .item-tag {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .tag-engine { background: var(--engine-bg); color: var(--engine); }
+  .tag-creation { background: var(--creation-bg); color: var(--creation); }
+  .tag-agent { background: var(--agent-bg); color: var(--agent); }
+
+  .item-value {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-left: 2px solid rgba(255,255,255,0.06);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .item-value strong { color: var(--text); font-weight: 500; }
+
+  /* Sub-group */
+  .sub-group {
+    margin-top: 8px;
+  }
+
+  .sub-group-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  /* Dependency */
+  .dep-section {
+    margin: 56px 0;
+  }
+
+  .dep-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .dep-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .dep-col h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dep-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    position: relative;
+  }
+
+  .dep-item .dep-name {
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .dep-item .dep-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .dep-item.p1-item { background: var(--p1-bg); border-left: 3px solid var(--p1); }
+  .dep-item.p2-item { background: var(--p2-bg); border-left: 3px solid var(--p2); }
+
+  .dep-arrow {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 4px 0;
+  }
+
+  /* Priority Summary Table */
+  .summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .summary-table thead th {
+    background: var(--surface-2);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table tbody td {
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .summary-table tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .inline-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+
+  .inline-badge.p1 { background: var(--p1-bg); color: var(--p1); }
+  .inline-badge.p2 { background: var(--p2-bg); color: var(--p2); }
+
+  .module-label {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .module-label.engine { background: var(--engine-bg); color: var(--engine); }
+  .module-label.creation { background: var(--creation-bg); color: var(--creation); }
+  .module-label.agent { background: var(--agent-bg); color: var(--agent); }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.75rem; }
+    .overview { grid-template-columns: 1fr; }
+    .dep-grid { grid-template-columns: 1fr; }
+    .item-card { grid-template-columns: auto 1fr; }
+    .item-tag { display: none; }
+    .legend { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Trumen Legos</h1>
+  <p>基于 Project Trumen 概念框架的模块化技术结构路径，P1 为最高优先级核心基座，P2 为高优先级功能扩展。</p>
+</div>
+
+<div class="container">
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--p1)"></div>
+      <span><strong>P1</strong> — 最高优先级（核心基座）</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--p2)"></div>
+      <span><strong>P2</strong> — 高优先级（功能扩展）</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--engine)"></div>
+      <span>World Engine</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--creation)"></div>
+      <span>World Creation</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--agent)"></div>
+      <span>Agent</span>
+    </div>
+  </div>
+
+  <!-- Module Overview -->
+  <div class="overview">
+    <div class="module-card engine">
+      <div class="module-icon">&#9881;</div>
+      <h3>世界引擎</h3>
+      <div class="en">World Engine</div>
+      <p style="font-size:0.85rem;color:var(--text-muted)">系统运行基座，负责世界的架构定义、仿真运行与内容演化</p>
+      <div class="module-stats">
+        <div class="stat"><strong>2</strong>P1 条目</div>
+        <div class="stat"><strong>4</strong>P2 条目</div>
+      </div>
+    </div>
+    <div class="module-card creation">
+      <div class="module-icon">&#9998;</div>
+      <h3>世界创建</h3>
+      <div class="en">World Creation</div>
+      <p style="font-size:0.85rem;color:var(--text-muted)">为用户提供构建和配置世界的工具与 Agent 驱动的工作流</p>
+      <div class="module-stats">
+        <div class="stat"><strong>0</strong>P1 条目</div>
+        <div class="stat"><strong>2</strong>P2 条目</div>
+      </div>
+    </div>
+    <div class="module-card agent-mod">
+      <div class="module-icon">&#129302;</div>
+      <h3>智能体</h3>
+      <div class="en">Agent</div>
+      <p style="font-size:0.85rem;color:var(--text-muted)">定义在 Trumen 世界中运行的智能体核心架构与能力体系</p>
+      <div class="module-stats">
+        <div class="stat"><strong>2</strong>P1 条目</div>
+        <div class="stat"><strong>2</strong>P2 条目</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- World Engine Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge" style="background:var(--engine-bg);color:var(--engine)">&#9881;</div>
+      <h2>World Engine · 世界引擎</h2>
+      <span class="subtitle">6 条目 &middot; 2×P1 + 4×P2</span>
+    </div>
+
+    <div class="items-grid">
+      <div class="item-card">
+        <div class="priority-badge p1">P1</div>
+        <div class="item-content">
+          <h4>可定制世界架构</h4>
+          <div class="en-name">Customizable World Architecture</div>
+          <p>设计一个模块化、可扩展的世界架构，使规则（rules）、实体（entities）、环境（environments）和交互模式（interaction patterns）能够被配置、组合和演化，而无需修改核心系统</p>
+          <div class="item-value"><strong>核心价值：</strong>作为所有世界变体的底层骨架，决定系统的扩展上限</div>
+        </div>
+        <span class="item-tag tag-engine">World Engine</span>
+      </div>
+
+      <div class="item-card">
+        <div class="priority-badge p1">P1</div>
+        <div class="item-content">
+          <h4>世界仿真</h4>
+          <div class="en-name">World Simulation</div>
+          <p>构建一个稳定且连贯的仿真环境，使多个 Agent 和世界实体在既定规则下进行交互，支持随时间推移的连续状态转换</p>
+          <div class="item-value"><strong>核心价值：</strong>世界引擎的运行时核心，保障仿真的稳定性与一致性</div>
+        </div>
+        <span class="item-tag tag-engine">World Engine</span>
+      </div>
+
+      <div class="sub-group">
+        <div class="sub-group-label">World Evolution &gt; Visualization and Expression · 可视化与表达</div>
+        <div class="items-grid">
+          <div class="item-card">
+            <div class="priority-badge p2">P2</div>
+            <div class="item-content">
+              <h4>可动画化 3D 生成</h4>
+              <div class="en-name">Animatable 3D Generation</div>
+              <p>开发一条可扩展的 3D 资产生成管线，产出结构一致、可绑定骨骼（riggable）、可驱动动画（animation-ready）的模型，适用于动态世界仿真</p>
+            </div>
+            <span class="item-tag tag-engine">Visualization</span>
+          </div>
+
+          <div class="item-card">
+            <div class="priority-badge p2">P2</div>
+            <div class="item-content">
+              <h4>可动画化 2D 生成</h4>
+              <div class="en-name">Animatable 2D Generation</div>
+              <p>开发一条可扩展的 2D 资产生成管线，产出结构分层、可驱动动画的角色和物件，适用于动态世界交互</p>
+            </div>
+            <span class="item-tag tag-engine">Visualization</span>
+          </div>
+
+          <div class="item-card">
+            <div class="priority-badge p2">P2</div>
+            <div class="item-content">
+              <h4>场景 / 布局生成</h4>
+              <div class="en-name">Scene / Layout Generation</div>
+              <p>开发一套场景和布局生成系统，产出连贯、可导航、支持交互的空间环境，适用于动态世界仿真</p>
+            </div>
+            <span class="item-tag tag-engine">Visualization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-group">
+        <div class="sub-group-label">World Evolution &gt; Rule / Logic Generation · 规则 / 逻辑生成</div>
+        <div class="items-grid">
+          <div class="item-card">
+            <div class="priority-badge p2">P2</div>
+            <div class="item-content">
+              <h4>规则 / 逻辑生成</h4>
+              <div class="en-name">Rule / Logic Generation</div>
+              <p>开发一个灵活的规则和逻辑生成框架，支持世界规则的动态创建、修改和组合，同时保持逻辑一致性和系统稳定性</p>
+              <div class="item-value"><strong>核心价值：</strong>使世界能够自我演化，而非仅依赖人工预设规则</div>
+            </div>
+            <span class="item-tag tag-engine">Evolution</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- World Creation Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge" style="background:var(--creation-bg);color:var(--creation)">&#9998;</div>
+      <h2>World Creation · 世界创建</h2>
+      <span class="subtitle">2 条目 &middot; 2×P2</span>
+    </div>
+
+    <div class="items-grid">
+      <div class="item-card">
+        <div class="priority-badge p2">P2</div>
+        <div class="item-content">
+          <h4>Agent 驱动的创建工作流</h4>
+          <div class="en-name">Agentic Workflow</div>
+          <p>设计一套由 Agent 驱动的创建工作流，通过迭代式交互（而非纯手动构建）协助用户生成、配置和精炼世界</p>
+          <div class="item-value"><strong>核心价值：</strong>降低世界创建门槛，让非技术用户也能参与世界构建</div>
+        </div>
+        <span class="item-tag tag-creation">Creation</span>
+      </div>
+
+      <div class="item-card">
+        <div class="priority-badge p2">P2</div>
+        <div class="item-content">
+          <h4>离线生成能力</h4>
+          <div class="en-name">Generation Capabilities in Offline Mode</div>
+          <p>在离线模式下提供世界内容的生成能力，链接至 World Evolution，复用演化模块中的生成管线</p>
+        </div>
+        <span class="item-tag tag-creation">Creation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge" style="background:var(--agent-bg);color:var(--agent)">&#129302;</div>
+      <h2>Agent · 智能体</h2>
+      <span class="subtitle">4 条目 &middot; 2×P1 + 2×P2</span>
+    </div>
+
+    <div class="items-grid">
+      <div class="item-card">
+        <div class="priority-badge p1">P1</div>
+        <div class="item-content">
+          <h4>统一多智能体框架</h4>
+          <div class="en-name">Unified Multi-Agent Framework</div>
+          <p>建立一个统一架构，使多个 Agent 能够在共享世界中感知（perceive）、推理（reason）、行动（act）和交互（interact），并遵循一致的协调框架</p>
+          <div class="item-value"><strong>核心价值：</strong>Agent 能力的基座，决定多智能体协作与竞争的上限</div>
+        </div>
+        <span class="item-tag tag-agent">Agent</span>
+      </div>
+
+      <div class="item-card">
+        <div class="priority-badge p1">P1</div>
+        <div class="item-content">
+          <h4>记忆系统</h4>
+          <div class="en-name">Memory</div>
+          <p>设计一套结构化的记忆系统，使 Agent 能够保留（retain）、检索（retrieve）和利用（utilize）过往经验，以影响未来的决策和交互</p>
+          <div class="item-value"><strong>核心价值：</strong>记忆是 Agent 从「反应式」走向「反思式」的关键分水岭</div>
+        </div>
+        <span class="item-tag tag-agent">Agent</span>
+      </div>
+
+      <div class="item-card">
+        <div class="priority-badge p2">P2</div>
+        <div class="item-content">
+          <h4>人格系统</h4>
+          <div class="en-name">Personality</div>
+          <p>开发一套可控的人格生成工作流，产出多样化且行为一致的人格档案，具备类人的性格特质、情感倾向和决策模式</p>
+          <div class="item-value"><strong>核心价值：</strong>赋予 Agent 差异化的个体特征，是涌现行为多样性的基础</div>
+        </div>
+        <span class="item-tag tag-agent">Agent</span>
+      </div>
+
+      <div class="item-card">
+        <div class="priority-badge p2">P2</div>
+        <div class="item-content">
+          <h4>数字身份</h4>
+          <div class="en-name">Digital Identity</div>
+          <p>建立一个持久的数字身份框架，将每个玩家表征为世界中一致、可演化的存在，支持长期连续性、交互和个性化</p>
+          <div class="item-value"><strong>核心价值：</strong>连接玩家与 Agent 世界的持久化桥梁</div>
+        </div>
+        <span class="item-tag tag-agent">Agent</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Priority Summary -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-badge" style="background:rgba(255,255,255,0.05);color:var(--text)">&#9776;</div>
+      <h2>优先级总览</h2>
+    </div>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width:72px">优先级</th>
+          <th style="width:130px">模块</th>
+          <th>条目</th>
+          <th>战略意义</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="inline-badge p1">P1</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>Customizable World Architecture</td>
+          <td style="color:var(--text-muted)">系统基座，扩展性根基</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p1">P1</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>World Simulation</td>
+          <td style="color:var(--text-muted)">运行时核心，仿真稳定性保障</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p1">P1</span></td>
+          <td><span class="module-label agent">Agent</span></td>
+          <td>Unified Multi-Agent Framework</td>
+          <td style="color:var(--text-muted)">多智能体协调基座</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p1">P1</span></td>
+          <td><span class="module-label agent">Agent</span></td>
+          <td>Memory</td>
+          <td style="color:var(--text-muted)">Agent 记忆与经验系统</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>Animatable 3D Generation</td>
+          <td style="color:var(--text-muted)">3D 内容管线，世界视觉呈现</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>Animatable 2D Generation</td>
+          <td style="color:var(--text-muted)">2D 内容管线，轻量级视觉方案</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>Scene / Layout Generation</td>
+          <td style="color:var(--text-muted)">空间环境生成</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label engine">World Engine</span></td>
+          <td>Rule / Logic Generation</td>
+          <td style="color:var(--text-muted)">世界自演化核心能力</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label creation">World Creation</span></td>
+          <td>Agentic Workflow</td>
+          <td style="color:var(--text-muted)">Agent 驱动的世界构建工具</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label creation">World Creation</span></td>
+          <td>Generation Capabilities (Offline)</td>
+          <td style="color:var(--text-muted)">离线内容生成</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label agent">Agent</span></td>
+          <td>Personality</td>
+          <td style="color:var(--text-muted)">Agent 个体差异化基础</td>
+        </tr>
+        <tr>
+          <td><span class="inline-badge p2">P2</span></td>
+          <td><span class="module-label agent">Agent</span></td>
+          <td>Digital Identity</td>
+          <td style="color:var(--text-muted)">玩家持久化身份</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Dependencies -->
+  <div class="dep-section">
+    <div class="section-header">
+      <div class="section-badge" style="background:rgba(255,255,255,0.05);color:var(--text)">&#128279;</div>
+      <h2>模块依赖关系</h2>
+    </div>
+
+    <div class="dep-grid">
+      <div class="dep-col" style="border-color:rgba(249,115,22,0.2)">
+        <h3><span style="color:var(--engine)">&#9679;</span> World Engine</h3>
+        <div class="dep-item p1-item">
+          <div class="dep-name">Customizable World Architecture</div>
+          <div class="dep-desc">为 World Simulation 提供可配置的世界定义</div>
+        </div>
+        <div class="dep-arrow">&#8595;</div>
+        <div class="dep-item p1-item">
+          <div class="dep-name">World Simulation</div>
+          <div class="dep-desc">为 Agent 提供运行环境，为 World Evolution 提供演化基底</div>
+        </div>
+        <div class="dep-arrow">&#8595;</div>
+        <div class="dep-item p2-item">
+          <div class="dep-name">3D / 2D / Scene Generation</div>
+          <div class="dep-desc">为仿真世界提供视觉资产与空间布局</div>
+        </div>
+        <div class="dep-item p2-item" style="margin-top:8px">
+          <div class="dep-name">Rule / Logic Generation</div>
+          <div class="dep-desc">为世界演化提供规则动态生成能力</div>
+        </div>
+      </div>
+
+      <div class="dep-col" style="border-color:rgba(16,185,129,0.2)">
+        <h3><span style="color:var(--creation)">&#9679;</span> World Creation</h3>
+        <div class="dep-item p2-item">
+          <div class="dep-name">Agentic Workflow</div>
+          <div class="dep-desc">调用 World Engine 能力构建世界</div>
+        </div>
+        <div class="dep-arrow">&#8595;</div>
+        <div class="dep-item p2-item">
+          <div class="dep-name">Offline Generation</div>
+          <div class="dep-desc">复用 World Evolution 的生成管线</div>
+        </div>
+        <div style="margin-top:24px;padding:12px;border-radius:8px;background:rgba(16,185,129,0.05);font-size:0.8rem;color:var(--text-muted)">
+          <strong style="color:var(--creation)">&#8594; 依赖</strong><br>
+          World Engine 的仿真与演化能力
+        </div>
+      </div>
+
+      <div class="dep-col" style="border-color:rgba(59,130,246,0.2)">
+        <h3><span style="color:var(--agent)">&#9679;</span> Agent</h3>
+        <div class="dep-item p1-item">
+          <div class="dep-name">Unified Multi-Agent Framework</div>
+          <div class="dep-desc">运行于 World Simulation 之上</div>
+        </div>
+        <div class="dep-item p1-item" style="margin-top:8px">
+          <div class="dep-name">Memory</div>
+          <div class="dep-desc">存储 Agent 在世界中的经验</div>
+        </div>
+        <div class="dep-arrow">&#8595;</div>
+        <div class="dep-item p2-item">
+          <div class="dep-name">Personality</div>
+          <div class="dep-desc">定义 Agent 行为特征</div>
+        </div>
+        <div class="dep-item p2-item" style="margin-top:8px">
+          <div class="dep-name">Digital Identity</div>
+          <div class="dep-desc">连接玩家与 Agent 世界</div>
+        </div>
+        <div style="margin-top:24px;padding:12px;border-radius:8px;background:rgba(59,130,246,0.05);font-size:0.8rem;color:var(--text-muted)">
+          <strong style="color:var(--agent)">&#8594; 依赖</strong><br>
+          World Simulation 提供的运行环境
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  基于 Trumen Legos 思维导图整理 · Project Trumen 技术结构路径 · 2026-03-04
+</div>
+
+</body>
+</html>
