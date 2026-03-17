@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Cyberpunk theme CSS variables */
+:root {
+  --background: #0a0a0f;
+  --foreground: #e0e0e8;
+  --neon-cyan: #00fff5;
+  --neon-magenta: #ff00ff;
+  --neon-yellow: #ffd700;
+  --card-bg: #12121a;
+  --card-border: rgba(0, 255, 245, 0.2);
+  --glow-cyan: 0 0 20px rgba(0, 255, 245, 0.3);
+  --glow-magenta: 0 0 20px rgba(255, 0, 255, 0.3);
+  --glow-yellow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), "JetBrains Mono", "Fira Code", monospace;
+  min-height: 100vh;
+}
+
+/* Cyberpunk utility classes */
+.cyber-glow-cyan {
+  box-shadow: var(--glow-cyan);
+}
+
+.cyber-glow-magenta {
+  box-shadow: var(--glow-magenta);
+}
+
+.cyber-glow-yellow {
+  box-shadow: var(--glow-yellow);
+}
+
+.cyber-border {
+  border: 1px solid var(--card-border);
+}
+
+.cyber-text-cyan {
+  color: var(--neon-cyan);
+}
+
+.cyber-text-magenta {
+  color: var(--neon-magenta);
+}
+
+.cyber-text-yellow {
+  color: var(--neon-yellow);
+}
+
+/* Scanline effect (optional subtle overlay) */
+.cyber-scanline::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  z-index: 9999;
+}

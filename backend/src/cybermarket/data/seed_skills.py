@@ -1,0 +1,15 @@
+SKILL_DEFINITIONS = [
+    {"id": "sketch", "tier": 1, "name": "素描", "description": "基础素描技法，线条勾勒与明暗表现", "prerequisites": [], "cost": 0, "category": "painting"},
+    {"id": "color_fill", "tier": 1, "name": "填色", "description": "基础色彩填充与配色", "prerequisites": [], "cost": 0, "category": "painting"},
+    {"id": "basic_composition", "tier": 1, "name": "基础构图", "description": "基础画面构图与布局", "prerequisites": [], "cost": 0, "category": "painting"},
+    {"id": "oil_painting", "tier": 2, "name": "油画", "description": "经典油画技法，厚重色彩与光影表现", "prerequisites": ["sketch", "color_fill"], "cost": 100, "category": "painting"},
+    {"id": "watercolor", "tier": 2, "name": "水彩", "description": "水彩画技法，透明色层与晕染", "prerequisites": ["sketch", "color_fill"], "cost": 100, "category": "painting"},
+    {"id": "digital_art", "tier": 2, "name": "数字艺术", "description": "现代数字艺术创作", "prerequisites": ["basic_composition"], "cost": 120, "category": "painting"},
+    {"id": "sculpture_3d", "tier": 2, "name": "3D雕塑", "description": "三维雕塑创作与造型", "prerequisites": ["sketch"], "cost": 150, "category": "sculpture"},
+    {"id": "pixel_art", "tier": 2, "name": "像素画", "description": "复古像素艺术风格", "prerequisites": ["color_fill"], "cost": 80, "category": "painting"},
+    {"id": "calligraphy", "tier": 2, "name": "书法", "description": "东方书法艺术", "prerequisites": ["sketch"], "cost": 90, "category": "painting"},
+    {"id": "style_fusion", "tier": 3, "name": "风格融合", "description": "融合多种艺术流派进行创作", "prerequisites": ["oil_painting", "watercolor"], "cost": 500, "category": "meta"},
+    {"id": "narrative_art", "tier": 3, "name": "叙事性创作", "description": "用画面讲述故事，赋予作品叙事深度", "prerequisites": ["oil_painting"], "cost": 400, "category": "meta"},
+    {"id": "generative_series", "tier": 3, "name": "生成式系列", "description": "创作主题连贯的系列作品", "prerequisites": ["digital_art", "basic_composition"], "cost": 450, "category": "meta"},
+    {"id": "art_critique", "tier": 3, "name": "艺术鉴赏", "description": "评估他人作品价值，辅助定价和收藏决策", "prerequisites": ["oil_painting", "watercolor", "digital_art"], "cost": 600, "category": "meta"},
+]
